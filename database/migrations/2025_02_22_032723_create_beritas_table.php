@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('judul');
             $table->text('isi');
             $table->string('penulis');
+            $table->string('tempat');
             $table->date('tanggal');
             $table->string('photo')->nullable(); // Bisa kosong
             $table->timestamps();

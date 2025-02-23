@@ -11,7 +11,7 @@ class Berita extends Model
     use HasFactory;
     protected $table = 'berita';
 
-    protected $fillable = ['id_user', 'judul', 'isi', 'penulis', 'tanggal', 'photo'];
+    protected $fillable = ['id_user', 'judul', 'isi', 'penulis', 'tanggal', 'tempat', 'photo'];
 
     public function user(): BelongsTo
     {

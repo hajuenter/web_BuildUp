@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Data_Verifikasi_CPB extends Model
+class DataVerifikasiCPB extends Model
 {
     use HasFactory;
 
@@ -33,6 +33,6 @@ class Data_Verifikasi_CPB extends Model
 
     public function cpb()
     {
-        return $this->belongsTo(Data_CPB::class, 'nik', 'nik');
+        return $this->belongsTo(DataCPB::class, 'nik', 'nik');
     }
 }
