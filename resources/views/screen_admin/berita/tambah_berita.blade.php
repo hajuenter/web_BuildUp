@@ -20,7 +20,7 @@
                         <h6 class="card-title">Tambah Berita Form</h6>
 
                         <form class="forms-sample" method="post" action="{{ route('admin.store.berita') }}"
-                            enctype="multipart/form-data">
+                            enctype="multipart/form-data" onsubmit="disableButton()">
                             {{ csrf_field() }}
 
                             <div class="row mb-3">
@@ -35,6 +35,13 @@
                                 <label class="col-sm-3 col-form-label">Isi <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" name="isi" required placeholder="Masukkan isi berita">{{ old('isi') }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Tempat <span style="color: red;">*</span></label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" name="tempat" required placeholder="Masukkan tempat">{{ old('tempat') }}</textarea>
                                 </div>
                             </div>
 
@@ -55,7 +62,7 @@
                                     <span style="color: red;">{{ $errors->first('photo') }}</span>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary me-2">Tambah</button>
+                            <button type="submit" id="tambahBeritaButton" class="btn btn-primary me-2">Tambah</button>
                             <a href="{{ route('admin.berita') }}" class="btn btn-secondary">Kembali</a>
                         </form>
 
@@ -65,3 +72,10 @@
         </div>
     </section>
 @endsection
+<script>
+    function disableButton() {
+        let button = document.getElementById('tambahBeritaButton');
+        button.disabled = true;
+        button.innerHTML = "Menambah...";
+    }
+</script>

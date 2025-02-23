@@ -21,7 +21,7 @@
                         <h6 class="card-title">Edit Berita</h6>
 
                         <form class="forms-sample" method="post" action="{{ route('admin.update.berita', $berita->id) }}"
-                            enctype="multipart/form-data">
+                            enctype="multipart/form-data" onsubmit="disableButton()">
                             @csrf
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Judul <span style="color: red;">*</span></label>
@@ -44,6 +44,13 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Tempat <span style="color: red;">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="tempat" required
+                                        value="{{ old('tempat', $berita->tempat) }}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Foto</label>
                                 <div class="col-sm-9">
                                     <input type="file" class="form-control" name="photo" accept="image/*">
@@ -55,7 +62,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary me-2">Edit</button>
+                            <button type="submit" id="editBeritaButton" class="btn btn-primary me-2">Edit</button>
                             <a href="{{ route('admin.berita') }}" class="btn btn-secondary">Kembali</a>
                         </form>
 
@@ -65,3 +72,10 @@
         </div>
     </section>
 @endsection
+<script>
+    function disableButton() {
+        let button = document.getElementById('editBeritaButton');
+        button.disabled = true;
+        button.innerHTML = "Mengedit...";
+    }
+</script>

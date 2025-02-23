@@ -13,12 +13,52 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class BeritaController extends Controller
 {
-    public function showBerita()
+    public function showBerita(Request $request)
     {
-        $dataBerita = Berita::paginate(5);
+        // Ambil semua input pencarian dari request
+        $id = $request->id;
+        $judul = $request->judul;
+        $penulis = $request->penulis;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        // Query dasar
+        $query = Berita::query();
+
+        // Filter berdasarkan ID
+        if (!empty($id)) {
+            $query->where('id', $id);
+        }
+
+        // Filter berdasarkan Judul
+        if (!empty($judul)) {
+            $query->where('judul', 'like', "%$judul%");
+        }
+
+        // Filter berdasarkan Penulis
+        if (!empty($penulis)) {
+            $query->where('penulis', 'like', "%$penulis%");
+        }
+
+        // Filter berdasarkan Tanggal
+        if (!empty($start_date) && !empty($end_date)) {
+            $query->whereBetween('created_at', [$start_date . " 00:00:00", $end_date . " 23:59:59"]);
+        } elseif (!empty($start_date)) {
+            $query->whereDate('created_at', '>=', $start_date);
+        } elseif (!empty($end_date)) {
+            $query->whereDate('created_at', '<=', $end_date);
+        }
+
+        // Ambil data dengan pagination
+        $dataBerita = $query->paginate(5);
+
+        // Pastikan pagination tetap mempertahankan parameter pencarian
+        $dataBerita->appends(request()->query());
 
         return view('screen_admin.berita.berita', compact('dataBerita'));
     }
+
+
 
     public function showAddBerita()
     {
@@ -31,6 +71,7 @@ class BeritaController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
+            'tempat' => 'required|string',
             'penulis' => 'required|string|max:255',
             'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048', // Maksimal 2MB
         ]);
@@ -57,6 +98,7 @@ class BeritaController extends Controller
                 'judul' => $request->judul,
                 'isi' => $request->isi,
                 'penulis' => $request->penulis,
+                'tempat' => $request->tempat,
                 'photo' => $fileName,
                 'tanggal' => Carbon::now(),
             ]);

@@ -19,10 +19,12 @@ class UserFactory extends Factory
         $faker = FakerFactory::create('id_ID'); // Gunakan locale Indonesia
 
         return [
-            'name' => $faker->name(), // Nama dalam format Indonesia
+            'name' => $faker->name(),
             'email' => $faker->unique()->safeEmail(),
-            'password' => Hash::make('password'), // Semua user pakai password 'password'
+            'password' => Hash::make('password'),
             'role' => 'user',
+            'no_hp' => '62' . $faker->numerify('8##########'),
+            'alamat' => $faker->address(),
             'email_verified_at' => null,
         ];
     }
@@ -34,6 +36,8 @@ class UserFactory extends Factory
             'email' => 'eskuwut1945@gmail.com',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
+            'no_hp' => '6289697082930',
+            'alamat' => 'Cangkringan Nganjuk',
             'email_verified_at' => now(),
         ]);
     }

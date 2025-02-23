@@ -79,7 +79,8 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Kirim OTP</button>
+                                            <button id="sendOtpButton" class="btn btn-primary w-100"
+                                                type="submit">Kirim OTP</button>
                                         </div>
 
                                         <div class="col-12">
@@ -115,7 +116,6 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('niceadmin/assets/js/main.js') }}"></script>
-
 </body>
 
 </html>

@@ -63,7 +63,7 @@
                                         </div>
                                     @endif
                                     <form action="{{ route('login') }}" method="POST" class="row g-3 needs-validation"
-                                        novalidate>
+                                        novalidate onsubmit="disableButton()">
                                         @csrf
 
                                         <!-- Email Input -->
@@ -107,7 +107,8 @@
 
                                         <!-- Tombol Login -->
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                            <button class="btn btn-primary w-100" id="loginButton"
+                                                type="submit">Login</button>
                                         </div>
 
                                         <!-- Tombol Kembali -->
@@ -141,6 +142,12 @@
     <script src="{{ asset('niceadmin/assets/js/main.js') }}"></script>
 
     <script>
+        function disableButton() {
+            let button = document.getElementById('loginButton');
+            button.disabled = true;
+            button.innerHTML = "Login...";
+        }
+
         document.getElementById("togglePassword").addEventListener("click", function() {
             const passwordInput = document.getElementById("yourPassword");
             const icon = this.querySelector("i");
