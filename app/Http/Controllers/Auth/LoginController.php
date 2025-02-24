@@ -44,16 +44,20 @@ class LoginController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role !== 'admin') {
+        if ($user->role === 'admin') {
+            $redirectRoute = 'admin.dashboard';
+        } elseif ($user->role === 'petugas') {
+            $redirectRoute = 'petugas.inputcpb';
+        } else {
             Auth::logout();
-            return back()->withErrors(['email' => 'Akses ditolak! Hanya admin yang dapat login.'])->withInput();
+            return back()->withErrors(['email' => 'Akses ditolak! Hanya admin & petugas yang dapat login di web.'])->withInput();
         }
 
         $request->session()->regenerate();
 
         DB::table('sessions')
-        ->where('id', session()->getId()) // Ambil session yang baru dibuat
-        ->update(['user_id' => $user->id]); // Tambahkan user_id ke dalam session database
+            ->where('id', session()->getId()) // Ambil session yang baru dibuat
+            ->update(['user_id' => $user->id]); // Tambahkan user_id ke dalam session database
 
         session([
             'user_id' => $user->id,
@@ -63,6 +67,6 @@ class LoginController extends Controller
 
         RateLimiter::clear($throttleKey);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, Admin!');
+        return redirect()->route($redirectRoute)->with('yaya', 'Selamat datang, ' . ucfirst($user->role) . '!');
     }
 }

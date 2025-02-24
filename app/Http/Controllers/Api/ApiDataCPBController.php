@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Data_CPB;
+use App\Models\DataCPB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +14,7 @@ class ApiDataCPBController extends Controller
      */
     public function index()
     {
-        $data = Data_CPB::orderBy('id', 'asc')->get();
+        $data = DataCPB::orderBy('id', 'asc')->get();
 
         if ($data->isEmpty()) {
             return response()->json([
@@ -72,7 +72,7 @@ class ApiDataCPBController extends Controller
             ], 422);
         }
 
-        $data = Data_CPB::create([
+        $data = DataCPB::create([
             'nama'          => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,
             'umur'          => $request->umur,
@@ -94,7 +94,7 @@ class ApiDataCPBController extends Controller
     public function show(string $id)
     {
         try {
-            $data = Data_CPB::findOrFail($id);
+            $data = DataCPB::findOrFail($id);
             return response()->json([
                 'status' => true,
                 'message' => 'Data ditemukan',
@@ -149,7 +149,7 @@ class ApiDataCPBController extends Controller
             ], 422);
         }
 
-        $data = Data_CPB::findOrFail($id);
+        $data = DataCPB::findOrFail($id);
 
         $data->update([
             'nama'          => $request->nama,
@@ -174,7 +174,7 @@ class ApiDataCPBController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = Data_CPB::findOrFail($id);
+            $data = DataCPB::findOrFail($id);
 
             // Menghapus data
             $data->delete();

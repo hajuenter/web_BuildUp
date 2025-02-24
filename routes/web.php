@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\LupaPasswordController;
+use App\Http\Controllers\Petugas\InputCPBController;
+use App\Http\Controllers\Petugas\ProfileController as PetugasProfileController;
 
 //landing page
 Route::get('/', function () {
@@ -50,4 +52,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     //jadwal
     Route::get('/admin/jadwal', [JadwalController::class, 'showJadwal'])->name('admin.jadwal');
+});
+
+//petugas
+Route::middleware(['auth', 'petugas'])->group(function () {
+    Route::get('/petugas/inputCPB', [InputCPBController::class, 'showFormInpuCPB'])->name('petugas.inputcpb');
+    Route::post('/petugas/tambahCPB', [InputCPBController::class, 'inputCPB'])->name('petugas.create.inputcpb');
+    Route::get('/petugas/profile', [PetugasProfileController::class, 'showProfile'])->name('petugas.profile');
 });

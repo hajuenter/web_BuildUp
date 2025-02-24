@@ -28,12 +28,14 @@ class DataCPBFactory extends Factory
         $noKks[] = $no_kk;
 
         return [
-            'nama'          => $faker->name(), // Nama dalam bahasa Indonesia
-            'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
-            'umur'          => $faker->numberBetween(18, 80),
-            'nik'           => $nik,
-            'no_kk'         => $no_kk,
-            'alamat'        => $faker->address(), // Alamat dalam bahasa Indonesia
+            'nama'       => $faker->name(),
+            'alamat'     => $faker->address(),
+            'nik'        => $nik,
+            'no_kk'      => $no_kk,
+            'pekerjaan'  => $faker->jobTitle(),
+            'email'      => $faker->unique()->safeEmail(),
+            'foto_rumah' => 'images/default-rumah.jpg', 
+            'koordinat'  => $faker->latitude(-10, 5) . ', ' . $faker->longitude(95, 141), 
         ];
     }
 }

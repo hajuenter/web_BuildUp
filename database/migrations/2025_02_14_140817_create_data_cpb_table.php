@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('data_cpb', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
-            $table->tinyInteger('umur')->unsigned();
+            $table->text('alamat');
             $table->string('nik', 16)->unique()->index();
             $table->string('no_kk', 16)->unique();
-            $table->text('alamat');
+            $table->string('pekerjaan');
+            $table->string('email')->unique();
+            $table->string('foto_rumah');
+            $table->string('koordinat');
             $table->timestamps();
         });
     }

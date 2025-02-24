@@ -13,11 +13,13 @@ class DataCPB extends Model
 
     protected $fillable = [
         'nama',
-        'jenis_kelamin',
-        'umur',
+        'alamat',
         'nik',
         'no_kk',
-        'alamat'
+        'pekerjaan',
+        'email',
+        'foto_rumah',
+        'koordinat'
     ];
 
     public function verifikasi()

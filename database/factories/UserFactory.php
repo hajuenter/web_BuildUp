@@ -41,4 +41,16 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
         ]);
     }
+    public function petugas(): static
+    {
+        return $this->state([
+            'name' => 'Petugas Input CPB',
+            'email' => 'esjeruk517@gmail.com',
+            'password' => Hash::make('petugas123'),
+            'role' => 'petugas',
+            'no_hp' => '6289697083456',
+            'alamat' => 'Cangkringan Nganjuk',
+            'email_verified_at' => now(),
+        ]);
+    }
 }

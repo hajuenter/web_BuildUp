@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Data_Verifikasi_CPB;
+use App\Models\DataVerifikasiCPB;
 use Illuminate\Http\Request;
 
 class ApiDataVerifikasiCPBController extends Controller
@@ -13,7 +13,7 @@ class ApiDataVerifikasiCPBController extends Controller
      */
     public function index()
     {
-        $data = Data_Verifikasi_CPB::orderBy('id', 'asc')->get();
+        $data = DataVerifikasiCPB::orderBy('id', 'asc')->get();
 
         if ($data->isEmpty()) {
             return response()->json([

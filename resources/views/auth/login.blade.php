@@ -145,7 +145,7 @@
         function disableButton() {
             let button = document.getElementById('loginButton');
             button.disabled = true;
-            button.innerHTML = "Login...";
+            button.innerHTML = "Login";
         }
 
         document.getElementById("togglePassword").addEventListener("click", function() {

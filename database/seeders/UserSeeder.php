@@ -9,10 +9,10 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Buat 1 admin
         User::factory()->admin()->create();
 
-        // Buat 5 user biasa
+        User::factory()->petugas()->create();
+
         User::factory()->count(5)->create();
     }
 }
