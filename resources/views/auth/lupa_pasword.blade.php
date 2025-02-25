@@ -59,7 +59,7 @@
                                     </div>
 
                                     <form class="row g-3 needs-validation" action="{{ route('kirim.otp') }}"
-                                        method="POST" novalidate>
+                                        method="POST" novalidate onsubmit="disableButton()">
                                         @csrf
                                         <div class="col-12">
                                             <label for="yourEmail" class="form-label">Email</label>
@@ -79,8 +79,8 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <button id="sendOtpButton" class="btn btn-primary w-100"
-                                                type="submit">Kirim OTP</button>
+                                            <button id="btnKirimOtp" class="btn btn-primary w-100" type="submit">Kirim
+                                                OTP</button>
                                         </div>
 
                                         <div class="col-12">
@@ -105,17 +105,34 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="{{ asset('niceadmin/assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('niceadmin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/chart.js/chart.umd.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/echarts/echarts.min.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/quill/quill.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/php-email-form/validate.js') }}"></script>
 
     <!-- Template Main JS File -->
     <script src="{{ asset('niceadmin/assets/js/main.js') }}"></script>
+    <script>
+        function disableButton() {
+            let email = document.getElementById('yourEmail').value.trim();
+            let button = document.getElementById('btnKirimOtp');
+
+            // Jika email kosong, form tidak dikirim dan tombol tetap aktif
+            if (!email) {
+                return false;
+            }
+
+            // Nonaktifkan tombol saat form dikirim
+            button.disabled = true;
+            button.innerHTML = "Memproses...";
+            return true;
+        }
+
+        // Aktifkan tombol kembali jika user mengedit input
+        document.getElementById('yourEmail').addEventListener('input', function() {
+            let button = document.getElementById('btnKirimOtp');
+            button.disabled = false;
+            button.innerHTML = "Kirim OTP";
+        });
+    </script>
+
 </body>
 
 </html>

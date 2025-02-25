@@ -23,10 +23,6 @@
     <link href="{{ asset('niceadmin/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('niceadmin/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('niceadmin/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('niceadmin/assets/css/style.css') }}" rel="stylesheet">
@@ -138,31 +134,54 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
 
+    <script src="{{ asset('niceadmin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
     <!-- Template Main JS File -->
     <script src="{{ asset('niceadmin/assets/js/main.js') }}"></script>
 
     <script>
         function disableButton() {
+            let email = document.getElementById('yourEmail').value.trim();
+            let password = document.getElementById('yourPassword').value.trim();
             let button = document.getElementById('loginButton');
+
+            // Jika ada input kosong, hentikan pengiriman form
+            if (!email || !password) {
+                return false; // Mencegah form terkirim
+            }
+
+            // Nonaktifkan tombol saat form dikirim
             button.disabled = true;
-            button.innerHTML = "Login";
+            button.innerHTML = "Memproses...";
+            return true; // Izinkan form terkirim
         }
 
-        document.getElementById("togglePassword").addEventListener("click", function() {
-            const passwordInput = document.getElementById("yourPassword");
-            const icon = this.querySelector("i");
+        // Aktifkan tombol kembali jika ada perubahan input
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                let button = document.getElementById('loginButton');
+                button.disabled = false;
+                button.innerHTML = "Login";
+            });
+        });
 
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
+        // Toggle visibility password
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            let passwordField = document.getElementById('yourPassword');
+            let icon = this.querySelector('i');
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
                 icon.classList.remove("bi-eye");
                 icon.classList.add("bi-eye-slash");
             } else {
-                passwordInput.type = "password";
+                passwordField.type = "password";
                 icon.classList.remove("bi-eye-slash");
                 icon.classList.add("bi-eye");
             }
         });
     </script>
+
 </body>
 
 </html>

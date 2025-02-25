@@ -6,7 +6,7 @@
         <li class="nav-item">
             <a class="nav-link {{ Request::is('petugas/inputCPB') ? '' : 'collapsed' }}"
                 href="{{ route('petugas.inputcpb') }}">
-                <i class="bi bi-grid"></i>
+                <i class="bi bi-clipboard-plus"></i>
                 <span>Input Data CPB</span>
             </a>
         </li>

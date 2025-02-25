@@ -14,6 +14,21 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
+                        @if (session('successEditCPB'))
+                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                <strong>Berhasil !</strong> {{ session('successEditCPB') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
+                        @if (session('successDeleteCPB'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Berhasil !</strong> {{ session('successDeleteCPB') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
+
 
                         <form id="inputCPBForm" method="POST" action="{{ route('petugas.create.inputcpb') }}"
                             enctype="multipart/form-data" onsubmit="disableButton()">
@@ -173,6 +188,7 @@
                                         <th>Foto Rumah</th>
                                         <th>Koordinat</th>
                                         <th>Maps</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -187,8 +203,8 @@
                                             <td>{{ $cpb->email }}</td>
                                             <td>
                                                 @if ($cpb->foto_rumah)
-                                                    <img src="{{ asset('up/data_cpb/' . $cpb->foto_rumah) }}"
-                                                        width="100" alt="Foto Rumah">
+                                                    <img src="{{ asset($cpb->foto_rumah) }}" width="100"
+                                                        alt="Foto Rumah">
                                                 @else
                                                     Tidak ada foto
                                                 @endif
@@ -203,6 +219,17 @@
                                                 @else
                                                     <span class="text-muted">Tidak tersedia</span>
                                                 @endif
+                                            </td>
+                                            <td class="d-flex flex-column">
+                                                <a href="{{ route('petugas.edit.cpb', $cpb->id) }}"
+                                                    class="btn btn-success mb-1">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    onclick="setDeleteForm({{ $cpb->id }})">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty
@@ -223,12 +250,75 @@
             </div>
         </div>
         {{-- tabel end --}}
+
+        <!-- Modal Konfirmasi Hapus -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus data CPB ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <form id="deleteForm" method="POST" onsubmit="disableDeleteButton()">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" id="deleteButton">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 @endsection
 <script>
+    function setDeleteForm(id) {
+        let form = document.getElementById('deleteForm');
+        form.action = "{{ url('/petugas/cpb/delete') }}/" + id;
+    }
+
+    function disableDeleteButton() {
+        let button = document.getElementById('deleteButton');
+        button.disabled = true;
+        button.innerHTML = "Menghapus...";
+    }
+</script>
+
+<script>
     function disableButton() {
+        let nama = document.querySelector('input[name="nama"]').value.trim();
+        let alamat = document.querySelector('input[name="alamat"]').value.trim();
+        let nik = document.querySelector('input[name="nik"]').value.trim();
+        let no_kk = document.querySelector('input[name="no_kk"]').value.trim();
+        let pekerjaan = document.querySelector('input[name="pekerjaan"]').value.trim();
+        let email = document.querySelector('input[name="email"]').value.trim();
+        let foto_rumah = document.querySelector('input[name="foto_rumah"]').value;
+        let koordinat = document.querySelector('input[name="koordinat"]').value.trim();
+
         let button = document.getElementById('tambahCPBButton');
+
+        // Cek jika ada input yang kosong, jangan disable tombol
+        if (!nama || !alamat || !nik || !no_kk || !pekerjaan || !email || !foto_rumah || !koordinat) {
+            return false;
+        }
+
+        // Nonaktifkan tombol saat form dikirim
         button.disabled = true;
         button.innerHTML = "Menambah...";
+        return true;
     }
+
+    // Aktifkan kembali tombol jika ada perubahan pada input
+    document.querySelectorAll('input').forEach(element => {
+        element.addEventListener('input', function() {
+            let button = document.getElementById('tambahCPBButton');
+            button.disabled = false;
+            button.innerHTML = "Tambah";
+        });
+    });
 </script>

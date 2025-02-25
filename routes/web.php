@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\LupaPasswordController;
 use App\Http\Controllers\Petugas\InputCPBController;
-use App\Http\Controllers\Petugas\ProfileController as PetugasProfileController;
+use App\Http\Controllers\Petugas\PetugasProfileController;
 
 //landing page
 Route::get('/', function () {
@@ -30,9 +30,9 @@ Route::controller(LogoutController::class)->group(function () {
 //lupa password
 Route::controller(LupaPasswordController::class)->group(function () {
     Route::get('/lupa-password', 'showLupaPasswordForm')->name('lupa.password');
-    Route::post('/lupa-password', 'sendOTP')->name('kirim.otp');
+    Route::post('/lupa-password-send', 'sendOTP')->name('kirim.otp');
     Route::get('/lupa-password-new', 'showKonfirPasswordForm')->name('konfir.password');
-    Route::post('/lupa-password-new', 'updatePassword')->name('perbarui.password');
+    Route::post('/lupa-password-update', 'updatePassword')->name('perbarui.password');
 });
 
 //admin
@@ -56,7 +56,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 //petugas
 Route::middleware(['auth', 'petugas'])->group(function () {
+    //cpb
     Route::get('/petugas/inputCPB', [InputCPBController::class, 'showFormInpuCPB'])->name('petugas.inputcpb');
     Route::post('/petugas/tambahCPB', [InputCPBController::class, 'inputCPB'])->name('petugas.create.inputcpb');
-    Route::get('/petugas/profile', [PetugasProfileController::class, 'showProfile'])->name('petugas.profile');
+    Route::get('/petugas/cpb/edit/{id}', [InputCPBController::class, 'showEditCPB'])->name('petugas.edit.cpb');
+    Route::post('/petugas/cpb/update/{id}', [InputCPBController::class, 'updateCPB'])->name('petugas.update.cpb');
+    Route::delete('/petugas/cpb/delete/{id}', [InputCPBController::class, 'deleteCPB'])->name('petugas.delete.cpb');
+
+    //profile
+    Route::get('/petugas/profile', [PetugasProfileController::class, 'showPetugasProfile'])->name('petugas.profile');
 });

@@ -74,8 +74,31 @@
 @endsection
 <script>
     function disableButton() {
+        let judul = document.querySelector('input[name="judul"]').value.trim();
+        let isi = document.querySelector('textarea[name="isi"]').value.trim();
+        let tempat = document.querySelector('textarea[name="tempat"]').value.trim();
+        let penulis = document.querySelector('input[name="penulis"]').value.trim();
+        let photo = document.querySelector('input[name="photo"]').value;
+
         let button = document.getElementById('tambahBeritaButton');
+
+        // Jika ada input kosong, form tidak dikirim dan tombol tetap aktif
+        if (!judul || !isi || !tempat || !penulis || !photo) {
+            return false;
+        }
+
+        // Nonaktifkan tombol saat form dikirim
         button.disabled = true;
         button.innerHTML = "Menambah...";
+        return true;
     }
+
+    // Aktifkan tombol kembali jika user mengedit input
+    document.querySelectorAll('input, textarea').forEach(element => {
+        element.addEventListener('input', function() {
+            let button = document.getElementById('tambahBeritaButton');
+            button.disabled = false;
+            button.innerHTML = "Tambah";
+        });
+    });
 </script>

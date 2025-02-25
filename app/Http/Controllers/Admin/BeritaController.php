@@ -103,7 +103,7 @@ class BeritaController extends Controller
                 'tanggal' => Carbon::now(),
             ]);
 
-            return redirect()->route('admin.berita')->with('success', 'Berita berhasil ditambahkan!');
+            return redirect()->route('admin.berita')->with('successAddBerita', 'Berita berhasil ditambahkan!');
         }
 
         return back()->with('error', 'Gagal mengupload foto');
@@ -151,7 +151,7 @@ class BeritaController extends Controller
 
         $berita->save();
 
-        return redirect()->route('admin.berita')->with('success', 'Berita berhasil diperbarui!');
+        return redirect()->route('admin.berita')->with('successEditBerita', 'Berita berhasil diperbarui!');
     }
 
     public function deleteBerita($id)
@@ -166,6 +166,6 @@ class BeritaController extends Controller
         // Hapus berita dari database
         $berita->delete();
 
-        return redirect()->route('admin.berita')->with('success', 'Berita berhasil dihapus!');
+        return redirect()->route('admin.berita')->with('successDeleteBerita', 'Berita berhasil dihapus!');
     }
 }

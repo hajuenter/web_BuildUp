@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'no_hp',
+        'foto',
         'alamat',
         'otp',
         'otp_expires_at'

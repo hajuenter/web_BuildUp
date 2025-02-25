@@ -19,7 +19,7 @@
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                         <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <h2>Kevin Anderson</h2>
+                        <h2>berikan name disini dari db tabel users kolom name</h2>
                         <h3>Petugas Input Data CPB</h3>
                     </div>
                 </div>
@@ -51,26 +51,26 @@
                         <div class="tab-content pt-2">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                <h5 class="card-title">Profile Details</h5>
+                                <h5 class="card-title">Detail Profile</h5>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Nama</div>
-                                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                                    <div class="col-lg-9 col-md-8">berikan dari db kolom name</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Role</div>
-                                    <div class="col-lg-9 col-md-8">Petugas Input Data CPB</div>
+                                    <div class="col-lg-9 col-md-8">berikan dari db kolom role</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                                    <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                                    <div class="col-lg-9 col-md-8">berikan dari db kolom no_hp</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Email</div>
-                                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                                    <div class="col-lg-9 col-md-8">berikan dari db kolom</div>
                                 </div>
                             </div>
 

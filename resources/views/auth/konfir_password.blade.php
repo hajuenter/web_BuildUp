@@ -22,11 +22,6 @@
     <!-- Vendor CSS Files -->
     <link href="{{ asset('niceadmin/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('niceadmin/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    <link href="{{ asset('niceadmin/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('niceadmin/assets/css/style.css') }}" rel="stylesheet">
@@ -50,16 +45,22 @@
                             </div><!-- End Logo -->
 
                             <div class="card mb-3">
-
                                 <div class="card-body">
                                     <div class="pt-4 pb-2">
                                         <h5 class="card-title text-center pb-0 fs-4">Buat password baru</h5>
                                         <p class="text-center small">Masukkan password baru dan konfirmasi password
                                             dengan benar sesuai ketentuan</p>
                                     </div>
+                                    @if (session('successotp'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ session('successotp') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                        </div>
+                                    @endif
 
                                     <form class="row g-3 needs-validation" action="{{ route('perbarui.password') }}"
-                                        method="POST" novalidate>
+                                        method="POST" novalidate onsubmit="disableButton()">
                                         @csrf
 
                                         <!-- OTP Input -->
@@ -122,7 +123,8 @@
 
 
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Perbarui</button>
+                                            <button id="btnPerbarui" class="btn btn-primary w-100"
+                                                type="submit">Perbarui</button>
                                         </div>
                                     </form>
 
@@ -143,14 +145,7 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="{{ asset('niceadmin/assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('niceadmin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/chart.js/chart.umd.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/echarts/echarts.min.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/quill/quill.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('niceadmin/assets/vendor/php-email-form/validate.js') }}"></script>
 
     <!-- Template Main JS File -->
     <script src="{{ asset('niceadmin/assets/js/main.js') }}"></script>
@@ -170,6 +165,33 @@
                     icon.classList.remove("bi-eye-slash");
                     icon.classList.add("bi-eye");
                 }
+            });
+        });
+    </script>
+    <script>
+        function disableButton() {
+            let otp = document.getElementById('otp').value.trim();
+            let newPassword = document.getElementById('newpassword').value.trim();
+            let confirmPassword = document.getElementById('newkonfirpassword').value.trim();
+            let button = document.getElementById('btnPerbarui');
+
+            // Jika ada input kosong, hentikan pengiriman form dan tampilkan pesan error
+            if (!otp || !newPassword || !confirmPassword) {
+                return false; // Mencegah form terkirim
+            }
+
+            // Nonaktifkan tombol dan ubah teksnya saat form dikirim
+            button.disabled = true;
+            button.innerHTML = "Memproses...";
+            return true; // Izinkan form terkirim
+        }
+
+        // Aktifkan tombol kembali jika ada perubahan input
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                let button = document.getElementById('btnPerbarui');
+                button.disabled = false;
+                button.innerHTML = "Perbarui";
             });
         });
     </script>

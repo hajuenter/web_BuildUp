@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'petugas', 'user'])->default('user');
             $table->string('no_hp', 15);
+            $table->string('foto');
             $table->text('alamat');
             $table->string('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();

@@ -26,9 +26,8 @@ class LupaPasswordController extends Controller
         // Cari user berdasarkan email
         $user = User::where('email', $request->email)->first();
 
-        // Jika user tidak ditemukan atau bukan admin, kembalikan error
-        if (!$user || $user->role !== 'admin') {
-            return back()->withErrors(['email' => 'Email tidak ditemukan atau bukan admin.'])->withInput();
+        if (!$user || !in_array($user->role, ['admin', 'petugas'])) {
+            return back()->withErrors(['email' => 'Email tidak ditemukan atau Anda tidak memiliki akses.'])->withInput();
         }
 
         $otp = rand(1000, 9999);
@@ -52,7 +51,7 @@ class LupaPasswordController extends Controller
         $result = $emailService->sendEmail($to, $subject, $body);
 
         if ($result) {
-            return redirect()->route('konfir.password')->with('success', 'Kode OTP telah dikirim ke email Anda.');
+            return redirect()->route('konfir.password')->with('successotp', 'Kode OTP telah dikirim ke email Anda.');
         } else {
             return back()->withErrors(['email' => 'Gagal mengirim OTP. Coba lagi nanti.']);
         }
