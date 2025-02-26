@@ -188,6 +188,7 @@
                                         <th>Foto Rumah</th>
                                         <th>Koordinat</th>
                                         <th>Maps</th>
+                                        <th>Cetak</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -214,11 +215,17 @@
                                                 @if ($cpb->koordinat)
                                                     <a href="https://www.google.com/maps?q={{ $cpb->koordinat }}"
                                                         target="_blank" class="btn btn-sm btn-primary">
-                                                        Lihat di Maps
+                                                        <i class="bi bi-geo-alt"></i> Lihat di Maps
                                                     </a>
                                                 @else
                                                     <span class="text-muted">Tidak tersedia</span>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('cpb.cetakSurat', $cpb->id) }}"
+                                                    class="btn btn-warning btn-sm">
+                                                    <i class="bi bi-file-earmark-text"></i> Cetak Surat
+                                                </a>
                                             </td>
                                             <td class="d-flex flex-column">
                                                 <a href="{{ route('petugas.edit.cpb', $cpb->id) }}"

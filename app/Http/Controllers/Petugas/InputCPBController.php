@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Models\DataCPB;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpWord\SimpleType\Jc;
 use Illuminate\Support\Facades\Validator;
 
 class InputCPBController extends Controller
@@ -195,5 +198,59 @@ class InputCPBController extends Controller
         $cpb->delete();
 
         return redirect()->route('petugas.inputcpb')->with('successDeleteCPB', 'Data CPB berhasil dihapus.');
+    }
+
+    public function cetakSurat($id)
+    {
+        // Ambil data penerima berdasarkan ID
+        $cpb = DataCPB::findOrFail($id);
+
+        // Buat dokumen Word baru
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+
+        // Header Surat
+        $section->addText("SURAT PERNYATAAN", [
+            'bold' => true,
+            'size' => 14
+        ], [
+            'alignment' => Jc::CENTER
+        ]);
+
+        $section->addText("Yang bertanda tangan di bawah ini:", [
+            'size' => 12
+        ]);
+        $section->addTextBreak(1);
+
+        // Data Penerima Bantuan
+        $section->addText("Nama          : " . $cpb->nama, ['size' => 12]);
+        $section->addText("NIK           : " . $cpb->nik, ['size' => 12]);
+        $section->addText("No KK         : " . $cpb->no_kk, ['size' => 12]);
+        $section->addText("Alamat        : " . $cpb->alamat, ['size' => 12]);
+        $section->addText("Pekerjaan     : " . $cpb->pekerjaan, ['size' => 12]);
+        $section->addText("Email         : " . $cpb->email, ['size' => 12]);
+        $section->addTextBreak(1);
+
+        // Isi Pernyataan
+        $isiPernyataan = "Dengan ini saya menyatakan bahwa saya benar-benar merupakan penerima bantuan sosial "
+            . "dan data yang saya berikan adalah benar. Jika dikemudian hari ditemukan kesalahan dalam data saya, "
+            . "saya bersedia menerima konsekuensi sesuai ketentuan yang berlaku.";
+        $section->addText($isiPernyataan, ['size' => 12], ['alignment' => Jc::BOTH]);
+        $section->addTextBreak(2);
+
+        // Tanda Tangan
+        $tanggal = date("d F Y"); // Format tanggal otomatis
+        $section->addText("Dibuat pada: " . $tanggal, ['size' => 12]);
+        $section->addText("Penerima Bantuan,", ['size' => 12], ['alignment' => Jc::RIGHT]);
+        $section->addTextBreak(3);
+        $section->addText($cpb->nama, ['size' => 12, 'bold' => true], ['alignment' => Jc::RIGHT]);
+
+        // Simpan dan Unduh
+        $fileName = 'Surat_Pernyataan_' . $cpb->id . '.docx';
+        $tempFile = storage_path($fileName);
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($tempFile);
+
+        return response()->download($tempFile)->deleteFileAfterSend(true);
     }
 }

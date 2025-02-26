@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Berita::class, 'id_user');
     }
+
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'id_user');
+    }
 }

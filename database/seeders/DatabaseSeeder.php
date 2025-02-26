@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             DataCPBSeeder::class,
             DataVerifikasiCPBSeeder::class,
             BeritaSeeder::class,
+            JadwalSeeder::class,
         ]);
     }
 }
