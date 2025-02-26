@@ -14,8 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'api.key' => \App\Http\Middleware\ApiKeyMiddleware::class,
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'petugas' => \App\Http\Middleware\PetugasMiddleware::class,
+            'checkRole' => \App\Http\Middleware\CheckRoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

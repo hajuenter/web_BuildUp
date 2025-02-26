@@ -35,34 +35,38 @@ Route::controller(LupaPasswordController::class)->group(function () {
     Route::post('/lupa-password-update', 'updatePassword')->name('perbarui.password');
 });
 
-//admin
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'showDashboardAdmin'])->name('admin.dashboard');
+Route::middleware(['auth', 'checkRole'])->group(function () {
+    // Admin Routes
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'showDashboardAdmin'])->name('admin.dashboard');
 
-    //profile
-    Route::get('/admin/profile', [ProfileController::class, 'showProfile'])->name('admin.profile');
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'showProfile'])->name('admin.profile');
 
-    //berita
-    Route::get('/admin/berita', [BeritaController::class, 'showBerita'])->name('admin.berita');
-    Route::get('/admin/berita/add', [BeritaController::class, 'showAddBerita'])->name('admin.add.berita');
-    Route::post('/admin/berita/store', [BeritaController::class, 'addBerita'])->name('admin.store.berita');
-    Route::get('/admin/berita/edit/{id}', [BeritaController::class, 'showEditBerita'])->name('admin.edit.berita');
-    Route::post('/admin/berita/update/{id}', [BeritaController::class, 'updateBerita'])->name('admin.update.berita');
-    Route::delete('/admin/berita/delete/{id}', [BeritaController::class, 'deleteBerita'])->name('admin.delete.berita');
+        // Berita
+        Route::get('/berita', [BeritaController::class, 'showBerita'])->name('admin.berita');
+        Route::get('/berita/add', [BeritaController::class, 'showAddBerita'])->name('admin.add.berita');
+        Route::post('/berita/store', [BeritaController::class, 'addBerita'])->name('admin.store.berita');
+        Route::get('/berita/edit/{id}', [BeritaController::class, 'showEditBerita'])->name('admin.edit.berita');
+        Route::post('/berita/update/{id}', [BeritaController::class, 'updateBerita'])->name('admin.update.berita');
+        Route::delete('/berita/delete/{id}', [BeritaController::class, 'deleteBerita'])->name('admin.delete.berita');
 
-    //jadwal
-    Route::get('/admin/jadwal', [JadwalController::class, 'showJadwal'])->name('admin.jadwal');
-});
+        // Jadwal
+        Route::get('/jadwal', [JadwalController::class, 'showJadwal'])->name('admin.jadwal');
+    });
 
-//petugas
-Route::middleware(['auth', 'petugas'])->group(function () {
-    //cpb
-    Route::get('/petugas/inputCPB', [InputCPBController::class, 'showFormInpuCPB'])->name('petugas.inputcpb');
-    Route::post('/petugas/tambahCPB', [InputCPBController::class, 'inputCPB'])->name('petugas.create.inputcpb');
-    Route::get('/petugas/cpb/edit/{id}', [InputCPBController::class, 'showEditCPB'])->name('petugas.edit.cpb');
-    Route::post('/petugas/cpb/update/{id}', [InputCPBController::class, 'updateCPB'])->name('petugas.update.cpb');
-    Route::delete('/petugas/cpb/delete/{id}', [InputCPBController::class, 'deleteCPB'])->name('petugas.delete.cpb');
+    // Petugas Routes
+    Route::prefix('petugas')->group(function () {
+        // CPB
+        Route::get('/inputCPB', [InputCPBController::class, 'showFormInpuCPB'])->name('petugas.inputcpb');
+        Route::post('/tambahCPB', [InputCPBController::class, 'inputCPB'])->name('petugas.create.inputcpb');
+        Route::get('/cpb/edit/{id}', [InputCPBController::class, 'showEditCPB'])->name('petugas.edit.cpb');
+        Route::post('/cpb/update/{id}', [InputCPBController::class, 'updateCPB'])->name('petugas.update.cpb');
+        Route::delete('/cpb/delete/{id}', [InputCPBController::class, 'deleteCPB'])->name('petugas.delete.cpb');
 
-    //profile
-    Route::get('/petugas/profile', [PetugasProfileController::class, 'showPetugasProfile'])->name('petugas.profile');
+        // Profile
+        Route::get('/profile', [PetugasProfileController::class, 'showPetugasProfile'])->name('petugas.profile');
+        Route::post('/profile/update', [PetugasProfileController::class, 'updateProfile'])->name('petugas.profile.update');
+        Route::post('/ganti-password', [PetugasProfileController::class, 'changePassword'])->name('petugas.ganti.password');
+    });
 });
