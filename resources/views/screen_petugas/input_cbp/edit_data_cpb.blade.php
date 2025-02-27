@@ -1,6 +1,6 @@
-@extends('layouts.layouts_admin')
+@extends('layouts.layouts_petugas')
 
-@section('content-admin')
+@section('content-petugas')
     <div class="pagetitle">
         <h1>Edit Berita</h1>
         <nav>

@@ -17,15 +17,17 @@
                 Request::routeIs('admin.berita') ||
                 Request::routeIs('admin.add.berita') ||
                 Request::routeIs('admin.edit.berita') ||
-                Request::routeIs('admin.jadwal');
+                Request::routeIs('admin.jadwal') ||
+                Request::routeIs('admin.add.jadwal') ||
+                Request::routeIs('admin.edit.jadwal');
         @endphp
 
         <li class="nav-item">
-            <a class="nav-link {{ $isMenuActive ? '' : 'collapsed' }}" data-bs-target="#forms-nav"
+            <a class="nav-link {{ $isMenuActive ? '' : 'collapsed' }}" data-bs-target="#menu-nav"
                 data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-text"></i><span>Menu</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="forms-nav" class="nav-content collapse {{ $isMenuActive ? 'show' : '' }}"
+            <ul id="menu-nav" class="nav-content collapse {{ $isMenuActive ? 'show' : '' }}"
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.berita') }}"
@@ -35,12 +37,39 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.jadwal') }}"
-                        class="{{ Request::routeIs('admin.jadwal') ? 'active' : '' }}">
+                        class="{{ Request::routeIs('admin.jadwal') || Request::routeIs('admin.add.jadwal') || Request::routeIs('admin.edit.jadwal') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Jadwal</span>
                     </a>
                 </li>
             </ul>
         </li><!-- End Menu -->
+
+        {{-- <!-- Data -->
+        @php
+            $isDataActive = Request::routeIs('admin.data_cpb') || Request::routeIs('admin.verifikasi_cpb');
+        @endphp
+
+        <li class="nav-item">
+            <a class="nav-link {{ $isDataActive ? '' : 'collapsed' }}" data-bs-target="#data-nav"
+                data-bs-toggle="collapse" href="#">
+                <i class="bi bi-database"></i><span>Data</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="data-nav" class="nav-content collapse {{ $isDataActive ? 'show' : '' }}"
+                data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.data_cpb') }}"
+                        class="{{ Request::routeIs('admin.data_cpb') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Data CPB</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.verifikasi_cpb') }}"
+                        class="{{ Request::routeIs('admin.verifikasi_cpb') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Data Verifikasi CPB</span>
+                    </a>
+                </li>
+            </ul>
+        </li> <!-- End Data --> --}}
 
     </ul>
 </aside><!-- End Sidebar -->

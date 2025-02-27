@@ -1,5 +1,5 @@
 <!-- Services Section -->
-<section id="services" class="services section">
+<section id="jadwal" class="services section">
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
         <h2>Jadwal</h2>

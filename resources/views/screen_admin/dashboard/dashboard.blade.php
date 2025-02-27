@@ -20,8 +20,7 @@
                     <div class="col-xxl-4 col-md-4">
                         <div class="card info-card sales-card">
                             <div class="filter">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                        class="bi bi-three-dots"></i></a>
+                                <a class="icon" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li class="dropdown-header text-start">
                                         <h6>Filter CPB</h6>
@@ -70,7 +69,7 @@
                     <div class="col-xxl-4 col-md-4">
                         <div class="card info-card revenue-card">
                             <div class="filter">
-                                <a class="icon" href="#" data-bs-toggle="dropdown">
+                                <a class="icon" data-bs-toggle="dropdown">
                                     <i class="bi bi-three-dots"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -118,10 +117,10 @@
                     <!-- End Berita Card -->
 
                     <!-- Jadwal Card -->
-                    {{-- <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card revenue-card">
+                    <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card customers-card">
                             <div class="filter">
-                                <a class="icon" href="#" data-bs-toggle="dropdown">
+                                <a class="icon" data-bs-toggle="dropdown">
                                     <i class="bi bi-three-dots"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -165,7 +164,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <!-- End Jadwal Card -->
 
                 </div>
@@ -173,111 +172,91 @@
 
             <div class="col-lg-8">
                 <!-- Reports -->
-                {{-- <div class="col-12">
+                <div class="col-12">
                     <div class="card">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter Laporan</h6>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('admin.dashboard', ['filter_laporan' => 'hari', 'filter_cpb' => request('filter_cpb', 'tahun'), 'filter_berita' => request('filter_berita', 'tahun'), 'filter_jadwal' => request('filter_jadwal', 'tahun')]) }}">
-                                        Hari Ini
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('admin.dashboard', ['filter_laporan' => 'bulan', 'filter_cpb' => request('filter_cpb', 'tahun'), 'filter_berita' => request('filter_berita', 'tahun'), 'filter_jadwal' => request('filter_jadwal', 'tahun')]) }}">
-                                        Bulan Ini
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('admin.dashboard', ['filter_laporan' => 'tahun', 'filter_cpb' => request('filter_cpb', 'tahun'), 'filter_berita' => request('filter_berita', 'tahun'), 'filter_jadwal' => request('filter_jadwal', 'tahun')]) }}">
-                                        Tahun Ini
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="card-body">
-                            <h5 class="card-title">Laporan</h5>
-
-                            <!-- Line Chart -->
-                            <div id="reportsChart"></div>
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", () => {
-                                    new ApexCharts(document.querySelector("#reportsChart"), {
-                                        series: [{
-                                            name: 'Data CPB',
-                                            data: [{{ $dataLaporan['cpb'] }}],
-                                        }, {
-                                            name: 'Data Berita',
-                                            data: [{{ $dataLaporan['berita'] }}]
-                                        }, {
-                                            name: 'Data Jadwal',
-                                            data: [{{ $dataLaporan['jadwal'] }}]
-                                        }],
-                                        chart: {
-                                            height: 350,
-                                            type: 'area',
-                                            toolbar: {
-                                                show: false
-                                            },
-                                        },
-                                        markers: {
-                                            size: 4
-                                        },
-                                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                                        fill: {
-                                            type: "gradient",
-                                            gradient: {
-                                                shadeIntensity: 1,
-                                                opacityFrom: 0.3,
-                                                opacityTo: 0.4,
-                                                stops: [0, 90, 100]
-                                            }
-                                        },
-                                        dataLabels: {
-                                            enabled: false
-                                        },
-                                        stroke: {
-                                            curve: 'smooth',
-                                            width: 2
-                                        },
-                                        xaxis: {
-                                            categories: ["Hari Ini", "Bulan Ini", "Tahun Ini"]
-                                        },
-                                        tooltip: {
-                                            x: {
-                                                format: 'dd/MM/yy HH:mm'
-                                            },
-                                        }
-                                    }).render();
-                                });
-                            </script>
-                            <!-- End Line Chart -->
-                        </div>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3954.7432667192843!2d111.90611727500304!3d-7.602893692412099!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e784baee3d69fd3%3A0x132635346a25bd7f!2sDinas%20Perumahan%20Rakyat%20Kawasan%20Permukiman%20dan%20Pertanahan%20Kabupaten%20Nganjuk!5e0!3m2!1sid!2sid!4v1740065925010!5m2!1sid!2sid"
+                            frameborder="0" style="border:0; width: 100%; height: 460px;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
-                </div> --}}
-                <!-- End Reports -->
-
+                </div>
             </div>
 
             <!-- Right side columns -->
             <div class="col-lg-4">
-                <!-- Maps -->
+                <!-- Website Traffic -->
                 <div class="card">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3954.7432667192843!2d111.90611727500304!3d-7.602893692412099!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e784baee3d69fd3%3A0x132635346a25bd7f!2sDinas%20Perumahan%20Rakyat%20Kawasan%20Permukiman%20dan%20Pertanahan%20Kabupaten%20Nganjuk!5e0!3m2!1sid!2sid!4v1740065925010!5m2!1sid!2sid"
-                        frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div><!-- End Maps -->
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url()->current() }}?filter_laporan=hari">Hari Ini</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url()->current() }}?filter_laporan=bulan">Bulan Ini</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url()->current() }}?filter_laporan=tahun">Tahun Ini</a>
+                            </li>
+                        </ul>
+                    </div>
 
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">Laporan Data <span>| {{ ucfirst($filterLaporan) }}</span></h5>
+
+                        <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                let dataLaporan = @json($dataLaporan);
+
+                                echarts.init(document.querySelector("#trafficChart")).setOption({
+                                    tooltip: {
+                                        trigger: 'item'
+                                    },
+                                    legend: {
+                                        top: '5%',
+                                        left: 'center'
+                                    },
+                                    series: [{
+                                        name: 'Jumlah Data',
+                                        type: 'pie',
+                                        radius: ['40%', '70%'],
+                                        avoidLabelOverlap: false,
+                                        label: {
+                                            show: false,
+                                            position: 'center'
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: '18',
+                                                fontWeight: 'bold'
+                                            }
+                                        },
+                                        labelLine: {
+                                            show: false
+                                        },
+                                        data: [{
+                                                value: dataLaporan.cpb,
+                                                name: 'Data CPB'
+                                            },
+                                            {
+                                                value: dataLaporan.berita,
+                                                name: 'Data Berita'
+                                            },
+                                            {
+                                                value: dataLaporan.jadwal,
+                                                name: 'Data Jadwal'
+                                            }
+                                        ]
+                                    }]
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!-- End Website Traffic -->
             </div><!-- End Right side columns -->
 
         </div>

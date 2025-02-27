@@ -25,9 +25,9 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="#hero" class="active">Rumah</a></li>
-                    <li><a href="#about">Berita</a></li>
-                    <li><a href="#services">Jadwal</a></li>
+                    <li><a href="#rumah" class="active">Rumah</a></li>
+                    <li><a href="#berita">Berita</a></li>
+                    <li><a href="#jadwal">Jadwal</a></li>
                     <li><a href="#contact">Kontak</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

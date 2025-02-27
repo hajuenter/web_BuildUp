@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Cari</button>
-                            <a href="{{ route('admin.berita') }}" class="btn btn-danger">Batal</a>
+                            <a href="{{ route('admin.berita') }}" class="btn btn-danger">Refresh</a>
                         </form>
                     </div>
                 </div>

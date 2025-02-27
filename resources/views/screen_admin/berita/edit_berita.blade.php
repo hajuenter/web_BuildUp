@@ -23,37 +23,60 @@
                         <form class="forms-sample" method="post" action="{{ route('admin.update.berita', $berita->id) }}"
                             enctype="multipart/form-data" onsubmit="disableButton()">
                             @csrf
+                            @method('PUT')
+
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Judul <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="judul" required
-                                        value="{{ old('judul', $berita->judul) }}">
+                                    <input type="text" class="form-control @error('judul') is-invalid @enderror"
+                                        name="judul" value="{{ old('judul', $berita->judul) }}">
+                                    @error('judul')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Isi <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" name="isi" required>{{ old('isi', $berita->isi) }}</textarea>
+                                    <textarea class="form-control @error('isi') is-invalid @enderror" name="isi">{{ old('isi', $berita->isi) }}</textarea>
+                                    @error('isi')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Penulis <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="penulis" required
-                                        value="{{ old('penulis', $berita->penulis) }}">
+                                    <input type="text" class="form-control @error('penulis') is-invalid @enderror"
+                                        name="penulis" value="{{ old('penulis', $berita->penulis) }}">
+                                    @error('penulis')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Tempat <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="tempat" required
-                                        value="{{ old('tempat', $berita->tempat) }}">
+                                    <input type="text" class="form-control @error('tempat') is-invalid @enderror"
+                                        name="tempat" value="{{ old('tempat', $berita->tempat) }}">
+                                    @error('tempat')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Foto</label>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" name="photo" accept="image/*">
+                                    <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                                        name="photo" accept="image/*">
+                                    @error('photo')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
                                     @if ($berita->photo)
                                         <div class="mt-2">
                                             <img src="{{ asset('up/berita/' . $berita->photo) }}" alt="Foto Berita"
@@ -62,6 +85,7 @@
                                     @endif
                                 </div>
                             </div>
+
                             <button type="submit" id="editBeritaButton" class="btn btn-primary me-2">Edit</button>
                             <a href="{{ route('admin.berita') }}" class="btn btn-secondary">Kembali</a>
                         </form>

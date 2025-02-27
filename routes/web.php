@@ -48,11 +48,16 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::get('/berita/add', [BeritaController::class, 'showAddBerita'])->name('admin.add.berita');
         Route::post('/berita/store', [BeritaController::class, 'addBerita'])->name('admin.store.berita');
         Route::get('/berita/edit/{id}', [BeritaController::class, 'showEditBerita'])->name('admin.edit.berita');
-        Route::post('/berita/update/{id}', [BeritaController::class, 'updateBerita'])->name('admin.update.berita');
+        Route::put('/berita/update/{id}', [BeritaController::class, 'updateBerita'])->name('admin.update.berita');
         Route::delete('/berita/delete/{id}', [BeritaController::class, 'deleteBerita'])->name('admin.delete.berita');
 
         // Jadwal
         Route::get('/jadwal', [JadwalController::class, 'showJadwal'])->name('admin.jadwal');
+        Route::get('/jadwal/add', [JadwalController::class, 'showAddJadwal'])->name('admin.add.jadwal');
+        Route::post('/jadwal/store', [JadwalController::class, 'AddJadwal'])->name('admin.store.jadwal');
+        Route::get('/jadwal/edit/{id}', [JadwalController::class, 'showEditJadwal'])->name('admin.edit.jadwal');
+        Route::put('/jadwal/update/{id}', [JadwalController::class, 'updateJadwal'])->name('admin.update.jadwal');
+        Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'deleteJadwal'])->name('admin.delete.jadwal');
     });
 
     // Petugas Routes

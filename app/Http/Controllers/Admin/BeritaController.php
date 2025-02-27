@@ -58,8 +58,6 @@ class BeritaController extends Controller
         return view('screen_admin.berita.berita', compact('dataBerita'));
     }
 
-
-
     public function showAddBerita()
     {
         return view('screen_admin.berita.tambah_berita');
@@ -67,13 +65,31 @@ class BeritaController extends Controller
 
     public function addBerita(Request $request)
     {
-        // Validasi input
         $request->validate([
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'tempat' => 'required|string',
             'penulis' => 'required|string|max:255',
             'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048', // Maksimal 2MB
+        ], [
+            'judul.required' => 'Judul wajib diisi.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+
+            'isi.required' => 'Isi berita wajib diisi.',
+            'isi.string' => 'Isi berita harus berupa teks.',
+
+            'tempat.required' => 'Tempat wajib diisi.',
+            'tempat.string' => 'Tempat harus berupa teks.',
+
+            'penulis.required' => 'Nama penulis wajib diisi.',
+            'penulis.string' => 'Nama penulis harus berupa teks.',
+            'penulis.max' => 'Nama penulis tidak boleh lebih dari 255 karakter.',
+
+            'photo.required' => 'Foto berita wajib diunggah.',
+            'photo.image' => 'Foto berita harus berupa gambar.',
+            'photo.mimes' => 'Format foto yang diperbolehkan: JPG, PNG, JPEG.',
+            'photo.max' => 'Ukuran foto tidak boleh lebih dari 2MB.',
         ]);
 
         // Proses upload foto
@@ -122,6 +138,21 @@ class BeritaController extends Controller
             'isi' => 'required|string',
             'penulis' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'judul.required' => 'Judul wajib diisi.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+
+            'isi.required' => 'Isi berita wajib diisi.',
+            'isi.string' => 'Isi berita harus berupa teks.',
+
+            'penulis.required' => 'Nama penulis wajib diisi.',
+            'penulis.string' => 'Nama penulis harus berupa teks.',
+            'penulis.max' => 'Nama penulis tidak boleh lebih dari 255 karakter.',
+
+            'photo.image' => 'File yang diunggah harus berupa gambar.',
+            'photo.mimes' => 'Format gambar harus JPG, JPEG, atau PNG.',
+            'photo.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
         ]);
 
         $berita = Berita::findOrFail($id);

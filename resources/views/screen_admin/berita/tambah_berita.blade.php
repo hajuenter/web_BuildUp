@@ -26,30 +26,42 @@
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Judul <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="judul" required
-                                        placeholder="Masukkan judul" value="{{ old('judul') }}">
+                                    <input type="text" class="form-control @error('judul') is-invalid @enderror"
+                                        name="judul" placeholder="Masukkan judul" value="{{ old('judul') }}">
+                                    @error('judul')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Isi <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" name="isi" required placeholder="Masukkan isi berita">{{ old('isi') }}</textarea>
+                                    <textarea class="form-control @error('isi') is-invalid @enderror" name="isi" placeholder="Masukkan isi berita">{{ old('isi') }}</textarea>
+                                    @error('isi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Tempat <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" name="tempat" required placeholder="Masukkan tempat">{{ old('tempat') }}</textarea>
+                                    <textarea class="form-control @error('tempat') is-invalid @enderror" name="tempat" placeholder="Masukkan tempat">{{ old('tempat') }}</textarea>
+                                    @error('tempat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Penulis <span style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="penulis" required
-                                        placeholder="Masukkan penulis" value="{{ old('penulis') }}">
+                                    <input type="text" class="form-control @error('penulis') is-invalid @enderror"
+                                        name="penulis" placeholder="Masukkan penulis" value="{{ old('penulis') }}">
+                                    @error('penulis')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -57,11 +69,14 @@
                                 <label class="col-sm-3 col-form-label">Foto Berita <span
                                         style="color: red;">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" name="photo" accept=".jpg, .png, .jpeg"
-                                        required>
-                                    <span style="color: red;">{{ $errors->first('photo') }}</span>
+                                    <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                                        name="photo" accept=".jpg, .png, .jpeg">
+                                    @error('photo')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
+
                             <button type="submit" id="tambahBeritaButton" class="btn btn-primary me-2">Tambah</button>
                             <a href="{{ route('admin.berita') }}" class="btn btn-secondary">Kembali</a>
                         </form>

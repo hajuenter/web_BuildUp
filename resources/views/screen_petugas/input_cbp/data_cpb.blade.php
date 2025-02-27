@@ -215,7 +215,7 @@
                                                 @if ($cpb->koordinat)
                                                     <a href="https://www.google.com/maps?q={{ $cpb->koordinat }}"
                                                         target="_blank" class="btn btn-sm btn-primary">
-                                                        <i class="bi bi-geo-alt"></i> Lihat di Maps
+                                                        <i class="bi bi-geo-alt"></i> Maps
                                                     </a>
                                                 @else
                                                     <span class="text-muted">Tidak tersedia</span>
@@ -224,7 +224,7 @@
                                             <td>
                                                 <a href="{{ route('cpb.cetakSurat', $cpb->id) }}"
                                                     class="btn btn-warning btn-sm">
-                                                    <i class="bi bi-file-earmark-text"></i> Cetak Surat
+                                                    <i class="bi bi-file-earmark-text"></i> Cetak
                                                 </a>
                                             </td>
                                             <td class="d-flex flex-column">
