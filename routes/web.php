@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\LupaPasswordController;
+use App\Http\Controllers\Petugas\GantiPasswordController;
 use App\Http\Controllers\Petugas\InputCPBController;
 use App\Http\Controllers\Petugas\PetugasProfileController;
 
@@ -72,7 +73,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
 
         // Profile
         Route::get('/profile', [PetugasProfileController::class, 'showPetugasProfile'])->name('petugas.profile');
-        Route::post('/profile/update', [PetugasProfileController::class, 'updateProfile'])->name('petugas.profile.update');
-        Route::post('/ganti-password', [PetugasProfileController::class, 'changePassword'])->name('petugas.ganti.password');
+        Route::put('/profile/update', [PetugasProfileController::class, 'updateProfile'])->name('petugas.profile.update');
+        Route::get('/ganti-password', [GantiPasswordController::class, 'showChangePassword'])->name('petugas.ganti.password');
+        Route::post('/ganti-password-new', [GantiPasswordController::class, 'ChangePassword'])->name('petugas.update.password');
     });
 });

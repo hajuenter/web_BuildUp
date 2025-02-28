@@ -16,13 +16,38 @@ class CheckRoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Ambil role user yang sedang login
         $user = Auth::user();
 
-        // Cek apakah user memiliki role "admin" atau "petugas"
-        if (!$user || !in_array($user->role, ['admin', 'petugas'])) {
-            abort(403, 'Unauthorized'); // Jika bukan admin/petugas, tolak akses
+        if (!$user) {
+            abort(403, 'Unauthorized');
         }
+
+        // Cek apakah user mengakses route "admin"
+        if ($request->is('admin/*') && $user->role !== 'admin') {
+            abort(403, 'Unauthorized - You are not an admin');
+        }
+
+        // Cek apakah user mengakses route "petugas"
+        if ($request->is('petugas/*') && $user->role !== 'petugas') {
+            abort(403, 'Unauthorized - You are not a petugas');
+        }
+
         return $next($request);
+
+        // if (!Auth::check()) {
+        //     return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        // }
+
+        // $user = Auth::user();
+
+        // if (Str::startsWith($request->path(), 'admin') && $user->role !== 'admin') {
+        //     return redirect('/')->with('error', 'Anda tidak memiliki akses sebagai admin.');
+        // }
+
+        // if (Str::startsWith($request->path(), 'petugas') && $user->role !== 'petugas') {
+        //     return redirect('/')->with('error', 'Anda tidak memiliki akses sebagai petugas.');
+        // }
+
+        // return $next($request);
     }
 }

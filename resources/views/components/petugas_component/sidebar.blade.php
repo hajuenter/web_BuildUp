@@ -4,7 +4,7 @@
 
         <!-- Dashboard -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('petugas/inputCPB') ? '' : 'collapsed' }}"
+            <a class="nav-link {{ Request::is('petugas/inputCPB*') || Request::is('petugas/cpb/edit/*') ? '' : 'collapsed' }}"
                 href="{{ route('petugas.inputcpb') }}">
                 <i class="bi bi-clipboard-plus"></i>
                 <span>Input Data CPB</span>

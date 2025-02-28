@@ -36,12 +36,14 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <hr class="dropdown-divider">
+                        <a class="dropdown-item d-flex align-items-center" href="{{ route('petugas.ganti.password') }}">
+                            <i class="bi bi-lock"></i>
+                            <span>Ganti Password</span>
+                        </a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href=""
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
