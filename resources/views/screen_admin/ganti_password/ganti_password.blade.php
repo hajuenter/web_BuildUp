@@ -1,11 +1,11 @@
-@extends('layouts.layouts_petugas')
+@extends('layouts.layouts_admin')
 
-@section('content-petugas')
+@section('content-admin')
     <div class="pagetitle">
         <h1>Ganti Password</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a>Petugas</a></li>
+                <li class="breadcrumb-item"><a>Admin</a></li>
                 <li class="breadcrumb-item active">Ganti Password</li>
             </ol>
         </nav>
@@ -19,7 +19,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-                <form onsubmit="disableButton()" action="{{ route('petugas.update.password') }}" method="POST">
+                <form onsubmit="disableButton()" action="{{ route('admin.update.password') }}" method="POST">
                     @csrf
 
                     <!-- Password Lama -->

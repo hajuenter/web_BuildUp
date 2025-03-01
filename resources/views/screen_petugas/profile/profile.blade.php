@@ -62,22 +62,23 @@
 
                             <div class="tab-pane fade {{ session('active_tab', 'profile-overview') == 'profile-overview' ? 'show active' : '' }}"
                                 id="profile-overview">
+                                <h5 class="card-title">Detail Profile</h5>
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Nama</div>
+                                    <div class="col-lg-3 col-md-4 label ">Nama</div>
                                     <div class="col-lg-9 col-md-8">{{ $user->name }}</div>
                                 </div>
 
-                                <div class="row mt-lg-2">
+                                <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Role</div>
-                                    <div class="col-lg-9 col-md-8">{{ ucfirst($user->role) }}</div>
+                                    <div class="col-lg-9 col-md-8">Admin</div>
                                 </div>
 
-                                <div class="row mt-lg-2">
-                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">No Hp</div>
                                     <div class="col-lg-9 col-md-8">{{ $user->no_hp }}</div>
                                 </div>
 
-                                <div class="row mt-lg-2">
+                                <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Email</div>
                                     <div class="col-lg-9 col-md-8">{{ $user->email }}</div>
                                 </div>
@@ -189,34 +190,6 @@
             let button = document.getElementById('simpanProfileButton');
             button.disabled = false;
             button.innerHTML = "Simpan";
-        });
-    });
-</script>
-<script>
-    function disableButtonChangePassword() {
-        let currentPassword = document.querySelector('input[name="current_password"]').value.trim();
-        let newPassword = document.querySelector('input[name="new_password"]').value.trim();
-        let renewPassword = document.querySelector('input[name="renew_password"]').value.trim();
-
-        let button = document.getElementById('gantiPasswordButton');
-
-        // Jika ada input yang kosong, tombol tetap aktif
-        if (!currentPassword || !newPassword || !renewPassword) {
-            return false;
-        }
-
-        // Nonaktifkan tombol saat form dikirim
-        button.disabled = true;
-        button.innerHTML = "Mengganti...";
-        return true;
-    }
-
-    // Aktifkan kembali tombol jika user mengedit input
-    document.querySelectorAll('input[type="password"]').forEach(element => {
-        element.addEventListener('input', function() {
-            let button = document.getElementById('gantiPasswordButton');
-            button.disabled = false;
-            button.innerHTML = "Ganti Password";
         });
     });
 </script>

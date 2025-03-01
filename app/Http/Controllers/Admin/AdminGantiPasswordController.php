@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Petugas;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -8,14 +8,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class GantiPasswordController extends Controller
+class AdminGantiPasswordController extends Controller
 {
     public function showChangePassword()
     {
-        return view('screen_petugas.ganti_password.ganti_password');
+        return view('screen_admin.ganti_password.ganti_password');
     }
 
-    public function changePassword(Request $request)
+    public function ChangePassword(Request $request)
     {
         $user = Auth::user();
 
