@@ -12,10 +12,38 @@ use Illuminate\Support\Facades\Validator;
 
 class InputCPBController extends Controller
 {
-    public function showFormInpuCPB()
+    public function showFormInpuCPB(Request $request)
     {
-        $dataCPB = DataCPB::paginate(5);
-        return view('screen_petugas.input_cbp.data_cpb', compact('dataCPB'));
+        $query = DataCPB::query();
+
+        // Ambil input pencarian
+        $nik = $request->input('nik');
+        $no_kk = $request->input('no_kk');
+        $nama = $request->input('nama');
+        $perPage = $request->input('perPage', 5); // Default 5
+
+        // Filter berdasarkan input yang diisi
+        if (!empty($nik)) {
+            $query->where('nik', 'like', "%$nik%");
+        }
+        if (!empty($no_kk)) {
+            $query->where('no_kk', 'like', "%$no_kk%");
+        }
+        if (!empty($nama)) {
+            $query->where('nama', 'like', "%$nama%");
+        }
+
+        $perPage = $request->input('perPage', 5); // Default 5 jika tidak ada input
+
+        // Jika pilih "Semua", ambil semua data tanpa pagination
+        if ($perPage == "all") {
+            $dataCPB = $query->get();
+        } else {
+            $dataCPB = $query->paginate($perPage);
+            $dataCPB->appends(request()->query());
+        }
+
+        return view('screen_petugas.input_cbp.data_cpb', compact('dataCPB', 'perPage'));
     }
 
     public function inputCPB(Request $request)

@@ -80,8 +80,8 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href=""
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item d-flex align-items-center" href="" data-bs-toggle="modal"
+                            data-bs-target="#logoutModal">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -93,6 +93,30 @@
     </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
+
+<!-- Modal Konfirmasi Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="confirmLogout">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('confirmLogout').addEventListener('click', function() {
+        document.getElementById('logout-form').submit();
+    });
+</script>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf

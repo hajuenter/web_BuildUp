@@ -49,13 +49,17 @@ class BeritaController extends Controller
             $query->whereDate('created_at', '<=', $end_date);
         }
 
-        // Ambil data dengan pagination
-        $dataBerita = $query->paginate(5);
+        $perPage = $request->input('perPage', 5); // Default 5 jika tidak ada input
 
-        // Pastikan pagination tetap mempertahankan parameter pencarian
-        $dataBerita->appends(request()->query());
+        // Jika pilih "Semua", ambil semua data tanpa pagination
+        if ($perPage == "all") {
+            $dataBerita = $query->get(); // Gunakan query agar filter tetap berfungsi
+        } else {
+            $dataBerita = $query->paginate($perPage);
+            $dataBerita->appends(request()->query());
+        }
 
-        return view('screen_admin.berita.berita', compact('dataBerita'));
+        return view('screen_admin.berita.berita', compact('dataBerita', 'perPage'));
     }
 
     public function showAddBerita()

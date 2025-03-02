@@ -168,13 +168,67 @@
         </div>
         {{-- input end --}}
 
+        {{-- cari --}}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Pencarian Data CPB</h6>
+                        <form method="GET" action="{{ route('petugas.inputcpb') }}">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="nik" class="form-label">NIK</label>
+                                    <input type="text" name="nik" id="nik" class="form-control"
+                                        value="{{ request('nik') }}" placeholder="Masukkan NIK">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="no_kk" class="form-label">No KK</label>
+                                    <input type="text" name="no_kk" id="no_kk" class="form-control"
+                                        value="{{ request('no_kk') }}" placeholder="Masukkan No KK">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="nama" class="form-label">Nama</label>
+                                    <input type="text" name="nama" id="nama" class="form-control"
+                                        value="{{ request('nama') }}" placeholder="Masukkan Nama">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-search"></i> Cari
+                                </button>
+                                <a href="{{ route('petugas.inputcpb') }}" class="btn btn-secondary ms-2">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- cari end --}}
+
         <!-- Tabel Data CPB -->
         <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Daftar Data CPB</h6>
-                        <div class="table-responsive">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="card-title">Daftar Data CPB</h6>
+                            <form method="GET" action="{{ route('petugas.inputcpb') }}" class="mb-0">
+                                <label for="perPage" class="me-2">Tampilkan:</label>
+                                <select name="perPage" id="perPage" class="form-select d-inline-block w-auto"
+                                    onchange="this.form.submit()">
+                                    <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
+                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="all" {{ request('perPage') == 'all' ? 'selected' : '' }}>Semua
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
+
+                        <div class="table-responsive mt-3">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -248,10 +302,11 @@
                             </table>
                         </div>
 
-                        <div class="d-flex justify-content-center mt-3">
-                            {{ $dataCPB->onEachSide(1)->links('pagination::bootstrap-5') }}
-                        </div>
-
+                        @if ($perPage !== 'all')
+                            <div class="d-flex justify-content-center justify-content-md-end mt-3">
+                                {{ $dataCPB->appends(request()->query())->links('pagination::bootstrap-5') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

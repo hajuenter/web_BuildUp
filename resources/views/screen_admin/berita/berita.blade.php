@@ -90,6 +90,22 @@
                     <div class="card-body">
                         <div class="d-flex p-3 justify-content-between align-items-center flex-wrap">
                             <h4 class="card-title">Data Berita</h4>
+                            <form method="GET" action="{{ route('admin.berita') }}" class="mb-0">
+                                <label for="perPage">Tampilkan:</label>
+                                <select name="perPage" id="perPage" class="form-select d-inline-block w-auto"
+                                    onchange="this.form.submit()">
+                                    <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5
+                                    </option>
+                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10
+                                    </option>
+                                    <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25
+                                    </option>
+                                    <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50
+                                    </option>
+                                    <option value="all" {{ request('perPage') == 'all' ? 'selected' : '' }}>Semua
+                                    </option>
+                                </select>
+                            </form>
                             <div class="d-flex align-items-center">
                                 <a href="{{ route('admin.add.berita') }}" class="btn btn-primary">Tambah Berita</a>
                             </div>
@@ -111,11 +127,18 @@
                                 <tbody>
                                     @forelse ($dataBerita as $value)
                                         <tr>
+
                                             <th>{{ $value->id }}</th>
-                                            <td>{{ $value->judul }}</td>
-                                            <td>{{ $value->isi }}</td>
+                                            <td style="min-width: 300px;">
+                                                <span
+                                                    style="text-align: left; display: inline-block; width: 100%;">{{ $value->judul }}</span>
+                                            </td>
+                                            <td style="min-width: 400px;">
+                                                <span
+                                                    style="text-align: justify; display: inline-block; width: 100%;">{{ $value->isi }}</span>
+                                            </td>
                                             <td>{{ $value->penulis }}</td>
-                                            <td>{{ $value->tempat }}</td>
+                                            <td style="min-width: 300px">{{ $value->tempat }}</td>
                                             <td>{{ date('F d, Y', strtotime($value->created_at)) }}</td>
                                             <td>
                                                 <img src="{{ asset('up/berita/' . $value->photo) }}" alt="Foto Berita"
@@ -142,9 +165,11 @@
                             </table>
                         </div>
 
-                        <div class="d-flex justify-content-center justify-content-md-end mt-3">
-                            {{ $dataBerita->appends(request()->query())->links('pagination::bootstrap-5') }}
-                        </div>
+                        @if ($perPage !== 'all')
+                            <div class="d-flex justify-content-center justify-content-md-end mt-3">
+                                {{ $dataBerita->appends(request()->query())->links('pagination::bootstrap-5') }}
+                            </div>
+                        @endif
 
                     </div>
                 </div>

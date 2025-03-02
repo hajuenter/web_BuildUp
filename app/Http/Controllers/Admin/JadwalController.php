@@ -45,13 +45,16 @@ class JadwalController extends Controller
             $query->whereDate('tanggal_end', '<=', $end_date);
         }
 
-        // Ambil data dengan pagination
-        $dataJadwal = $query->paginate(10);
+        $perPage = $request->input('perPage', 5);
 
-        // Pastikan pagination tetap mempertahankan parameter pencarian
-        $dataJadwal->appends(request()->query());
+        if ($perPage == "all") {
+            $dataJadwal = $query->get();
+        } else {
+            $dataJadwal = $query->paginate($perPage);
+            $dataJadwal->appends(request()->query());
+        }
 
-        return view('screen_admin.jadwal.jadwal', compact('dataJadwal'));
+        return view('screen_admin.jadwal.jadwal', compact('dataJadwal', 'perPage'));
     }
 
     public function showAddJadwal()

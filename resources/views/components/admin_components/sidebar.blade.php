@@ -1,4 +1,3 @@
-<!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -31,22 +30,31 @@
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('admin.berita') }}"
-                        class="{{ Request::routeIs('admin.berita') || Request::routeIs('admin.add.berita') || Request::routeIs('admin.edit.berita') ? 'active' : '' }}">
+                        class="{{ Request::routeIs('admin.berita', 'admin.add.berita', 'admin.edit.berita') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Berita</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.jadwal') }}"
-                        class="{{ Request::routeIs('admin.jadwal') || Request::routeIs('admin.add.jadwal') || Request::routeIs('admin.edit.jadwal') ? 'active' : '' }}">
+                        class="{{ Request::routeIs('admin.jadwal', 'admin.add.jadwal', 'admin.edit.jadwal') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Jadwal</span>
                     </a>
                 </li>
             </ul>
         </li><!-- End Menu -->
 
-        {{-- <!-- Data -->
+        <!-- Data -->
         @php
-            $isDataActive = Request::routeIs('admin.data_cpb') || Request::routeIs('admin.verifikasi_cpb');
+            $isDataActive =
+                Request::routeIs('admin.data_cpb') ||
+                // Request::routeIs('admin.add.data_cpb') ||
+                // Request::routeIs('admin.edit.data_cpb') ||
+                Request::routeIs('admin.data_role');
+            // Request::routeIs('admin.add.data_petugas') ||
+            // Request::routeIs('admin.edit.data_petugas') ||
+            // Request::routeIs('admin.data_user') ||
+            // Request::routeIs('admin.add.data_user') ||
+            // Request::routeIs('admin.edit.data_user');
         @endphp
 
         <li class="nav-item">
@@ -63,13 +71,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.verifikasi_cpb') }}"
-                        class="{{ Request::routeIs('admin.verifikasi_cpb') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Verifikasi CPB</span>
+                    <a href="{{ route('admin.data_role') }}"
+                        class="{{ Request::routeIs('admin.data_role') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Data Petugas dan User</span>
                     </a>
                 </li>
             </ul>
-        </li> <!-- End Data --> --}}
+        </li><!-- End Data -->
 
     </ul>
 </aside><!-- End Sidebar -->

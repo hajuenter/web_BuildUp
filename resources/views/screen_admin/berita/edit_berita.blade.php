@@ -6,7 +6,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a>Menu</a></li>
-                <li class="breadcrumb-item">Berita</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.berita') }}">Berita</a></li>
                 <li class="breadcrumb-item active">Edit Berita</li>
             </ol>
         </nav>

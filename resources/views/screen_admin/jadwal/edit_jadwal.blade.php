@@ -6,7 +6,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a>Menu</a></li>
-                <li class="breadcrumb-item">Jadwal</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.jadwal') }}">Jadwal</a></li>
                 <li class="breadcrumb-item active">Edit Jadwal</li>
             </ol>
         </nav>

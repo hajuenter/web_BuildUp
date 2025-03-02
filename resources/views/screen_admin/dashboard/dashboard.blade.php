@@ -5,7 +5,8 @@
         <h1>Dashboard</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

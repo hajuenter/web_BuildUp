@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DataController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\LupaPasswordController;
@@ -63,6 +64,12 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::get('/jadwal/edit/{id}', [JadwalController::class, 'showEditJadwal'])->name('admin.edit.jadwal');
         Route::put('/jadwal/update/{id}', [JadwalController::class, 'updateJadwal'])->name('admin.update.jadwal');
         Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'deleteJadwal'])->name('admin.delete.jadwal');
+
+        // Data
+        Route::get('/data/cpb', [DataController::class, 'showDataCPB'])->name('admin.data_cpb');
+        Route::get('/data/role', [DataController::class, 'showDataRole'])->name('admin.data_role');
+        Route::post('/user/verify/{id}', [DataController::class, 'verifyUser'])->name('admin.user.verify');
+        Route::post('/user/unverify/{id}', [DataController::class, 'unverifyUser'])->name('admin.user.unverify');
     });
 
     // Petugas Routes
