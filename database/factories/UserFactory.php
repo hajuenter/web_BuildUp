@@ -35,7 +35,7 @@ class UserFactory extends Factory
         return $this->state([
             'name' => 'Super Admin',
             'email' => 'eskuwut1945@gmail.com',
-            'password' => Hash::make('admin123'),
+            'password' => Hash::make('Admin123#'),
             'role' => 'admin',
             'no_hp' => '6289697082930',
             'foto' => $this->faker->imageUrl(200, 200, 'people'),
@@ -48,7 +48,7 @@ class UserFactory extends Factory
         return $this->state([
             'name' => 'Petugas Input CPB',
             'email' => 'esjeruk517@gmail.com',
-            'password' => Hash::make('petugas123'),
+            'password' => Hash::make('Petugas123#'),
             'role' => 'petugas',
             'no_hp' => '6289697083456',
             'foto' => $this->faker->imageUrl(200, 200, 'people'),

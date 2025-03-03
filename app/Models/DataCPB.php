@@ -19,7 +19,9 @@ class DataCPB extends Model
         'pekerjaan',
         'email',
         'foto_rumah',
-        'koordinat'
+        'koordinat',
+        'status',
+        'pengecekan'
     ];
 
     public function verifikasi()

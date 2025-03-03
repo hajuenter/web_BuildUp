@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('penulis');
             $table->string('tempat');
             $table->date('tanggal');
-            $table->string('photo')->nullable(); // Bisa kosong
+            $table->string('photo')->nullable(); 
             $table->timestamps();
         });
     }

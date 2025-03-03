@@ -31,6 +31,9 @@ return new class extends Migration
             $table->decimal('air_kotor', 3, 2)->nullable();
             $table->boolean('kesanggupan_berswadaya')->default(0);
             $table->enum('tipe', ['T', 'K'])->nullable();
+            $table->decimal('penilaian_kerusakan', 5, 2)->nullable();
+            $table->unsignedBigInteger('nilai_bantuan')->nullable();
+            $table->string('catatan')->nullable();
             $table->timestamps();
         });
     }

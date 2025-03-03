@@ -28,7 +28,10 @@ class DataVerifikasiCPB extends Model
         'mck',
         'air_kotor',
         'kesanggupan_berswadaya',
-        'tipe'
+        'tipe',
+        'penilaian_kerusakan',
+        'nilai_bantuan',
+        'catatan'
     ];
 
     public function cpb()

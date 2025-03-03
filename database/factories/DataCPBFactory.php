@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\DataCPB;
+use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Factory as FakerFactory; // Tambahkan ini
 
 class DataCPBFactory extends Factory
 {
@@ -34,8 +34,10 @@ class DataCPBFactory extends Factory
             'no_kk'      => $no_kk,
             'pekerjaan'  => $faker->jobTitle(),
             'email'      => $faker->unique()->safeEmail(),
-            'foto_rumah' => 'images/default-rumah.jpg', 
-            'koordinat'  => $faker->latitude(-10, 5) . ', ' . $faker->longitude(95, 141), 
+            'foto_rumah' => 'images/default-rumah.jpg',
+            'koordinat'  => $faker->latitude(-10, 5) . ', ' . $faker->longitude(95, 141),
+            'status'     => 'Tidak Terverifikasi',
+            'pengecekan' => 'Belum Dicek',
         ];
     }
 }

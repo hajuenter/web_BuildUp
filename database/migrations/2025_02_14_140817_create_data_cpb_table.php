@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('foto_rumah');
             $table->string('koordinat');
+            $table->enum('status', ['Terverifikasi', 'Tidak Terverifikasi'])->default('Tidak Terverifikasi');
+            $table->enum('pengecekan', ['Sudah Dicek', 'Belum Dicek'])->default('Belum Dicek');
             $table->timestamps();
         });
     }
