@@ -70,6 +70,9 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::get('/data/role', [DataController::class, 'showDataRole'])->name('admin.data_role');
         Route::post('/user/verify/{id}', [DataController::class, 'verifyUser'])->name('admin.user.verify');
         Route::post('/user/unverify/{id}', [DataController::class, 'unverifyUser'])->name('admin.user.unverify');
+        Route::delete('/user/delete/{id}', [DataController::class, 'deleteUser'])->name('admin.user.delete');
+        Route::get('/data/pengguna/add', [DataController::class, 'showPetugasAdd'])->name('admin.user.petugas.add');
+        Route::post('/data/pengguna/create', [DataController::class, 'createPengguna'])->name('admin.user.create');
     });
 
     // Petugas Routes

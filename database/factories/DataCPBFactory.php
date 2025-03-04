@@ -34,7 +34,7 @@ class DataCPBFactory extends Factory
             'no_kk'      => $no_kk,
             'pekerjaan'  => $faker->jobTitle(),
             'email'      => $faker->unique()->safeEmail(),
-            'foto_rumah' => 'images/default-rumah.jpg',
+            'foto_rumah' => 'up/data_cpb/default-cpb.png',
             'koordinat'  => $faker->latitude(-10, 5) . ', ' . $faker->longitude(95, 141),
             'status'     => 'Tidak Terverifikasi',
             'pengecekan' => 'Belum Dicek',

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\DataCPB;
 use App\Models\User;
+use App\Models\DataCPB;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
 {
@@ -19,7 +21,6 @@ class DataController extends Controller
     {
         $perPage = $request->input('perPage', 5); // Default 5 jika tidak ada input
 
-        // Jika pilih "Semua", ambil semua data tanpa pagination
         if ($perPage == "all") {
             $dataRole = User::whereIn('role', ['petugas', 'user'])->get();
         } else {
@@ -45,5 +46,105 @@ class DataController extends Controller
         $user->save();
 
         return back()->with('successG', 'User berhasil dinonaktifkan!');
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User tidak ditemukan.');
+        }
+
+        if ($user->foto && file_exists(public_path('up/profile/' . $user->foto))) {
+            unlink(public_path('up/profile/' . $user->foto));
+        }
+
+        $user->delete();
+
+        return redirect()->back()->with('successG', 'User berhasil dihapus.');
+    }
+
+    public function showPetugasAdd()
+    {
+        return view('screen_admin.data.tambah_pengguna');
+    }
+
+    public function createPengguna(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string|max:255',
+                'password' => [
+                    'required',
+                    'min:8',
+                    'regex:/[A-Z]/',   // Harus ada huruf besar
+                    'regex:/[a-z]/',   // Harus ada huruf kecil
+                    'regex:/[0-9]/',   // Harus ada angka
+                    'regex:/[\W]/'     // Harus ada karakter khusus
+                ],
+                'no_hp' => 'required|string|max:15|unique:users,no_hp',
+                'email' => 'required|email|max:255|unique:users,email',
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'role' => 'required',
+                'alamat' => 'required|string|max:255',
+            ],
+            [
+                'alamat.required' => 'Alamat wsjib di isi',
+                'alamat.string' => 'Alamat harus text',
+                'alamat.max' => 'Alamat tidak boleh lebih dari 255 karakter',
+                'role.required' => 'Role tidak boleh kosong',
+                'name.required' => 'Nama tidak boleh kosong.',
+                'name.string' => 'Nama harus berupa teks.',
+                'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+
+                'password.required' => 'Password wajib diisi.',
+                'password.min' => 'Password minimal 8 karakter.',
+                'password.regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus.',
+
+                'no_hp.required' => 'Nomor HP wajib diisi.',
+                'no_hp.string' => 'Nomor HP harus berupa teks.',
+                'no_hp.max' => 'Nomor HP tidak boleh lebih dari 15 karakter.',
+                'no_hp.unique' => 'Nomor HP sudah terdaftar, gunakan nomor lain.',
+
+                'email.required' => 'Email wajib diisi.',
+                'email.email' => 'Format email tidak valid.',
+                'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
+                'email.unique' => 'Email sudah terdaftar, gunakan email lain.',
+
+                'foto.image' => 'File yang diunggah harus berupa gambar.',
+                'foto.mimes' => 'Format gambar harus JPEG, PNG, JPG, atau GIF.',
+                'foto.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        // dd($validator->errors());
+        $foto = 'profile.png';
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension(); // Nama unik
+            $file->move(public_path('up/profile'), $filename); // Simpan ke public/up/profile/
+            $foto = $filename; // Simpan nama file ke database
+        }
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'email_verified_at' => null,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'no_hp' => $request->no_hp,
+            'alamat' => $request->alamat,
+            'foto' => $foto,
+        ]);
+
+        return redirect()->route('admin.data_role')->with('successY', 'Pengguna berhasil ditambahkan.');
     }
 }

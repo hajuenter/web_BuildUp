@@ -26,7 +26,7 @@ class BeritaFactory extends Factory
             'penulis' => $faker->name(),
             'tempat' => $faker->address(),
             'tanggal' => $faker->date(),
-            'photo' => 'up/berita/' . $faker->uuid() . '.jpg',
+            'photo' => 'default-berita.png',
         ];
     }
 }

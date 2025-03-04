@@ -47,6 +47,7 @@
         @php
             $isDataActive =
                 Request::routeIs('admin.data_cpb') ||
+                Request::routeIs('admin.user.petugas.add') ||
                 // Request::routeIs('admin.add.data_cpb') ||
                 // Request::routeIs('admin.edit.data_cpb') ||
                 Request::routeIs('admin.data_role');
@@ -72,7 +73,7 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.data_role') }}"
-                        class="{{ Request::routeIs('admin.data_role') ? 'active' : '' }}">
+                        class="{{ Request::routeIs('admin.data_role', 'admin.user.petugas.add') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Data Petugas dan User</span>
                     </a>
                 </li>

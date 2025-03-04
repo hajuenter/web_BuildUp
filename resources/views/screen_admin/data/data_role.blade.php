@@ -17,6 +17,10 @@
                 {{-- tabel --}}
                 <div class="row">
                     <div class="col-md-12 grid-margin stretch-card mb-0">
+                        <a href="{{ route('admin.user.petugas.add') }}" class="btn btn-primary mb-2">
+                            <i class="bi bi-person-plus"></i> Tambah Pengguna
+                        </a>
+
                         @if (session('successY'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('successY') }}
@@ -63,6 +67,7 @@
                                                 <th>Role</th>
                                                 <th>No Hp</th>
                                                 <th>Verifikasi</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -80,7 +85,7 @@
                                                     </td>
                                                     <td>{{ $value->role }}</td>
                                                     <td>{{ $value->no_hp }}</td>
-                                                    <td class="d-flex flex-column gap-2">
+                                                    <td class="d-flex align-items-center flex-column gap-2">
                                                         @if (!$value->email_verified_at)
                                                             <!-- Button Verifikasi -->
                                                             <form action="{{ route('admin.user.verify', $value->id) }}"
@@ -100,6 +105,49 @@
                                                                 </button>
                                                             </form>
                                                         @endif
+                                                    </td>
+                                                    <td>
+                                                        <!-- Tombol Hapus -->
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal{{ $value->id }}">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+
+                                                        <!-- Modal Konfirmasi -->
+                                                        <div class="modal fade" id="deleteModal{{ $value->id }}"
+                                                            tabindex="-1"
+                                                            aria-labelledby="deleteModalLabel{{ $value->id }}"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="deleteModalLabel{{ $value->id }}">
+                                                                            Konfirmasi Hapus</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Apakah Anda yakin ingin menghapus user
+                                                                        <strong>{{ $value->name }}</strong>?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Batal</button>
+                                                                        <form
+                                                                            action="{{ route('admin.user.delete', $value->id) }}"
+                                                                            method="post">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Hapus</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @empty

@@ -38,7 +38,7 @@ class UserFactory extends Factory
             'password' => Hash::make('Admin123#'),
             'role' => 'admin',
             'no_hp' => '6289697082930',
-            'foto' => $this->faker->imageUrl(200, 200, 'people'),
+            'foto' => 'default-profile.png',
             'alamat' => 'Cangkringan Nganjuk',
             'email_verified_at' => now(),
         ]);
@@ -51,7 +51,7 @@ class UserFactory extends Factory
             'password' => Hash::make('Petugas123#'),
             'role' => 'petugas',
             'no_hp' => '6289697083456',
-            'foto' => $this->faker->imageUrl(200, 200, 'people'),
+            'foto' => 'default-profile.png',
             'alamat' => 'Cangkringan Nganjuk',
             'email_verified_at' => now(),
         ]);

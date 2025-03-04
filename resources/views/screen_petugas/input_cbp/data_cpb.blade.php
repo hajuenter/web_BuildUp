@@ -233,8 +233,8 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Nama</th>
-                                        <th>Alamat</th>
+                                        <th style="min-width: 150px;">Nama</th>
+                                        <th style="min-width: 300px;">Alamat</th>
                                         <th>NIK</th>
                                         <th>NO KK</th>
                                         <th>Pekerjaan</th>
