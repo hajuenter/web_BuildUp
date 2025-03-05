@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'petugas', 'user'])->default('user');
-            $table->string('no_hp', 15);
-            $table->string('foto');
-            $table->text('alamat');
+            $table->string('no_hp', 15)->nullable();
+            $table->string('foto')->nullable();
+            $table->text('alamat')->nullable();
             $table->string('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();
             $table->timestamps();

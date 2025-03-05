@@ -11,15 +11,59 @@ use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
 {
-    public function showDataCPB()
+    public function showDataCPB(Request $request)
     {
-        $dataCPB = DataCPB::all();
-        return view('screen_admin.data.data_cpb', compact('dataCPB'));
+        $nik = $request->input('nik');
+        $no_kk = $request->input('no_kk');
+        $nama = $request->input('nama');
+
+        // Query dasar
+        $query = DataCPB::query();
+
+        // Filter jika ada input NIK
+        if (!empty($nik)) {
+            $query->where('nik', 'LIKE', "%$nik%");
+        }
+
+        // Filter jika ada input No KK
+        if (!empty($no_kk)) {
+            $query->where('no_kk', 'LIKE', "%$no_kk%");
+        }
+
+        // Filter jika ada input Nama
+        if (!empty($nama)) {
+            $query->where('nama', 'LIKE', "%$nama%");
+        }
+
+        // Ambil hasil pencarian
+        $dataCPB = $query->get();
+        $totalSudahDicek = DataCPB::where('pengecekan', 'Sudah Dicek')->count();
+        $totalBelumDicek = DataCPB::where('pengecekan', 'Belum Dicek')->count();
+
+        $totalTerverifikasi = DataCPB::where('status', 'Terverifikasi')->count();
+        $totalTidakTerverifikasi = DataCPB::where('status', 'Tidak Terverifikasi')->count();
+        $perPage = $request->input('perPage', 5); // Default 5 jika tidak ada input
+
+        // Jika pilih "Semua", ambil semua data tanpa pagination
+        if ($perPage == "all") {
+            $dataCPB = $query->get(); // Gunakan query agar filter tetap berfungsi
+        } else {
+            $dataCPB = $query->paginate($perPage);
+            $dataCPB->appends(request()->query());
+        }
+        return view('screen_admin.data.data_cpb', compact(
+            'dataCPB',
+            'perPage',
+            'totalSudahDicek',
+            'totalBelumDicek',
+            'totalTerverifikasi',
+            'totalTidakTerverifikasi'
+        ));
     }
 
     public function showDataRole(Request $request)
     {
-        $perPage = $request->input('perPage', 5); // Default 5 jika tidak ada input
+        $perPage = $request->input('perPage', 5);
 
         if ($perPage == "all") {
             $dataRole = User::whereIn('role', ['petugas', 'user'])->get();

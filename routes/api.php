@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Api\ApiDataCPBController;
 use App\Http\Controllers\Api\ApiDataVerifikasiCPBController;
-use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+//api auth
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['api.key'])->group(function () {
     Route::get('/user', function (Request $request) {
@@ -18,7 +21,3 @@ Route::middleware(['api.key'])->group(function () {
     // API Data Verifikasi CPB
     Route::resource('/dataVerifikasiCPB', ApiDataVerifikasiCPBController::class);
 });
-
-//api auth
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
