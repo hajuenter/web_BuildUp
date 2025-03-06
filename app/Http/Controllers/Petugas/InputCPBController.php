@@ -235,46 +235,145 @@ class InputCPBController extends Controller
 
         // Buat dokumen Word baru
         $phpWord = new PhpWord();
-        $section = $phpWord->addSection();
+        $phpWord->setDefaultFontName('Arial');
+        $phpWord->setDefaultFontSize(12);
+
+        $section = $phpWord->addSection([
+            'pageSizeW' => 11906, // A4 width
+            'pageSizeH' => 16838, // A4 height
+            'marginSTART' => 1000,
+            'marginEND' => 1000,
+            'marginTop' => 500,
+            'marginBottom' => 50,
+        ]);
 
         // Header Surat
-        $section->addText("SURAT PERNYATAAN", [
-            'bold' => true,
-            'size' => 14
-        ], [
-            'alignment' => Jc::CENTER
-        ]);
+        $section->addText("SURAT PERMOHONAN BANTUAN SOSIAL", ['bold' => true], ['alignment' => Jc::CENTER]);
 
-        $section->addText("Yang bertanda tangan di bawah ini:", [
-            'size' => 12
-        ]);
+        $table = $section->addTable();
+        $table->addRow();
+        $table->addCell(8000);
+        $table->addCell(4000)->addText(
+            "Nganjuk, ……- ….. – 20..",
+            [],
+            ['alignment' => Jc::END]
+        );
+        // Membuat tabel
+        $table = $section->addTable();
+
+        // Data yang akan ditampilkan dalam format sejajar
+        $dataSurat = [
+            "Nomor" => "--",
+            "Sifat" => "--",
+            "Lampiran" => "1 (satu) berkas",
+            "Hal" => "Permohonan Bantuan Sosial Penyediaan Rumah Layak Huni",
+        ];
+
+        foreach ($dataSurat as $label => $value) {
+            $table->addRow();
+            $table->addCell(1450)->addText($label); // Kolom pertama (label)
+            $table->addCell(500)->addText(":"); // Kolom kedua (titik dua)
+            $table->addCell(6000)->addText($value); // Kolom ketiga (isi)
+        }
+
+        // Tujuan Surat
+        $section->addText("Yth. Bupati Nganjuk");
+        $section->addText("Di – NGANJUK");
+        // Data Pemohon
+        $section->addText("Yang bertanda tangan di bawah ini:");
+        // Membuat tabel
+        $table = $section->addTable();
+        // Data pemohon
+        $dataPemohon = [
+            "Nama" => $cpb->nama,
+            "NIK" => $cpb->nik,
+            "Nomor KK" => $cpb->no_kk,
+            "Pekerjaan" => $cpb->pekerjaan,
+            "Alamat Rumah" => $cpb->alamat,
+        ];
+
+        foreach ($dataPemohon as $label => $value) {
+            $table->addRow();
+            $table->addCell(3000)->addText($label); // Kolom pertama (label)
+            $table->addCell(500)->addText(":"); // Kolom kedua (titik dua)
+            $table->addCell(6000)->addText($value); // Kolom ketiga (isi)
+        }
+
+        // Isi Surat
+        $isiSurat = "Dalam rangka meningkatkan kesejahteraan masyarakat utamanya dalam pemenuhan kebutuhan atas rumah layak huni, bersama ini kami mengajukan permohonan untuk diberikan bantuan sosial penyediaan rumah layak huni sebesar Rp…..…..(….. juta rupiah) yang diperuntukkan untuk Perbaikan/Pembangunan *) rumah, dengan perkiraan rincian penggunaan sebagai berikut :";
+
+        $section->addText(
+            $isiSurat,
+            ['size' => 11],
+            ['alignment' => Jc::BOTH, 'spaceAfter' => 0, 'spaceBefore' => 0]
+        );
+
+        $styleTable = [
+            'borderSize' => 6,
+            'borderColor' => '000000',
+            'cellMargin' => 50,
+            'width' => 100 * 50 // Mengisi seluruh lebar halaman
+        ];
+
+        $styleFirstRow = ['bgColor' => 'D3D3D3'];
+        $styleLastRow = ['bgColor' => 'D3D3D3'];
+
+        $phpWord->addTableStyle('TableStyle', $styleTable);
+        $table = $section->addTable('TableStyle');
+
+        // Baris pertama (judul tabel)
+        $table->addRow();
+        $table->addCell(500, $styleFirstRow)->addText("No", ['bold' => true]);
+        $table->addCell(4000, $styleFirstRow)->addText("Nama Bahan", ['bold' => true]); // Lebar besar
+        $table->addCell(1000, $styleFirstRow)->addText("Vol", ['bold' => true]);
+        $table->addCell(1000, $styleFirstRow)->addText("Sat", ['bold' => true]);
+        $table->addCell(1500, $styleFirstRow)->addText("Harga Satuan", ['bold' => true]);
+        $table->addCell(1500, $styleFirstRow)->addText("Jumlah", ['bold' => true]);
+
+        for ($i = 1; $i <= 3; $i++) {
+            $table->addRow();
+            $table->addCell(500)->addText($i);
+            $table->addCell(4000)->addText("");
+            $table->addCell(1000)->addText("");
+            $table->addCell(1000)->addText("");
+            $table->addCell(1500)->addText("");
+            $table->addCell(1500)->addText("");
+        }
+
+        $table->addRow(null, $styleLastRow);
+        $table->addCell(500, $styleLastRow)->addText(""); // No tetap ada
+        $table->addCell(4000, $styleLastRow)->addText(""); // Nama Bahan tetap ada
+        $table->addCell(1000, $styleLastRow)->addText(""); // Vol tetap ada
+        $table->addCell(1000, $styleLastRow)->addText(""); // Sat tetap ada
+        $table->addCell(1500, $styleLastRow)->addText("TOTAL", ['bold' => true], ['alignment' => Jc::START]);
+        $table->addCell(1500, $styleLastRow)->addText("Rp", ['bold' => true], ['alignment' => Jc::START]);
+
+        // Penutup
+        $penutup = "Perbaikan / Pembangunan *) rumah kami laksanakan dalam 1 (satu) tahun anggaran di lokasi sesuai alamat rumah. Berikut kami lampirkan salinan KTP/KK, dan foto kondisi rumah saat ini dan berkas pendukung lainnya.\nDemikian surat permohonan bantuan sosial ini disampaikan. Atas perhatian dan bantuanya disampaikan terima kasih.";
+        $section->addText(
+            $penutup,
+            ['size' => 11],
+            ['alignment' => Jc::BOTH, 'spaceAfter' => 0, 'spaceBefore' => 0]
+        );
         $section->addTextBreak(1);
+        // Buat tabel dengan dua kolom untuk tanda tangan dan coret yang tidak perlu
+        $table = $section->addTable();
 
-        // Data Penerima Bantuan
-        $section->addText("Nama          : " . $cpb->nama, ['size' => 12]);
-        $section->addText("NIK           : " . $cpb->nik, ['size' => 12]);
-        $section->addText("No KK         : " . $cpb->no_kk, ['size' => 12]);
-        $section->addText("Alamat        : " . $cpb->alamat, ['size' => 12]);
-        $section->addText("Pekerjaan     : " . $cpb->pekerjaan, ['size' => 12]);
-        $section->addText("Email         : " . $cpb->email, ['size' => 12]);
-        $section->addTextBreak(1);
+        $table->addRow();
+        $cellKiri = $table->addCell(6000); // Kolom pertama (Coret yang tidak perlu)
+        $cellTengah = $table->addCell(3000); // Kolom kedua (spasi kosong agar tanda tangan lebih ke kanan)
+        $cellKanan = $table->addCell(5000, ['alignment' => Jc::END]); // Kolom ketiga (Tanda tangan)
 
-        // Isi Pernyataan
-        $isiPernyataan = "Dengan ini saya menyatakan bahwa saya benar-benar merupakan penerima bantuan sosial "
-            . "dan data yang saya berikan adalah benar. Jika dikemudian hari ditemukan kesalahan dalam data saya, "
-            . "saya bersedia menerima konsekuensi sesuai ketentuan yang berlaku.";
-        $section->addText($isiPernyataan, ['size' => 12], ['alignment' => Jc::BOTH]);
-        $section->addTextBreak(2);
+        $cellKiri->addTextBreak(3);
+        $cellKiri->addText("*) Coret yang tidak perlu", ['size' => 10]);
 
-        // Tanda Tangan
-        $tanggal = date("d F Y"); // Format tanggal otomatis
-        $section->addText("Dibuat pada: " . $tanggal, ['size' => 12]);
-        $section->addText("Penerima Bantuan,", ['size' => 12], ['alignment' => Jc::RIGHT]);
-        $section->addTextBreak(3);
-        $section->addText($cpb->nama, ['size' => 12, 'bold' => true], ['alignment' => Jc::RIGHT]);
+        $cellKanan->addText("Pengusul,", ['alignment' => Jc::END]);
+        $cellKanan->addText("Calon Penerima Bansos", ['alignment' => Jc::END]);
+        $cellKanan->addTextBreak(1);
+        $cellKanan->addText("…………………………", ['bold' => true, 'alignment' => Jc::END]);
 
         // Simpan dan Unduh
-        $fileName = 'Surat_Pernyataan_' . $cpb->id . '.docx';
+        $fileName = 'Surat_Permohonan_' . $cpb->id . '.docx';
         $tempFile = storage_path($fileName);
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save($tempFile);
