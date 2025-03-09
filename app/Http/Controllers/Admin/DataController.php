@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\DataCPB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DataVerifikasiCPB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,6 +60,34 @@ class DataController extends Controller
             'totalTerverifikasi',
             'totalTidakTerverifikasi'
         ));
+    }
+
+    public function showDataverifCPB(Request $request)
+    {
+        $nik = $request->input('nik');
+        $query = DataVerifikasiCPB::query();
+
+        // Filter jika ada input NIK
+        if (!empty($nik)) {
+            $query->where('nik', 'LIKE', "%$nik%");
+        }
+
+        $dataVerifCPB = $query->get();
+        $totalRusakBerat = DataVerifikasiCPB::where('catatan', 'Rusak Berat')->count();
+        $totalRusakSedang = DataVerifikasiCPB::where('catatan', 'Rusak Sedang')->count();
+        $totalRusakRingan = DataVerifikasiCPB::where('catatan', 'Rusak Ringan')->count();
+        $totalTidakDapatBantuan = DataVerifikasiCPB::where('catatan', 'Tidak mendapat bantuan')->count();
+        $perPage = $request->input('perPage', 5); // Default 5 jika tidak ada input
+
+        // Jika pilih "Semua", ambil semua data tanpa pagination
+        if ($perPage == "all") {
+            $dataVerifCPB = $query->get();
+        } else {
+            $dataVerifCPB = $query->paginate($perPage);
+            $dataVerifCPB->appends(request()->query());
+        }
+
+        return view('screen_admin.data.data_verif_cpb', compact('dataVerifCPB', 'perPage', 'totalRusakBerat', 'totalRusakSedang', 'totalRusakRingan', 'totalTidakDapatBantuan'));
     }
 
     public function showDataRole(Request $request)

@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\RekapanCPBController;
+use App\Http\Controllers\Admin\RekapanVerifikasiController;
 use App\Http\Controllers\Auth\LupaPasswordController;
 use App\Http\Controllers\Petugas\GantiPasswordController;
 use App\Http\Controllers\Petugas\InputCPBController;
@@ -67,12 +69,17 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
 
         // Data
         Route::get('/data/cpb', [DataController::class, 'showDataCPB'])->name('admin.data_cpb');
+        Route::get('/data/verif/cpb', [DataController::class, 'showDataverifCPB'])->name('admin.data_verif_cpb');
         Route::get('/data/role', [DataController::class, 'showDataRole'])->name('admin.data_role');
         Route::post('/user/verify/{id}', [DataController::class, 'verifyUser'])->name('admin.user.verify');
         Route::post('/user/unverify/{id}', [DataController::class, 'unverifyUser'])->name('admin.user.unverify');
         Route::delete('/user/delete/{id}', [DataController::class, 'deleteUser'])->name('admin.user.delete');
         Route::get('/data/pengguna/add', [DataController::class, 'showPetugasAdd'])->name('admin.user.petugas.add');
         Route::post('/data/pengguna/create', [DataController::class, 'createPengguna'])->name('admin.user.create');
+
+        //rekapan
+        Route::get('/rekapan/cpb', [RekapanCPBController::class, 'showRekapCPB'])->name('admin.rekap.cpb');
+        Route::get('/rekapan/verifikasi', [RekapanVerifikasiController::class, 'showRekapVerif'])->name('admin.rekap.verif');
     });
 
     // Petugas Routes

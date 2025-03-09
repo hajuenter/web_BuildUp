@@ -5,7 +5,7 @@
         <h1>Jadwal</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a>Admin</a></li>
+                <li class="breadcrumb-item"><a>Menu</a></li>
                 <li class="breadcrumb-item active">Jadwal</li>
             </ol>
         </nav>
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover table-bordered">
                                 <thead>
                                     <tr>
                                         <th>ID</th>

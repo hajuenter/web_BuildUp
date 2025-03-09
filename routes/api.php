@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 //api auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/google-login', [AuthController::class, 'googleLogin']);
 Route::post('/send-otp', [AuthController::class, 'sendOTP']);
 Route::post('/verif-otp', [AuthController::class, 'verifOTP']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);

@@ -47,6 +47,7 @@
         @php
             $isDataActive =
                 Request::routeIs('admin.data_cpb') ||
+                Request::routeIs('admin.data_verif_cpb') ||
                 Request::routeIs('admin.user.petugas.add') ||
                 // Request::routeIs('admin.add.data_cpb') ||
                 // Request::routeIs('admin.edit.data_cpb') ||
@@ -72,6 +73,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.data_verif_cpb') }}"
+                        class="{{ Request::routeIs('admin.data_verif_cpb') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Data Verifikasi</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.data_role') }}"
                         class="{{ Request::routeIs('admin.data_role', 'admin.user.petugas.add') ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Data Petugas dan User</span>
@@ -79,6 +86,22 @@
                 </li>
             </ul>
         </li><!-- End Data -->
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::routeIs('admin.rekap.cpb') ? '' : 'collapsed' }}"
+                href="{{ route('admin.rekap.cpb') }}">
+                <i class="bi bi-people"></i>
+                <span>Rekap CPB</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::routeIs('admin.rekap.verif') ? '' : 'collapsed' }}"
+                href="{{ route('admin.rekap.verif') }}">
+                <i class="bi bi-person-check"></i>
+                <span>Rekap Verifikasi</span>
+            </a>
+        </li>
 
     </ul>
 </aside><!-- End Sidebar -->

@@ -98,6 +98,30 @@ class AuthController extends Controller
         ]);
     }
 
+    public function googleLogin(Request $request)
+    {
+        $email = $request->email;
+
+        $user = User::where('email', $email)
+            ->where('role', 'user')
+            ->whereNotNull('email_verified_at')
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email tidak terdaftar atau belum diverifikasi'
+            ], 401);
+        }
+        $token = $user->createToken('authToken')->plainTextToken;
+        // Jika user ditemukan, kirim data user
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'token' => $token
+        ]);
+    }
+
     public function sendOTP(Request $request)
     {
         $request->validate([
@@ -117,10 +141,8 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // 🔹 Buat OTP (angka acak 4 digit)
         $otp = rand(1000, 9999);
 
-        // 🔹 Simpan OTP ke database dengan masa berlaku 5 menit
         $user->update([
             'otp' => $otp,
             'otp_expires_at' => Carbon::now()->addMinutes(5)

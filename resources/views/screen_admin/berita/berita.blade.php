@@ -111,7 +111,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
@@ -137,7 +137,7 @@
                                                 <span
                                                     style="text-align: justify; display: inline-block; width: 100%;">{{ $value->isi }}</span>
                                             </td>
-                                            <td>{{ $value->penulis }}</td>
+                                            <td style="min-width: 200px">{{ $value->penulis }}</td>
                                             <td style="min-width: 300px">{{ $value->tempat }}</td>
                                             <td>{{ date('F d, Y', strtotime($value->created_at)) }}</td>
                                             <td>
