@@ -34,6 +34,24 @@ class DataVerifikasiCPB extends Model
         'catatan'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($verifikasi) {
+            
+            DataCPB::where('nik', $verifikasi->nik)->update([
+                'pengecekan' => 'Sudah Dicek',
+            ]);
+
+            if ($verifikasi->nilai_bantuan > 0) {
+                DataCPB::where('nik', $verifikasi->nik)->update([
+                    'status' => 'Terverifikasi',
+                ]);
+            }
+        });
+    }
+
     public function cpb()
     {
         return $this->belongsTo(DataCPB::class, 'nik', 'nik');

@@ -48,19 +48,47 @@ class DataVerifikasiCPBFactory extends Factory
 
         return [
             'penutup_atap'       => $kerusakan[0],
+            'foto_penutup_atap'  => null,
+
             'rangka_atap'        => $kerusakan[1],
+            'foto_rangka_atap'   => null,
+
             'kolom'              => $kerusakan[2],
+            'foto_kolom'         => null,
+
             'ring_balok'         => $kerusakan[3],
+            'foto_ring_balok'    => null,
+
             'dinding_pengisi'    => $kerusakan[4],
+            'foto_dinding_pengisi' => null,
+
             'kusen'              => $kerusakan[5],
+            'foto_kusen'         => null,
+
             'pintu'              => $kerusakan[6],
+            'foto_pintu'         => null,
+
             'jendela'            => $kerusakan[7],
+            'foto_jendela'       => null,
+
             'struktur_bawah'     => $kerusakan[8],
+            'foto_struktur_bawah' => null,
+
             'penutup_lantai'     => $kerusakan[9],
+            'foto_penutup_lantai' => null,
+
             'pondasi'            => $kerusakan[10],
+            'foto_pondasi'       => null,
+
             'sloof'              => $kerusakan[11],
+            'foto_sloof'         => null,
+
             'mck'                => $kerusakan[12],
+            'foto_mck'           => null,
+
             'air_kotor'          => $kerusakan[13],
+            'foto_air_kotor'     => null,
+
             'kesanggupan_berswadaya' => $kesanggupan_berswadaya,
             'tipe'               => $tipe,
             'penilaian_kerusakan' => $penilaian_kerusakan,

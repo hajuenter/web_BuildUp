@@ -47,8 +47,8 @@
                     <div class="p-3 d-flex gap-2 flex-wrap">
                         <span class="badge bg-success p-3">Rusak Berat: {{ $totalRusakBerat }}</span>
                         <span class="badge bg-danger p-3">Rusak Sedang: {{ $totalRusakSedang }}</span>
-                        <span class="badge bg-warning p-3">Rusak Ringan: {{ $totalRusakRingan }}</span>
-                        <span class="badge bg-primary p-3">Tidak Mendapat Bantuan: {{ $totalTidakDapatBantuan }}</span>
+                        <span class="badge bg-primary p-3">Rusak Ringan: {{ $totalRusakRingan }}</span>
+                        <span class="badge bg-warning p-3">Tidak Mendapat Bantuan: {{ $totalTidakDapatBantuan }}</span>
                     </div>
                     <div class="card-body">
                         <div class="d-flex p-3 justify-content-between align-items-center flex-wrap">

@@ -70,7 +70,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Role</div>
-                                    <div class="col-lg-9 col-md-8">Admin</div>
+                                    <div class="col-lg-9 col-md-8">Petugas</div>
                                 </div>
 
                                 <div class="row">

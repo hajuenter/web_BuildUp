@@ -20,6 +20,9 @@
                         <a href="{{ route('admin.user.petugas.add') }}" class="btn btn-primary mb-2">
                             <i class="bi bi-person-plus"></i> Tambah Pengguna
                         </a>
+                        <a href="{{ route('admin.data_role') }}" class="btn btn-secondary mb-2">
+                            <i class="bi bi-arrow-repeat"></i> Refresh
+                        </a>
 
                         @if (session('successY'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -88,24 +91,85 @@
                                                     <td class="d-flex align-items-center flex-column gap-2">
                                                         @if (!$value->email_verified_at)
                                                             <!-- Button Verifikasi -->
-                                                            <form action="{{ route('admin.user.verify', $value->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-success btn-sm">
-                                                                    <i class="bi bi-check-circle-fill"></i>
-                                                                </button>
-                                                            </form>
+                                                            <button type="button" class="btn btn-success btn-sm"
+                                                                data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                                data-action="{{ route('admin.user.verify', $value->id) }}"
+                                                                data-message="Apakah Anda yakin ingin memverifikasi akun ini?">
+                                                                <i class="bi bi-check-circle-fill"></i>
+                                                            </button>
                                                         @else
                                                             <!-- Button Unverifikasi -->
-                                                            <form action="{{ route('admin.user.unverify', $value->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                                    <i class="bi bi-x-circle-fill"></i>
-                                                                </button>
-                                                            </form>
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                data-bs-toggle="modal" data-bs-target="#confirmModal"
+                                                                data-action="{{ route('admin.user.unverify', $value->id) }}"
+                                                                data-message="Apakah Anda yakin ingin menonaktifkan akun ini?">
+                                                                <i class="bi bi-x-circle-fill"></i>
+                                                            </button>
                                                         @endif
                                                     </td>
+
+                                                    <!-- Modal Konfirmasi -->
+                                                    <div class="modal fade" id="confirmModal" tabindex="-1"
+                                                        aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="confirmModalLabel">
+                                                                        Konfirmasi</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body" id="confirmMessage">
+                                                                    <!-- Pesan konfirmasi akan muncul di sini -->
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Batal</button>
+                                                                    <form id="confirmForm" method="POST">
+                                                                        @csrf
+                                                                        <button type="submit" id="confirmButton"
+                                                                            class="btn btn-primary">
+                                                                            <span id="buttonText">Ya, Lanjutkan</span>
+                                                                            <span id="loadingSpinner"
+                                                                                class="spinner-border spinner-border-sm d-none"
+                                                                                role="status" aria-hidden="true"></span>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- JavaScript untuk Menyesuaikan Modal -->
+                                                    <script>
+                                                        var confirmModal = document.getElementById('confirmModal');
+                                                        var confirmForm = document.getElementById('confirmForm');
+                                                        var confirmButton = document.getElementById('confirmButton');
+                                                        var buttonText = document.getElementById('buttonText');
+                                                        var loadingSpinner = document.getElementById('loadingSpinner');
+
+                                                        confirmModal.addEventListener('show.bs.modal', function(event) {
+                                                            var button = event.relatedTarget; // Tombol yang memicu modal
+                                                            var action = button.getAttribute('data-action'); // URL dari tombol
+                                                            var message = button.getAttribute('data-message'); // Pesan konfirmasi
+
+                                                            document.getElementById('confirmMessage').textContent = message; // Set pesan modal
+                                                            confirmForm.setAttribute('action', action); // Set action form
+
+                                                            // Pastikan tombol kembali normal saat modal ditampilkan kembali
+                                                            confirmButton.disabled = false;
+                                                            loadingSpinner.classList.add('d-none');
+                                                            buttonText.classList.remove('d-none');
+                                                        });
+
+                                                        confirmForm.addEventListener('submit', function() {
+                                                            // Saat tombol diklik, disable & tampilkan loading
+                                                            confirmButton.disabled = true;
+                                                            loadingSpinner.classList.remove('d-none');
+                                                            buttonText.classList.add('d-none');
+                                                        });
+                                                    </script>
+
                                                     <td>
                                                         <!-- Tombol Hapus -->
                                                         <button type="button" class="btn btn-danger btn-sm"
@@ -148,6 +212,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </td>
                                                 </tr>
                                             @empty

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\ApiKey;
 use App\Models\DataCPB;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\DataVerifikasiCPB;
+use App\Services\PHPMailerService;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -109,6 +111,19 @@ class DataController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
+        $mailService = new PHPMailerService();
+        $subject = "Verifikasi Akun Berhasil";
+        $body = "
+        <h2>Halo, {$user->name}</h2>
+        <p>Selamat! Akun Anda dengan email {$user->email} telah berhasil diverifikasi.</p>
+        <p>Silakan login dan mulai menggunakan layanan kami.</p>
+        <br>
+        <p>Terima kasih,</p>
+        <p><strong>Tim Support</strong></p>
+    ";
+
+        $mailService->sendEmail($user->email, $subject, $body);
+
         return back()->with('successY', 'User berhasil diaktifkan!');
     }
 
@@ -117,6 +132,19 @@ class DataController extends Controller
         $user = User::findOrFail($id);
         $user->email_verified_at = null;
         $user->save();
+
+        $mailService = new PHPMailerService();
+        $subject = "Akun Anda Telah Dinonaktifkan";
+        $body = "
+        <h2>Halo, {$user->name}</h2>
+        <p>Kami ingin memberitahukan bahwa akun Anda dengan email {$user->email} telah dinonaktifkan.</p>
+        <p>Jika ini terjadi karena kesalahan atau Anda memerlukan bantuan, silakan hubungi tim support kami.</p>
+        <br>
+        <p>Terima kasih,</p>
+        <p><strong>Tim Support</strong></p>
+    ";
+
+        $mailService->sendEmail($user->email, $subject, $body);
 
         return back()->with('successG', 'User berhasil dinonaktifkan!');
     }
@@ -128,6 +156,8 @@ class DataController extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'User tidak ditemukan.');
         }
+
+        ApiKey::where('user_id', $user->id)->delete();
 
         if ($user->foto && file_exists(public_path('up/profile/' . $user->foto))) {
             unlink(public_path('up/profile/' . $user->foto));

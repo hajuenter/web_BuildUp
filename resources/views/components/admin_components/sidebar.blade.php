@@ -5,7 +5,7 @@
         <li class="nav-item">
             <a class="nav-link {{ Request::routeIs('admin.dashboard') ? '' : 'collapsed' }}"
                 href="{{ route('admin.dashboard') }}">
-                <i class="bi bi-grid"></i>
+                <i class="bi bi-bar-chart-line"></i>
                 <span>Dashboard</span>
             </a>
         </li>
@@ -90,7 +90,7 @@
         <li class="nav-item">
             <a class="nav-link {{ Request::routeIs('admin.rekap.cpb') ? '' : 'collapsed' }}"
                 href="{{ route('admin.rekap.cpb') }}">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-file-earmark-bar-graph"></i>
                 <span>Rekap CPB</span>
             </a>
         </li>
@@ -98,7 +98,7 @@
         <li class="nav-item">
             <a class="nav-link {{ Request::routeIs('admin.rekap.verif') ? '' : 'collapsed' }}"
                 href="{{ route('admin.rekap.verif') }}">
-                <i class="bi bi-person-check"></i>
+                <i class="bi bi-table"></i>
                 <span>Rekap Verifikasi</span>
             </a>
         </li>

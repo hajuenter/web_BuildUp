@@ -3,9 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\ApiKey;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory as FakerFactory; // Tambahkan ini
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -30,6 +32,16 @@ class UserFactory extends Factory
         ];
     }
 
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            ApiKey::create([
+                'user_id' => $user->id,
+                'api_key' => hash('sha256', Str::random(64)),
+            ]);
+        });
+    }
+
     public function admin(): static
     {
         return $this->state([
@@ -51,6 +63,19 @@ class UserFactory extends Factory
             'password' => Hash::make('Petugas123#'),
             'role' => 'petugas',
             'no_hp' => '6289697083456',
+            'foto' => 'default-profile.png',
+            'alamat' => 'Cangkringan Nganjuk',
+            'email_verified_at' => now(),
+        ]);
+    }
+    public function user(): static
+    {
+        return $this->state([
+            'name' => 'Petugas Verifikasi CPB',
+            'email' => 'escincau42@gmail.com',
+            'password' => Hash::make('User123#'),
+            'role' => 'user',
+            'no_hp' => '6289697083111',
             'foto' => 'default-profile.png',
             'alamat' => 'Cangkringan Nganjuk',
             'email_verified_at' => now(),

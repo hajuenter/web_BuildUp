@@ -9,6 +9,8 @@ use App\Services\PHPMailerService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Models\ApiKey;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -26,36 +28,28 @@ class AuthController extends Controller
             'email.email' => 'Format email tidak valid.',
             'email.max' => 'Email maksimal 255 karakter.',
             'email.unique' => 'Email sudah terdaftar.',
-            'email.regex' => 'Email tidak valid.',
 
             'password.required' => 'Password wajib diisi.',
             'password.string' => 'Password harus berupa teks.',
             'password.min' => 'Password minimal 8 karakter.',
-            'password.regex' => 'Password tidak valid.',
+            'password.regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan simbol.',
             'password_confirmation.required' => 'Konfirmasi password wajib diisi.',
             'password_confirmation.same' => 'Konfirmasi password harus sama.',
         ];
 
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s\'.]+$/'],
-            'email' => [
-                'required',
-                'string',
-                'max:255',
-                'unique:users',
-                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/'
-            ],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
-            ],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'],
             'password_confirmation' => ['required', 'same:password'],
         ], $messages);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
         $user = User::create([
@@ -65,9 +59,18 @@ class AuthController extends Controller
             'role' => 'user',
         ]);
 
+        $apiKey = Str::random(64);
+        $hashedKey = hash('sha256', $apiKey);
+        ApiKey::create([
+            'user_id' => $user->id,
+            'api_key' => $hashedKey,
+        ]);
+
         return response()->json([
-            'message' => 'Registrasi berhasil, menunggu verifikasi admin',
-            'user' => $user
+            'success' => true,
+            'message' => 'Registrasi berhasil',
+            'user' => $user,
+            'api_key' => $apiKey,
         ], 201);
     }
 
@@ -89,12 +92,23 @@ class AuthController extends Controller
             return response()->json(['message' => 'Akun belum diverifikasi oleh admin'], 403);
         }
 
-        $token = $user->createToken('authToken')->plainTextToken;
+        $apiKey = $user->apiKey->api_key ?? null;
+
+        if (!$apiKey) {
+            // Buat API Key baru jika belum ada
+            $apiKey = Str::random(64);
+            $user->apiKey()->create([
+                'api_key' => hash('sha256', $apiKey),
+            ]);
+        } else {
+            // Ambil API Key yang sudah ada
+            $apiKey = ApiKey::where('user_id', $user->id)->first()->api_key;
+        }
 
         return response()->json([
             'message' => 'Login berhasil',
             'user' => $user,
-            'token' => $token
+            'api_key' => $apiKey
         ]);
     }
 
@@ -113,12 +127,23 @@ class AuthController extends Controller
                 'message' => 'Email tidak terdaftar atau belum diverifikasi'
             ], 401);
         }
-        $token = $user->createToken('authToken')->plainTextToken;
-        // Jika user ditemukan, kirim data user
+
+        $apiKey = $user->apiKey->api_key ?? null;
+
+        if (!$apiKey) {
+            $apiKey = Str::random(64);
+            $user->apiKey()->create([
+                'api_key' => hash('sha256', $apiKey),
+            ]);
+        } else {
+            // Ambil API Key yang sudah ada
+            $apiKey = ApiKey::where('user_id', $user->id)->first()->api_key;
+        }
+
         return response()->json([
             'success' => true,
             'user' => $user,
-            'token' => $token
+            'api_key' => $apiKey
         ]);
     }
 
