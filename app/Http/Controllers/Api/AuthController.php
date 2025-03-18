@@ -105,6 +105,8 @@ class AuthController extends Controller
             $apiKey = ApiKey::where('user_id', $user->id)->first()->api_key;
         }
 
+        $user->foto = url('up/profile/' . $user->foto);
+        // $user->foto = str_replace("127.0.0.1", "192.168.1.100", $user->foto);
         return response()->json([
             'message' => 'Login berhasil',
             'user' => $user,
