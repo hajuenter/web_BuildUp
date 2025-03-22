@@ -111,7 +111,7 @@ class InputCPBController extends Controller
 
         // Simpan Data ke Database
         DataCPB::create([
-            'nama'       => $request->nama,
+            'nama'       => strtoupper($request->nama),
             'alamat'     => $request->alamat,
             'nik'        => $request->nik,
             'no_kk'      => $request->no_kk,
@@ -199,7 +199,7 @@ class InputCPBController extends Controller
 
         // Update Data di Database
         $cpb->update([
-            'nama'       => $request->nama,
+            'nama'       => strtoupper($request->nama),
             'alamat'     => $request->alamat,
             'nik'        => $request->nik,
             'no_kk'      => $request->no_kk,

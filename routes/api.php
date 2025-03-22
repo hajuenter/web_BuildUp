@@ -23,5 +23,5 @@ Route::middleware(['api.key'])->group(function () {
     Route::post('/profile', [ApiProfileController::class, 'getProfile']);
     Route::post('/profile-update', [ApiProfileController::class, 'updateProfile']);
     Route::resource('/dataCPB', ApiDataCPBController::class);
-    Route::resource('/dataVerifikasiCPB', ApiDataVerifikasiCPBController::class);
+    Route::post('/verifikasiCPB', [ApiDataVerifikasiCPBController::class, 'addVerifikasiCPB']);
 });

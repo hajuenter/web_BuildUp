@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RekapanCPBController;
 use App\Http\Controllers\Admin\RekapanVerifikasiController;
 use App\Http\Controllers\Auth\LupaPasswordController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Petugas\GantiPasswordController;
 use App\Http\Controllers\Petugas\InputCPBController;
 use App\Http\Controllers\Petugas\PetugasProfileController;
@@ -20,6 +21,12 @@ use App\Http\Controllers\Petugas\PetugasProfileController;
 Route::get('/', function () {
     return view('buildup');
 })->name('BuildUp');
+
+//register
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/register', 'showRegisterForm')->name('register');
+    Route::post('/register', 'register');
+});
 
 //login
 Route::controller(LoginController::class)->group(function () {

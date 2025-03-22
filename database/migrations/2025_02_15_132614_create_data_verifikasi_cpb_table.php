@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('nik');
             $table->foreign('nik')->references('nik')->on('data_cpb')->onDelete('cascade');
 
+            $table->string('foto_kk')->nullable();
+            $table->string('foto_ktp')->nullable();
+
             $table->decimal('penutup_atap', 3, 2)->nullable();
             $table->string('foto_penutup_atap')->nullable();
 

@@ -14,19 +14,33 @@ class DataVerifikasiCPB extends Model
     protected $fillable = [
         'nik',
         'penutup_atap',
+        'foto_penutup_atap',
         'rangka_atap',
+        'foto_rangka_atap',
         'kolom',
+        'foto_kolom',
         'ring_balok',
+        'foto_ring_balok',
         'dinding_pengisi',
+        'foto_dinding_pengisi',
         'kusen',
+        'foto_kusen',
         'pintu',
+        'foto_pintu',
         'jendela',
+        'foto_jendela',
         'struktur_bawah',
+        'foto_struktur_bawah',
         'penutup_lantai',
+        'foto_penutup_lantai',
         'pondasi',
+        'foto_pondasi',
         'sloof',
+        'foto_sloof',
         'mck',
+        'foto_mck',
         'air_kotor',
+        'foto_air_kotor',
         'kesanggupan_berswadaya',
         'tipe',
         'penilaian_kerusakan',
@@ -39,7 +53,7 @@ class DataVerifikasiCPB extends Model
         parent::boot();
 
         static::created(function ($verifikasi) {
-            
+
             DataCPB::where('nik', $verifikasi->nik)->update([
                 'pengecekan' => 'Sudah Dicek',
             ]);
