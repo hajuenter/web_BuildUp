@@ -12,6 +12,8 @@ class ApiDataVerifikasiCPBController extends Controller
     public function addVerifikasiCPB(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'foto_kk' => 'required|image|mimes:jpg,jpeg,png|max:10240',
+            'foto_ktp' => 'required|image|mimes:jpg,jpeg,png|max:10240',
             'nik' => 'required|exists:data_cpb,nik',
             'kesanggupan_berswadaya' => 'required|boolean',
             'tipe' => 'required|in:T,K',
@@ -164,6 +166,8 @@ class ApiDataVerifikasiCPBController extends Controller
         }
 
         $fotoFields = [
+            'foto_kk',
+            'foto_ktp',
             'foto_penutup_atap',
             'foto_rangka_atap',
             'foto_kolom',
@@ -182,8 +186,22 @@ class ApiDataVerifikasiCPBController extends Controller
 
         foreach ($fotoFields as $field) {
             if ($request->hasFile($field)) {
-                $fotoPath = $request->file($field)->store('up/verifikasi', 'public');
-                $data[$field] = $fotoPath;
+                // Generate a unique filename
+                $filename = time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
+
+                // Define the destination path (public/up/verifikasi)
+                $destinationPath = public_path('up/verifikasi');
+
+                // Create directory if it doesn't exist
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                // Move the file
+                $request->file($field)->move($destinationPath, $filename);
+
+                // Save the relative path to database
+                $data[$field] = 'up/verifikasi/' . $filename;
             }
         }
 
@@ -206,6 +224,10 @@ class ApiDataVerifikasiCPBController extends Controller
             $dataCPB->save();
         }
 
-        return response()->json(['message' => 'Verifikasi data CPB berhasil disimpan', 'data' => $verifikasi], 201);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Verifikasi data CPB berhasil disimpan',
+            'data' => $verifikasi
+        ], 201);
     }
 }

@@ -12,6 +12,8 @@ class DataVerifikasiCPB extends Model
     protected $table = "data_verifikasi_cpb";
 
     protected $fillable = [
+        'foto_kk',
+        'foto_ktp',
         'nik',
         'penutup_atap',
         'foto_penutup_atap',

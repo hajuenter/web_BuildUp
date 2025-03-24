@@ -47,6 +47,8 @@ class DataVerifikasiCPBFactory extends Factory
         }
 
         return [
+            'foto_kk' => null,
+            'foto_ktp' => null,
             'penutup_atap'       => $kerusakan[0],
             'foto_penutup_atap'  => null,
 
