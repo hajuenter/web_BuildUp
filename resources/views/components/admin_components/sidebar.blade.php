@@ -81,7 +81,7 @@
                 <li>
                     <a href="{{ route('admin.data_role') }}"
                         class="{{ Request::routeIs('admin.data_role', 'admin.user.petugas.add') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Petugas dan User</span>
+                        <i class="bi bi-circle"></i><span>Data Petugas Verifikasi dan Petugas Input CPB</span>
                     </a>
                 </li>
             </ul>

@@ -43,7 +43,7 @@
                                             <i class="bi bi-search"></i> Cari
                                         </button>
                                         <a href="{{ route('admin.data_cpb') }}" class="btn btn-secondary ms-2">
-                                            <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                            <i class="bi bi-arrow-counterclockwise"></i> Refresh
                                         </a>
                                     </div>
                                 </form>

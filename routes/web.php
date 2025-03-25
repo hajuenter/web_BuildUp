@@ -84,8 +84,14 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::get('/data/pengguna/add', [DataController::class, 'showPetugasAdd'])->name('admin.user.petugas.add');
         Route::post('/data/pengguna/create', [DataController::class, 'createPengguna'])->name('admin.user.create');
 
-        //rekapan
+        //rekapan cpb
         Route::get('/rekapan/cpb', [RekapanCPBController::class, 'showRekapCPB'])->name('admin.rekap.cpb');
+        //download rekap cpb
+        Route::post('/rekapan/cpb/pdf', [RekapanCPBController::class, 'downloadCpbPdf'])->name('rekap.cpb.pdf');
+        Route::post('/rekapan/cpb/excel', [RekapanCPBController::class, 'downloadCpbExcel'])->name('rekap.cpb.excel');
+        Route::post('/rekapan/cpb/word', [RekapanCPBController::class, 'downloadCpbWord'])->name('rekap.cpb.word');
+
+        //rekapan verifikasi cpb
         Route::get('/rekapan/verifikasi', [RekapanVerifikasiController::class, 'showRekapVerif'])->name('admin.rekap.verif');
     });
 

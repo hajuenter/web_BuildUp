@@ -77,7 +77,7 @@
                                                     @error('email')
                                                         {{ $message }}
                                                     @else
-                                                        Tolong masukkan email anda.
+                                                        Tolong masukkan email anda dengan benar.
                                                     @enderror
                                                 </div>
                                             </div>
@@ -98,10 +98,16 @@
                                                     @error('password')
                                                         {{ $message }}
                                                     @else
-                                                        Tolong masukkan password Anda.
+                                                        Tolong masukkan password Anda dengan benar.
                                                     @enderror
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="col-12 text-end">
+                                            <p class="small mb-4"><a class="text-decoration-underline"
+                                                    href="{{ route('lupa.password') }}">Lupa
+                                                    password?</a></p>
                                         </div>
 
                                         <!-- Tombol Login -->
@@ -116,11 +122,6 @@
                                                 onclick="window.location.href='{{ route('register') }}'">Register</button>
                                         </div>
 
-                                        <!-- Lupa Password -->
-                                        <div class="col-12">
-                                            <p class="small mb-0">Lupa password ? <a
-                                                    href="{{ route('lupa.password') }}">Klik disini</a></p>
-                                        </div>
                                     </form>
 
                                 </div>

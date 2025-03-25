@@ -86,7 +86,15 @@
                                                             <span class="badge bg-danger">Belum Verifikasi</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $value->role }}</td>
+                                                    <td style="min-width: 250px;">
+                                                        @if ($value->role === 'petugas')
+                                                            Petugas Input Data CPB
+                                                        @elseif ($value->role === 'user')
+                                                            Petugas Verifikasi Data CPB
+                                                        @else
+                                                            Tidak diketahui
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $value->no_hp }}</td>
                                                     <td class="d-flex align-items-center flex-column gap-2">
                                                         @if (!$value->email_verified_at)
