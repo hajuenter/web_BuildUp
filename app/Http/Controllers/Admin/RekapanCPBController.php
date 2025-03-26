@@ -15,39 +15,68 @@ class RekapanCPBController extends Controller
 {
     public function showRekapCPB(Request $request)
     {
-        $query = DataCPB::query();
+        $perPageAll = $request->get('perPageAll', 5);
+        $perPageTrue = $request->get('perPageTrue', 5);
+        $perPageFalse = $request->get('perPageFalse', 5);
 
-        $perPage = $request->input('perPage', 5);
+        // Semua Data CPB
+        $queryAll = DataCPB::query();
+        $dataCPB = ($perPageAll == "all")
+            ? $queryAll->get()
+            : $queryAll->paginate($perPageAll)->appends(['perPageAll' => $perPageAll]);
 
-        if ($perPage == "all") {
-            $dataCPB = $query->get();
-        } else {
-            $dataCPB = $query->paginate($perPage);
-            $dataCPB->appends(request()->except(['page']));
-        }
+        // Data yang "Sudah Dicek"
+        $queryTrue = DataCPB::where('pengecekan', 'Sudah Dicek');
+        $dataCekTrue = ($perPageTrue == "all")
+            ? $queryTrue->get()
+            : $queryTrue->paginate($perPageTrue)->appends(['perPageTrue' => $perPageTrue]);
 
-        return view('screen_admin.rekapan.rekapan_cpb', compact('dataCPB', 'perPage'));
+        // Data yang "Belum Dicek"
+        $queryFalse = DataCPB::where('pengecekan', 'Belum Dicek');
+        $dataCekFalse = ($perPageFalse == "all")
+            ? $queryFalse->get()
+            : $queryFalse->paginate($perPageFalse)->appends(['perPageFalse' => $perPageFalse]);
+
+        return view('screen_admin.rekapan.rekapan_cpb', compact('dataCPB', 'dataCekTrue', 'dataCekFalse', 'perPageAll', 'perPageTrue', 'perPageFalse'));
     }
 
     public function downloadCpbPdf(Request $request)
     {
-        $data = DataCPB::all();
+        $status = $request->status;
+
+        $data = DataCPB::when($status == 'checked', function ($query) {
+            return $query->where('pengecekan', 'Sudah Dicek');
+        })
+            ->when($status == 'unchecked', function ($query) {
+                return $query->where('pengecekan', 'Belum Dicek');
+            })
+            ->get();
 
         $pdf = Pdf::loadView('exports.rekap_cpb_pdf', compact('data'))
             ->setPaper('a4', 'potrait');
 
-        $filename = 'Rekap_CPB_' .
-            ($request->start_date ? $request->start_date : 'Awal') .
-            '_to_' .
-            ($request->end_date ? $request->end_date : 'Akhir') .
-            '.pdf';
+        $statusText = match ($status) {
+            'checked' => 'Sudah_Dicek',
+            'unchecked' => 'Belum_Dicek',
+            default => 'Semua_Data',
+        };
+
+        $filename = "Rekap_CPB_{$statusText}.pdf";
 
         return $pdf->download($filename);
     }
 
     public function downloadCpbExcel(Request $request)
     {
-        $data = DataCPB::all();
+        $status = $request->status;
+
+        $data = DataCPB::when($status == 'checked', function ($query) {
+            return $query->where('pengecekan', 'Sudah Dicek');
+        })
+            ->when($status == 'unchecked', function ($query) {
+                return $query->where('pengecekan', 'Belum Dicek');
+            })
+            ->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -130,11 +159,13 @@ class RekapanCPBController extends Controller
         }
 
         // Simpan dan download file
-        $filename = 'Rekap_CPB_' .
-            ($request->start_date ? $request->start_date : 'Awal') .
-            '_to_' .
-            ($request->end_date ? $request->end_date : 'Akhir') .
-            '.xlsx';
+        $statusText = match ($status) {
+            'checked' => 'Sudah_Dicek',
+            'unchecked' => 'Belum_Dicek',
+            default => 'Semua_Data',
+        };
+
+        $filename = "Rekap_CPB_{$statusText}.xlsx";
 
         $writer = new Xlsx($spreadsheet);
         $path = storage_path($filename);
@@ -145,7 +176,15 @@ class RekapanCPBController extends Controller
 
     public function downloadCpbWord(Request $request)
     {
-        $data = DataCPB::all();
+        $status = $request->status;
+
+        $data = DataCPB::when($status == 'checked', function ($query) {
+            return $query->where('pengecekan', 'Sudah Dicek');
+        })
+            ->when($status == 'unchecked', function ($query) {
+                return $query->where('pengecekan', 'Belum Dicek');
+            })
+            ->get();
 
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
@@ -199,11 +238,13 @@ class RekapanCPBController extends Controller
         $section->addTextBreak(3); // Beri jarak untuk tanda tangan
         $section->addText('…………………………….', ['bold' => true], ['alignment' => 'right']);
 
-        $filename = 'Rekap_CPB_' .
-            ($request->start_date ? $request->start_date : 'Awal') .
-            '_to_' .
-            ($request->end_date ? $request->end_date : 'Akhir') .
-            '.docx';
+        $statusText = match ($status) {
+            'checked' => 'Sudah_Dicek',
+            'unchecked' => 'Belum_Dicek',
+            default => 'Semua_Data',
+        };
+
+        $filename = "Rekap_CPB_{$statusText}.docx";
 
         $path = storage_path($filename);
         $writer = IOFactory::createWriter($phpWord, 'Word2007');
