@@ -12,8 +12,8 @@ class ApiDataVerifikasiCPBController extends Controller
     public function addVerifikasiCPB(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'foto_kk' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_ktp' => 'required|image|mimes:jpg,jpeg,png|max:10240',
+            'foto_kk' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_ktp' => 'required|image|mimes:jpg,jpeg,png|max:15360',
             'nik' => 'required|exists:data_cpb,nik',
             'kesanggupan_berswadaya' => 'required|boolean',
             'tipe' => 'required|in:T,K',
@@ -32,20 +32,20 @@ class ApiDataVerifikasiCPBController extends Controller
             'mck' => 'required|numeric|min:0|max:1',
             'air_kotor' => 'required|numeric|min:0|max:1',
 
-            'foto_penutup_atap' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_rangka_atap' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_kolom' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_ring_balok' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_dinding_pengisi' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_kusen' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_pintu' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_jendela' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_struktur_bawah' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_penutup_lantai' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_pondasi' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_sloof' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_mck' => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            'foto_air_kotor' => 'required|image|mimes:jpg,jpeg,png|max:10240',
+            'foto_penutup_atap' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_rangka_atap' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_kolom' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_ring_balok' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_dinding_pengisi' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_kusen' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_pintu' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_jendela' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_struktur_bawah' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_penutup_lantai' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_pondasi' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_sloof' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_mck' => 'required|image|mimes:jpg,jpeg,png|max:15360',
+            'foto_air_kotor' => 'required|image|mimes:jpg,jpeg,png|max:15360',
         ], [
             'nik.required' => 'NIK wajib diisi.',
             'nik.exists' => 'NIK tidak ditemukan dalam database penerima bantuan.',
@@ -186,22 +186,25 @@ class ApiDataVerifikasiCPBController extends Controller
 
         foreach ($fotoFields as $field) {
             if ($request->hasFile($field)) {
-                // Generate a unique filename
-                $filename = time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
+                // Ambil NIK dari data
+                $nik = $data['nik'];
 
-                // Define the destination path (public/up/verifikasi)
-                $destinationPath = public_path('up/verifikasi');
+                // Buat direktori unik berdasarkan NIK
+                $nikFolder = public_path('up/verifikasi/' . $nik);
 
-                // Create directory if it doesn't exist
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
+                // Buat direktori jika belum ada
+                if (!file_exists($nikFolder)) {
+                    mkdir($nikFolder, 0755, true);
                 }
 
-                // Move the file
-                $request->file($field)->move($destinationPath, $filename);
+                // Generate nama file unik dengan format: nama_field_timestamp_uniqueid
+                $filename = $field . '_' . time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
 
-                // Save the relative path to database
-                $data[$field] = 'up/verifikasi/' . $filename;
+                // Pindahkan file ke direktori NIK
+                $request->file($field)->move($nikFolder, $filename);
+
+                // Simpan path relatif ke database
+                $data[$field] = 'up/verifikasi/' . $nik . '/' . $filename;
             }
         }
 

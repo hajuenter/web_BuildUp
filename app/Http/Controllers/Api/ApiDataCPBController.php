@@ -179,14 +179,19 @@ class ApiDataCPBController extends Controller
             // Menghapus data
             $data->delete();
 
+            // Ambil data terbaru setelah penghapusan
+            $updatedData = DataCPB::orderBy('id', 'asc')->get();
+
             return response()->json([
                 'status' => true,
-                'message' => 'Data dihapus'
+                'message' => 'Data dihapus',
+                'data' => $updatedData
             ], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data tidak ditemukan'
+                'message' => 'Data tidak ditemukan',
+                'data' => []
             ], 404);
         }
     }

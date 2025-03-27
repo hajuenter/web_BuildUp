@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\ApiKey;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class ApiAuthController extends Controller
 {
     public function register(Request $request)
     {
