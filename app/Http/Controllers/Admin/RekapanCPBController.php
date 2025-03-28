@@ -18,6 +18,8 @@ class RekapanCPBController extends Controller
         $perPageAll = $request->get('perPageAll', 5);
         $perPageTrue = $request->get('perPageTrue', 5);
         $perPageFalse = $request->get('perPageFalse', 5);
+        $perPageVerif = $request->get('perPageverif', 5);
+        $perPageUnverif = $request->get('perPageUnverif', 5);
 
         // Semua Data CPB
         $queryAll = DataCPB::query();
@@ -37,7 +39,17 @@ class RekapanCPBController extends Controller
             ? $queryFalse->get()
             : $queryFalse->paginate($perPageFalse)->appends(['perPageFalse' => $perPageFalse]);
 
-        return view('screen_admin.rekapan.rekapan_cpb', compact('dataCPB', 'dataCekTrue', 'dataCekFalse', 'perPageAll', 'perPageTrue', 'perPageFalse'));
+        $queryVerif = DataCPB::where('status', 'Terverifikasi');
+        $dataCekVerif = ($perPageVerif == "all")
+            ? $queryVerif->get()
+            : $queryVerif->paginate($perPageVerif)->appends(['perPageverif' => $perPageVerif]);
+
+        $queryUnverif = DataCPB::where('status', 'Tidak Terverifikasi');
+        $dataCekUnverif = ($perPageUnverif == "all")
+            ? $queryUnverif->get()
+            : $queryUnverif->paginate($perPageUnverif)->appends(['perPageUnverif' => $perPageUnverif]);
+
+        return view('screen_admin.rekapan.rekapan_cpb', compact('dataCPB', 'dataCekTrue', 'dataCekFalse', 'dataCekVerif', 'dataCekUnverif', 'perPageVerif', 'perPageUnverif', 'perPageAll', 'perPageTrue', 'perPageFalse'));
     }
 
     public function downloadCpbPdf(Request $request)
@@ -50,6 +62,12 @@ class RekapanCPBController extends Controller
             ->when($status == 'unchecked', function ($query) {
                 return $query->where('pengecekan', 'Belum Dicek');
             })
+            ->when($status == 'verif', function ($query) {
+                return $query->where('status', 'Terverifikasi');
+            })
+            ->when($status == 'unverif', function ($query) {
+                return $query->where('status', 'Tidak Terverifikasi');
+            })
             ->get();
 
         $pdf = Pdf::loadView('exports.rekap_cpb_pdf', compact('data'))
@@ -58,6 +76,8 @@ class RekapanCPBController extends Controller
         $statusText = match ($status) {
             'checked' => 'Sudah_Dicek',
             'unchecked' => 'Belum_Dicek',
+            'verif' => 'Verifikasi',
+            'unverif' => 'Unverifikasi',
             default => 'Semua_Data',
         };
 
@@ -75,6 +95,12 @@ class RekapanCPBController extends Controller
         })
             ->when($status == 'unchecked', function ($query) {
                 return $query->where('pengecekan', 'Belum Dicek');
+            })
+            ->when($status == 'verif', function ($query) {
+                return $query->where('status', 'Terverifikasi');
+            })
+            ->when($status == 'unverif', function ($query) {
+                return $query->where('status', 'Tidak Terverifikasi');
             })
             ->get();
 
@@ -162,6 +188,8 @@ class RekapanCPBController extends Controller
         $statusText = match ($status) {
             'checked' => 'Sudah_Dicek',
             'unchecked' => 'Belum_Dicek',
+            'verif' => 'Verifikasi',
+            'unverif' => 'Unverifikasi',
             default => 'Semua_Data',
         };
 
@@ -183,6 +211,12 @@ class RekapanCPBController extends Controller
         })
             ->when($status == 'unchecked', function ($query) {
                 return $query->where('pengecekan', 'Belum Dicek');
+            })
+            ->when($status == 'verif', function ($query) {
+                return $query->where('status', 'Terverifikasi');
+            })
+            ->when($status == 'unverif', function ($query) {
+                return $query->where('status', 'Tidak Terverifikasi');
             })
             ->get();
 
@@ -241,6 +275,8 @@ class RekapanCPBController extends Controller
         $statusText = match ($status) {
             'checked' => 'Sudah_Dicek',
             'unchecked' => 'Belum_Dicek',
+            'verif' => 'Verifikasi',
+            'unverif' => 'Unverifikasi',
             default => 'Semua_Data',
         };
 

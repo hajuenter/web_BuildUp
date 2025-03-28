@@ -30,6 +30,8 @@
                                                     <option value="all">Semua Data</option>
                                                     <option value="checked">Sudah Dicek</option>
                                                     <option value="unchecked">Belum Dicek</option>
+                                                    <option value="verif">Mendapat Bantuan</option>
+                                                    <option value="unverif">Tidak Mendapat Bantuan</option>
                                                 </select>
                                             </div>
 
@@ -47,7 +49,7 @@
             </div>
         </div>
 
-        @foreach ([['title' => 'Semua Data CPB', 'data' => $dataCPB, 'perPage' => $perPageAll, 'param' => 'perPageAll'], ['title' => 'Data CPB - Sudah Dicek', 'data' => $dataCekTrue, 'perPage' => $perPageTrue, 'param' => 'perPageTrue'], ['title' => 'Data CPB - Belum Dicek', 'data' => $dataCekFalse, 'perPage' => $perPageFalse, 'param' => 'perPageFalse']] as $table)
+        @foreach ([['title' => 'Semua Data CPB', 'data' => $dataCPB, 'perPage' => $perPageAll, 'param' => 'perPageAll'], ['title' => 'Data CPB - Sudah Dicek', 'data' => $dataCekTrue, 'perPage' => $perPageTrue, 'param' => 'perPageTrue'], ['title' => 'Data CPB - Belum Dicek', 'data' => $dataCekFalse, 'perPage' => $perPageFalse, 'param' => 'perPageFalse'], ['title' => 'Data CPB - Mendapat Bantuan', 'data' => $dataCekVerif, 'perPage' => $perPageVerif, 'param' => 'perPageVerif'], ['title' => 'Data CPB - Tidak Mendapat Bantuan', 'data' => $dataCekUnverif, 'perPage' => $perPageUnverif, 'param' => 'perPageUnverif']] as $table)
             <div class="row mt-0">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
