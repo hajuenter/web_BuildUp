@@ -27,7 +27,7 @@ class RekapanCPBController extends Controller
             ? $queryAll->get()
             : $queryAll->paginate($perPageAll)->appends(['perPageAll' => $perPageAll]);
 
-        // Data yang "Sudah Dicek"
+        // Data yang Sudah Dicek
         $queryTrue = DataCPB::where('pengecekan', 'Sudah Dicek');
         $dataCekTrue = ($perPageTrue == "all")
             ? $queryTrue->get()

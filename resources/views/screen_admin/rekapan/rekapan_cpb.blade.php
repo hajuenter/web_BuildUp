@@ -42,6 +42,12 @@
                                         </form>
                                     </div>
                                 @endforeach
+                                <div class="col-md-12 mt-3 mb-1">
+                                    <a href="{{ route('admin.rekap.cpb') }}"
+                                        class="btn btn-secondary w-100 d-flex justify-content-center align-items-center">
+                                        <i class="bi bi-arrow-clockwise me-2"></i> Refresh
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

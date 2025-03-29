@@ -93,6 +93,9 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
 
         //rekapan verifikasi cpb
         Route::get('/rekapan/verifikasi', [RekapanVerifikasiController::class, 'showRekapVerif'])->name('admin.rekap.verif');
+        Route::post('/rekapan/verifikasi/pdf', [RekapanVerifikasiController::class, 'downloadVerifikasiPdf'])->name('rekap.verif.pdf');
+        Route::post('/rekapan/verifikasi/excel', [RekapanVerifikasiController::class, 'downloadVerifikasiExcel'])->name('rekap.verif.excel');
+        Route::post('/rekapan/verifikasi/word', [RekapanVerifikasiController::class, 'downloadVerifikasiWord'])->name('rekap.verif.word');
     });
 
     // Petugas Routes
