@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataController;
+use App\Http\Controllers\Admin\ImageVerifikasiController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RekapanCPBController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Petugas\GantiPasswordController;
 use App\Http\Controllers\Petugas\InputCPBController;
 use App\Http\Controllers\Petugas\PetugasProfileController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 //landing page
 Route::get('/', function () {
@@ -74,9 +77,15 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::put('/jadwal/update/{id}', [JadwalController::class, 'updateJadwal'])->name('admin.update.jadwal');
         Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'deleteJadwal'])->name('admin.delete.jadwal');
 
-        // Data
+        // Data CPB
         Route::get('/data/cpb', [DataController::class, 'showDataCPB'])->name('admin.data_cpb');
-        Route::get('/data/verif/cpb', [DataController::class, 'showDataverifCPB'])->name('admin.data_verif_cpb');
+        Route::delete('/data/cpb/{id}', [DataController::class, 'deleteDataCPB'])->name('admin.delete.data_cpb');
+
+        // Data Verif
+        Route::get('/data/verif/cpb', [DataController::class, 'showDataVerifCPB'])->name('admin.data_verif_cpb');
+        Route::delete('/data/verif/cpb', [DataController::class, 'deleteDataVerifCPB'])->name('admin.delete.data_verif_cpb');
+
+        // Data User
         Route::get('/data/role', [DataController::class, 'showDataRole'])->name('admin.data_role');
         Route::post('/user/verify/{id}', [DataController::class, 'verifyUser'])->name('admin.user.verify');
         Route::post('/user/unverify/{id}', [DataController::class, 'unverifyUser'])->name('admin.user.unverify');
@@ -84,18 +93,22 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::get('/data/pengguna/add', [DataController::class, 'showPetugasAdd'])->name('admin.user.petugas.add');
         Route::post('/data/pengguna/create', [DataController::class, 'createPengguna'])->name('admin.user.create');
 
-        //rekapan cpb
+        // Rekapan CPB
         Route::get('/rekapan/cpb', [RekapanCPBController::class, 'showRekapCPB'])->name('admin.rekap.cpb');
-        //download rekap cpb
         Route::post('/rekapan/cpb/pdf', [RekapanCPBController::class, 'downloadCpbPdf'])->name('rekap.cpb.pdf');
         Route::post('/rekapan/cpb/excel', [RekapanCPBController::class, 'downloadCpbExcel'])->name('rekap.cpb.excel');
         Route::post('/rekapan/cpb/word', [RekapanCPBController::class, 'downloadCpbWord'])->name('rekap.cpb.word');
 
-        //rekapan verifikasi cpb
+        // Rekapan Verifikasi CPB
         Route::get('/rekapan/verifikasi', [RekapanVerifikasiController::class, 'showRekapVerif'])->name('admin.rekap.verif');
         Route::post('/rekapan/verifikasi/pdf', [RekapanVerifikasiController::class, 'downloadVerifikasiPdf'])->name('rekap.verif.pdf');
         Route::post('/rekapan/verifikasi/excel', [RekapanVerifikasiController::class, 'downloadVerifikasiExcel'])->name('rekap.verif.excel');
         Route::post('/rekapan/verifikasi/word', [RekapanVerifikasiController::class, 'downloadVerifikasiWord'])->name('rekap.verif.word');
+
+        // Image Verif
+        Route::get('/verifikasi/image', [ImageVerifikasiController::class, 'showImageVerif'])->name('admin.verif.image');
+        Route::post('/admin/download-folder', [ImageVerifikasiController::class, 'downloadFolder'])
+            ->name('admin.download.folder');
     });
 
     // Petugas Routes

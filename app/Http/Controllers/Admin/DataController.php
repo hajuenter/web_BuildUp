@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\DataVerifikasiCPB;
 use App\Services\PHPMailerService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,7 +65,32 @@ class DataController extends Controller
         ));
     }
 
-    public function showDataverifCPB(Request $request)
+    public function deleteDataCPB($id)
+    {
+        $data = DataCPB::find($id);
+
+        if (!$data) {
+            return redirect()->route('admin.data_cpb')->with('error', 'Data tidak ditemukan!');
+        }
+
+        $verifikasi = DataVerifikasiCPB::where('nik', $data->nik)->get();
+
+        // Path folder tempat menyimpan gambar berdasarkan NIK
+        $folderPath = public_path("up/verifikasi/{$data->nik}");
+
+        // Hapus folder jika ada
+        if (File::exists($folderPath)) {
+            File::deleteDirectory($folderPath);
+        }
+        DataVerifikasiCPB::where('nik', $data->nik)->delete();
+
+        // Hapus data
+        $data->delete();
+
+        return redirect()->route('admin.data_cpb')->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function showDataVerifCPB(Request $request)
     {
         $nik = $request->input('nik');
         $query = DataVerifikasiCPB::query();
@@ -90,6 +116,38 @@ class DataController extends Controller
         }
 
         return view('screen_admin.data.data_verif_cpb', compact('dataVerifCPB', 'perPage', 'totalRusakBerat', 'totalRusakSedang', 'totalRusakRingan', 'totalTidakDapatBantuan'));
+    }
+
+    public function deleteDataVerifCPB(Request $request)
+    {
+        $id = $request->input('id');
+        $nik = $request->input('nik');
+
+        // Cari data verifikasi berdasarkan ID
+        $dataVerif = DataVerifikasiCPB::find($id);
+
+        if (!$dataVerif) {
+            return redirect()->route('admin.data_verif_cpb')->with('error', 'Data tidak ditemukan!');
+        }
+
+        // Path folder tempat menyimpan gambar berdasarkan NIK
+        $folderPath = public_path("up/verifikasi/{$nik}");
+
+        // Hapus folder jika ada
+        if (File::exists($folderPath)) {
+            File::deleteDirectory($folderPath);
+        }
+
+        // Hapus data verifikasi
+        $dataVerif->delete();
+
+        // Update status dan pengecekan di tabel data_cpb
+        DataCPB::where('nik', $nik)->update([
+            'status' => 'Tidak Terverifikasi',
+            'pengecekan' => 'Belum Dicek'
+        ]);
+
+        return redirect()->route('admin.data_verif_cpb')->with('success', 'Data, gambar, dan status terkait berhasil diperbarui!');
     }
 
     public function showDataRole(Request $request)

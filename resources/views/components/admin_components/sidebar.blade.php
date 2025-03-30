@@ -88,9 +88,17 @@
         </li><!-- End Data -->
 
         <li class="nav-item">
+            <a class="nav-link {{ Request::routeIs('admin.verif.image') ? '' : 'collapsed' }}"
+                href="{{ route('admin.verif.image') }}">
+                <i class="bi bi-images"></i>
+                <span>Kelola Foto Verifikasi</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link {{ Request::routeIs('admin.rekap.cpb') ? '' : 'collapsed' }}"
                 href="{{ route('admin.rekap.cpb') }}">
-                <i class="bi bi-file-earmark-bar-graph"></i>
+                <i class="bi bi-clipboard-data"></i>
                 <span>Rekap CPB</span>
             </a>
         </li>
@@ -98,7 +106,7 @@
         <li class="nav-item">
             <a class="nav-link {{ Request::routeIs('admin.rekap.verif') ? '' : 'collapsed' }}"
                 href="{{ route('admin.rekap.verif') }}">
-                <i class="bi bi-table"></i>
+                <i class="bi bi-journal-text"></i>
                 <span>Rekap Verifikasi</span>
             </a>
         </li>
