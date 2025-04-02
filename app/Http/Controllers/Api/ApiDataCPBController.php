@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\DataCPB;
 use Illuminate\Http\Request;
+use App\Models\DataVerifikasiCPB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class ApiDataCPBController extends Controller
@@ -175,6 +176,15 @@ class ApiDataCPBController extends Controller
     {
         try {
             $data = DataCPB::findOrFail($id);
+            $nik = $data->nik;
+            $verifikasiExists = DataVerifikasiCPB::where('nik', $nik)->exists();
+            if ($verifikasiExists) {
+                DataVerifikasiCPB::where('nik', $nik)->delete();
+            }
+
+            if ($data->foto_rumah && file_exists(public_path($data->foto_rumah))) {
+                unlink(public_path($data->foto_rumah));
+            }
 
             // Menghapus data
             $data->delete();

@@ -17,7 +17,7 @@
             <div class="col-lg-2 col-md-3 footer-links">
                 <h4>Useful Links</h4>
                 <ul>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#hero">Rumah</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="#beranda">Beranda</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#about">Berita</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#services">Jadwal</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#contact">Kontak</a></li>

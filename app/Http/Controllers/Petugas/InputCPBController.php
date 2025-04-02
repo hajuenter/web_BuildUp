@@ -6,6 +6,7 @@ use App\Models\DataCPB;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+use App\Models\DataVerifikasiCPB;
 use App\Http\Controllers\Controller;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use Illuminate\Support\Facades\Validator;
@@ -216,6 +217,13 @@ class InputCPBController extends Controller
     {
         // Ambil data berdasarkan ID
         $cpb = DataCPB::findOrFail($id);
+        $nik = $cpb->nik;
+
+        $verifikasiExists = DataVerifikasiCPB::where('nik', $nik)->exists();
+
+        if ($verifikasiExists) {
+            DataVerifikasiCPB::where('nik', $nik)->delete();
+        }
 
         // Hapus file gambar jika ada
         if ($cpb->foto_rumah && file_exists(public_path($cpb->foto_rumah))) {

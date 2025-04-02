@@ -25,7 +25,7 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="#rumah" class="active">Rumah</a></li>
+                    <li><a href="#beranda" class="active">Beranda</a></li>
                     <li><a href="#berita">Berita</a></li>
                     <li><a href="#jadwal">Jadwal</a></li>
                     <li><a href="#contact">Kontak</a></li>
