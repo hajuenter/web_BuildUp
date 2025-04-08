@@ -226,7 +226,7 @@ class RekapanCPBController extends Controller
         // Title
         $section->addText('DAFTAR REKAPITULASI USULAN BANTUAN SOSIAL', ['bold' => true, 'size' => 12], ['align' => 'center']);
         $section->addText('PENYEDIAAN RUMAH LAYAK HUNI', ['bold' => true, 'size' => 12], ['align' => 'center']);
-
+        $section->addTextBreak(1);
         $infoTable = $section->addTable();
         $infoTable->addRow();
         $infoTable->addCell(2000)->addText('DESA', ['size' => 12]);

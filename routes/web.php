@@ -1,29 +1,26 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminGantiPasswordController;
-use App\Http\Controllers\Admin\BeritaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DataController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\DataController;
-use App\Http\Controllers\Admin\ImageVerifikasiController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\RekapanCPBController;
-use App\Http\Controllers\Admin\RekapanVerifikasiController;
-use App\Http\Controllers\Auth\LupaPasswordController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Petugas\GantiPasswordController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RekapanCPBController;
 use App\Http\Controllers\Petugas\InputCPBController;
+use App\Http\Controllers\Auth\LupaPasswordController;
+use App\Http\Controllers\Admin\ImageVerifikasiController;
+use App\Http\Controllers\Petugas\GantiPasswordController;
 use App\Http\Controllers\Petugas\PetugasProfileController;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Admin\RekapanVerifikasiController;
+use App\Http\Controllers\Admin\AdminGantiPasswordController;
 
 //landing page
-Route::get('/', function () {
-    return view('buildup');
-})->name('BuildUp');
+Route::get('/', [LandingPageController::class, 'index'])->name('BuildUp');
 
 //register
 Route::controller(RegisterController::class)->group(function () {
