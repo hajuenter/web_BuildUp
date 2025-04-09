@@ -15,7 +15,7 @@
             </div>
 
             <div class="col-lg-2 col-md-3 footer-links">
-                <h4>Useful Links</h4>
+                <h4>Petunjuk Navigasi</h4>
                 <ul>
                     <li><i class="bi bi-chevron-right"></i> <a href="#beranda">Beranda</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#about">Berita</a></li>
@@ -27,10 +27,10 @@
             <div class="col-lg-2 col-md-3 footer-links">
                 <h4>Layanan</h4>
                 <ul>
-                    <li><i class="bi bi-chevron-right"></i> <a>1</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a>2</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a>3</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a>4</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a>Data CPB Penerima RTLH</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a>Data CPB Rumah Tidak Terverifikasi</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a>Data CPB Rumah Terdata</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a>Data CPB Total Terbantu</a></li>
                 </ul>
             </div>
 

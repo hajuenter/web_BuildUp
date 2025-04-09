@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\DataCPB;
 use App\Models\Jadwal;
+use App\Models\User;
+use App\Services\PHPMailerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
@@ -47,6 +50,51 @@ class LandingPageController extends Controller
 
         $showJadwal = Jadwal::all();
 
-        return view('buildup', compact('showBerita', 'showJadwal'));
+        $dataCpbTerverifikasi = DataCPB::where('status', 'Terverifikasi')->count();
+        $dataCpbRumahTidakTerverifikasi = DataCPB::where('status', 'Tidak Terverifikasi')->count();
+        $dataCpbRumahTerdata = DataCPB::count();
+        $dataCpbTotalTerbantu = DataCPB::where('status', 'Terverifikasi')->count();
+
+        return view('buildup', compact('showBerita', 'showJadwal', 'dataCpbTerverifikasi', 'dataCpbRumahTidakTerverifikasi', 'dataCpbRumahTerdata', 'dataCpbTotalTerbantu'));
+    }
+
+    protected $mailer;
+
+    public function __construct(PHPMailerService $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    public function kirim(Request $request)
+    {
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $to = User::where('role', 'admin')->value('email');
+
+        if (!$to) {
+            return back()->with('error', 'Email admin tidak ditemukan.');
+        }
+
+        // Data dari form
+        $subject = $request->subject;
+        $body = "
+            <p><strong>Nama:</strong> {$request->name}</p>
+            <p><strong>Email Pengirim:</strong> {$request->email}</p>
+            <p><strong>Subjek:</strong> {$request->subject}</p>
+            <p><strong>Pesan:</strong><br>{$request->message}</p>
+        ";
+
+        $sent = $this->mailer->sendEmail($to, $subject, $body);
+
+        if ($sent) {
+            return response()->json(['success' => true, 'message' => 'Pesan berhasil dikirim.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Gagal mengirim pesan. Silakan coba lagi.']);
+        }
     }
 }

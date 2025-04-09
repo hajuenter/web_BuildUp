@@ -9,8 +9,8 @@
                 <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                     <i class="bi bi-house-heart"></i>
                     <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
-                            class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $dataCpbTerverifikasi }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
                         <p>Penerima RTLH</p>
                     </div>
                 </div><!-- End Stats Item -->
@@ -18,17 +18,17 @@
                 <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                     <i class="bi bi-clipboard-check"></i>
                     <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
-                            class="purecounter"></span>
-                        <p>Rumah Terverifikasi</p>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $dataCpbRumahTidakTerverifikasi }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Tidak Terverifikasi</p>
                     </div>
                 </div><!-- End Stats Item -->
 
                 <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                     <i class="bi bi-building"></i>
                     <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1"
-                            class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $dataCpbRumahTerdata }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
                         <p>Rumah Terdata</p>
                     </div>
                 </div><!-- End Stats Item -->
@@ -36,8 +36,8 @@
                 <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                     <i class="bi bi-people"></i>
                     <div class="stats-item">
-                        <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1"
-                            class="purecounter"></span>
+                        <span data-purecounter-start="0" data-purecounter-end="{{ $dataCpbTotalTerbantu }}"
+                            data-purecounter-duration="1" class="purecounter"></span>
                         <p>Total Terbantu</p>
                     </div>
                 </div><!-- End Stats Item -->

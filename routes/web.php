@@ -47,6 +47,9 @@ Route::controller(LupaPasswordController::class)->group(function () {
     Route::post('/lupa-password-update', 'updatePassword')->name('perbarui.password');
 });
 
+//kirim pesan
+Route::post('/kirim-pesan', [LandingPageController::class, 'kirim'])->name('kirim.pesan');
+
 Route::middleware(['auth', 'checkRole'])->group(function () {
     // Admin Routes
     Route::prefix('admin')->group(function () {
