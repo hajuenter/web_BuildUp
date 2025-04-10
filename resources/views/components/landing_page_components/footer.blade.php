@@ -18,8 +18,8 @@
                 <h4>Petunjuk Navigasi</h4>
                 <ul>
                     <li><i class="bi bi-chevron-right"></i> <a href="#beranda">Beranda</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#about">Berita</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#services">Jadwal</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="#berita">Berita</a></li>
+                    <li><i class="bi bi-chevron-right"></i> <a href="#jadwal">Jadwal</a></li>
                     <li><i class="bi bi-chevron-right"></i> <a href="#contact">Kontak</a></li>
                 </ul>
             </div>

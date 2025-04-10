@@ -13,32 +13,35 @@
 
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
-                    <span class="badge bg-primary badge-number">4</span>
+                    <span id="notifBadge" class="badge bg-primary badge-number">{{ $jumlahNotif }}</span>
                 </a><!-- End Notification Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                     <li class="dropdown-header">
-                        You have 4 new notifications
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        Kamu Punya {{ $jumlahNotif }} notifikasi baru
+                        <a href="{{ route('admin.data_role') }}"><span
+                                class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-exclamation-circle text-warning"></i>
-                        <div>
-                            <h4>Lorem Ipsum</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>30 min. ago</p>
-                        </div>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li class="dropdown-footer">
-                        <a href="#">Show all notifications</a>
-                    </li>
+                    @isset($dataNotif)
+                        @foreach ($dataNotif as $notif)
+                            <a href="{{ route('admin.data_role') }}">
+                                <li class="notification-item">
+                                    <i class="bi bi-exclamation-circle text-warning"></i>
+                                    <div>
+                                        <h4>{{ ucfirst($notif->role) }}</h4>
+                                        <p>{{ $notif->email }}</p>
+                                        <p>{{ $notif->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </li>
+                            </a>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        @endforeach
+                    @endisset
 
                 </ul><!-- End Notification Dropdown Items -->
 
@@ -117,7 +120,6 @@
         document.getElementById('logout-form').submit();
     });
 </script>
-
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>
