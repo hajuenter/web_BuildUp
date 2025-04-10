@@ -9,6 +9,7 @@ class NotificationComposer
 {
     public function compose(View $view)
     {
+        // Data Notif
         $dataNotif = User::whereIn('role', ['user', 'petugas'])
             ->whereNull('email_verified_at')
             ->latest()
