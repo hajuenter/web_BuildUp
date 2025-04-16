@@ -546,4 +546,79 @@ class ApiDataVerifikasiCPBController extends Controller
             ], 500);
         }
     }
+
+    // Di DataVerifikasiCPBController.php
+    public function destroyByCpbId($cpbId)
+    {
+        try {
+            // Cari data CPB berdasarkan ID
+            $dataCPB = DataCPB::findOrFail($cpbId);
+            $nik = $dataCPB->nik;
+
+            // Cari data verifikasi berdasarkan NIK
+            $dataVerif = DataVerifikasiCPB::where('nik', $nik)->first();
+
+            if (!$dataVerif) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data verifikasi tidak ditemukan untuk data CPB ini',
+                    'errors' => ['id' => 'Data verifikasi tidak ditemukan']
+                ], 404);
+            }
+
+            // Hapus folder foto di public/up/verifikasi/{nik}
+            $folderPath = public_path('up/verifikasi/' . $nik);
+            if (file_exists($folderPath) && is_dir($folderPath)) {
+                $this->deleteDirectory($folderPath);
+            }
+
+            // Hapus data verifikasi
+            $dataVerif->delete();
+
+            // Update status dan pengecekan pada DataCPB
+            $dataCPB->status = 'Tidak Terverifikasi';
+            $dataCPB->pengecekan = 'Belum Dicek';
+            $dataCPB->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data verifikasi berhasil dihapus',
+                'data' => new \stdClass() // gae respon ben dadi object kosong
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data CPB tidak ditemukan',
+                'errors' => ['id' => 'Data tidak ditemukan']
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan dalam menghapus data',
+                'errors' => ['exception' => $e->getMessage()]
+            ], 500);
+        }
+    }
+
+    // Fungsi helper untuk menghapus direktori beserta isinya
+    private function deleteDirectory($dirPath)
+    {
+        if (!is_dir($dirPath)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dirPath), array('.', '..'));
+
+        foreach ($files as $file) {
+            $path = $dirPath . '/' . $file;
+
+            if (is_dir($path)) {
+                $this->deleteDirectory($path);
+            } else {
+                unlink($path);
+            }
+        }
+
+        return rmdir($dirPath);
+    }
 }

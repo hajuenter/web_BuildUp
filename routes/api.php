@@ -26,4 +26,5 @@ Route::middleware(['api.key'])->group(function () {
     Route::post('/verifikasiCPB', [ApiDataVerifikasiCPBController::class, 'addVerifikasiCPB']);
     Route::match(['POST', 'PUT'], '/updateVerifCPB/{id}', [ApiDataVerifikasiCPBController::class, 'updateVerifCPB']);
     Route::get('/getVerifCPB', [ApiDataVerifikasiCPBController::class, 'getVerifCPB']);
+    Route::delete('/delete/verifcpb/by-cpb/{id}', [ApiDataVerifikasiCPBController::class, 'destroyByCpbId']);
 });
