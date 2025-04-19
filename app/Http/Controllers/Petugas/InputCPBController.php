@@ -380,6 +380,109 @@ class InputCPBController extends Controller
         $cellKanan->addTextBreak(1);
         $cellKanan->addText("…………………………", ['bold' => true, 'alignment' => Jc::END]);
 
+        // Tambahkan section baru (opsional agar halaman baru)
+        $section = $phpWord->addSection([
+            'pageBreakBefore' => true,
+        ]);
+
+        // Judul lampiran
+        $section->addText("Lampiran 5", ['bold' => true]);
+        $section->addText("Surat Pernyataan Tanggung Jawab Pengusul Bantuan Sosial");
+        $section->addTextBreak(1);
+        $section->addText(
+            "SURAT PERNYATAAN TANGGUNG JAWAB PENGUSUL BANTUAN SOSIAL",
+            ['bold' => true, 'size' => 14],
+            ['alignment' => Jc::CENTER, 'spaceAfter' => 300]
+        );
+
+        // Identitas
+        $section->addText("Yang bertanda tangan di bawah ini :");
+
+        $table = $section->addTable();
+        $table->addRow();
+        $table->addCell(3000)->addText("Nama");
+        $table->addCell(500)->addText(":");
+        $table->addCell(6000)->addText($cpb->nama);
+
+        $table->addRow();
+        $table->addCell(3000)->addText("NIK");
+        $table->addCell(500)->addText(":");
+        $table->addCell(6000)->addText($cpb->nik);
+
+        $table->addRow();
+        $table->addCell(3000)->addText("Alamat");
+        $table->addCell(500)->addText(":");
+        $table->addCell(6000)->addText($cpb->alamat);
+
+        // Isi pernyataan
+        $section->addTextBreak(1);
+        $justify = ['alignment' => Jc::BOTH]; // digunakan berulang biar rapi
+        $section->addText(
+            "Saya selaku masyarakat pemohon bantuan sosial, dengan ini menyatakan bahwa:",
+            [],
+            $justify
+        );
+
+        $section->addText(
+            "1. Bertanggung jawab sepenuhnya terhadap kebenaran data yang diajukan di dalam proposal Bantuan Sosial untuk Tahun Anggaran ……… dan apabila dikemudian hari ternyata ditemukan data yang tidak benar, maka saya siap bertanggung jawab dan menanggung segala konsekuensi hukum yang timbul.",
+            [],
+            $justify
+        );
+
+        $section->addText(
+            "2. Akan menggunakan bantuan sesuai dengan proposal dan bertanggung jawab penggunaannya secara formal dan material apabila mendapatkan bantuan dari Pemerintah Daerah.",
+            [],
+            $justify
+        );
+
+        $section->addTextBreak(1);
+
+        $section->addText(
+            "Demikian surat pernyataan ini saya buat dengan sebenar-benarnya tanpa ada unsur paksaan untuk dapat digunakan sebagaimana mestinya.",
+            [],
+            $justify
+        );
+        $section->addTextBreak(2);
+
+        // Buat tabel utama dengan 3 kolom
+        $table = $section->addTable();
+        $table->addRow();
+
+        // Buat sel untuk setiap kolom
+        $cellKiri = $table->addCell(4000);
+        $cellTengah = $table->addCell(3000); // Kolom tengah sebagai pemisah/spasi
+        $cellKanan = $table->addCell(4000);
+
+        // Tambahkan spasi di awal
+        $cellKiri->addTextBreak(1);
+        $cellTengah->addTextBreak(1);
+        $cellKanan->addTextBreak(1);
+
+        // Tambahkan teks di kolom kanan
+        $cellKanan->addText("Pengusul,", null, ['alignment' => Jc::CENTER]);
+        $cellKanan->addText("Calon Penerima Bansos", null, ['alignment' => Jc::CENTER]);
+
+        // Buat tabel untuk area tanda tangan dan materai dalam sel kanan
+        $tableTandaTangan = $cellKanan->addTable(['alignment' => Jc::CENTER]);
+        $tableTandaTangan->addRow();
+        $cellTandaTangan = $tableTandaTangan->addCell(2500);
+
+        // Tambahkan kotak materai di area tanda tangan
+        $tableMaterai = $cellTandaTangan->addTable(['alignment' => Jc::CENTER]);
+        $tableMaterai->addRow();
+        $cellMaterai = $tableMaterai->addCell(1500, [
+            'borderSize' => 6,
+            'borderColor' => '000000',
+            'valign' => 'center',
+        ]);
+
+        // Tambahkan teks materai di dalam kotak
+        $cellMaterai->addText("Materai", ['color' => 'AA0000'], ['alignment' => Jc::CENTER]);
+        $cellMaterai->addText("Rp.10.000,00", ['bold' => true], ['alignment' => Jc::CENTER]);
+
+        // Tambahkan garis untuk tanda tangan di bawah materai
+        $cellKanan->addText("…………………………", ['bold' => true, 'underline' => 'single'], ['alignment' => Jc::CENTER]);
+
         // Simpan dan Unduh
         $fileName = 'Surat_Permohonan_' . $cpb->id . '.docx';
         $tempFile = storage_path($fileName);
