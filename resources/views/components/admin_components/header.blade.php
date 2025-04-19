@@ -20,7 +20,7 @@
                     <li class="dropdown-header">
                         Kamu Punya {{ $jumlahNotif }} notifikasi baru
                         <a href="{{ route('admin.data_role') }}"><span
-                                class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                                class="badge rounded-pill bg-primary p-2 ms-2">Lihat Semua</span></a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -29,9 +29,9 @@
                         @foreach ($dataNotif as $notif)
                             <a href="{{ route('admin.data_role') }}">
                                 <li class="notification-item">
-                                    <i class="bi bi-exclamation-circle text-warning"></i>
+                                    <i class="bi bi-exclamation-circle text-danger"></i>
                                     <div>
-                                        <h4>{{ ucfirst($notif->role) }}</h4>
+                                        <h4 class="text-black">{{ ucfirst($notif->role) }}</h4>
                                         <p>{{ $notif->email }}</p>
                                         <p>{{ $notif->created_at->diffForHumans() }}</p>
                                     </div>
