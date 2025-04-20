@@ -28,14 +28,14 @@ class DataCPBFactory extends Factory
         $noKks[] = $no_kk;
 
         return [
-            'nama'       => $faker->name(),
+            'nama'       => strtoupper($faker->name()),
             'alamat'     => $faker->address(),
             'nik'        => $nik,
             'no_kk'      => $no_kk,
             'pekerjaan'  => $faker->jobTitle(),
             'email'      => $faker->unique()->safeEmail(),
             'foto_rumah' => 'up/data_cpb/default-cpb.png',
-            'koordinat'  => $faker->latitude(-10, 5) . ', ' . $faker->longitude(95, 141),
+            'koordinat' => $faker->randomFloat(14, -6.4, -5.9) . ', ' . $faker->randomFloat(14, 106.6, 107.0),
             'status'     => 'Tidak Terverifikasi',
             'pengecekan' => 'Belum Dicek',
         ];
