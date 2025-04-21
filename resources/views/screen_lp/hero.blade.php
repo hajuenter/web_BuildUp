@@ -9,7 +9,7 @@
                     perumahan, permukiman, dan pertanahan untuk mendukung pembangunan dan kesejahteraan masyarakat.
                 </p>
                 <div class="d-flex">
-                    <a href="#beranda" class="btn-get-started">Mulai</a>
+                    <a href="#berita" class="btn-get-started">Mulai</a>
                 </div>
             </div>
         </div>
