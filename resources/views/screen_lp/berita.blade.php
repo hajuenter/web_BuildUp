@@ -24,7 +24,8 @@
             </div>
             <hr>
         @empty
-            <div class="alert alert-info text-center">Belum ada berita yang tersedia.</div>
+            <div class="alert alert-info text-center" data-aos="fade-up" data-aos-delay="100">Belum ada berita yang
+                tersedia.</div>
         @endforelse
 
         <!-- Pagination -->

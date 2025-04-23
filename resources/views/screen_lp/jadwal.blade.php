@@ -82,7 +82,8 @@
                             </div>
                         </div>
                     @empty
-                        <div class="alert alert-info text-center">Belum ada jadwal yang tersedia.</div>
+                        <div class="alert alert-info text-center" data-aos="fade-up" data-aos-delay="100">Belum ada
+                            jadwal yang tersedia.</div>
                     @endforelse
                 </div>
             </div>
