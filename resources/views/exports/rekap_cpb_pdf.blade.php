@@ -82,7 +82,9 @@
                 <th width="30">No</th>
                 <th>Nama</th>
                 <th>NIK</th>
-                <th>KK</th>
+                <th>No KK</th>
+                <th>Email</th>
+                <th>Koordinat</th>
                 <th>Pekerjaan</th>
                 <th>Alamat</th>
             </tr>
@@ -94,6 +96,8 @@
                     <td>{{ $cpb->nama }}</td>
                     <td>{{ $cpb->nik }}</td>
                     <td>{{ $cpb->no_kk }}</td>
+                    <td>{{ $cpb->email }}</td>
+                    <td>{{ $cpb->koordinat }}</td>
                     <td>{{ $cpb->pekerjaan }}</td>
                     <td>{{ $cpb->alamat }}</td>
                 </tr>

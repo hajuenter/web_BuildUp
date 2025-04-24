@@ -50,6 +50,30 @@
                             </div>
                             <i class="faq-toggle bi bi-chevron-right"></i>
                         </div><!-- End Faq item-->
+
+                        <div class="faq-item">
+                            <h3>Program Rumah Tidak Layak Huni (RTLH) di Indonesia</h3>
+                            <div class="faq-content">
+                                <p>program pemerintah atau lembaga terkait yang bertujuan untuk membantu masyarakat yang
+                                    tinggal di rumah yang tidak memenuhi standar kesehatan dan keselamatan, dengan cara
+                                    merehabilitasi atau merekonstruksi rumah tersebut. Program ini bertujuan untuk
+                                    meningkatkan kualitas tempat tinggal masyarakat, khususnya yang berpenghasilan
+                                    rendah, agar memiliki hunian yang layak dan sehat.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
+
+                        <div class="faq-item">
+                            <h3>Undang-undang yang mengatur rumah tidak layak huni (RTLH) di Indonesia secara umum</h3>
+                            <div class="faq-content">
+                                <p>Undang-Undang Nomor 1 Tahun 2011 tentang Perumahan dan Kawasan Permukiman.
+                                    Undang-undang ini memberikan kerangka hukum dasar terkait perumahan, termasuk
+                                    definisi dan standar RTLH. Selain itu, ada beberapa peraturan pemerintah dan menteri
+                                    yang lebih spesifik mengenai RTLH, seperti Peraturan Pemerintah Nomor 14 Tahun 2016
+                                    tentang Penyelenggaraan Perumahan dan Kawasan Permukiman. </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
                     </div>
 
                 </div><!-- End Faq Column-->

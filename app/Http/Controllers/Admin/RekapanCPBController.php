@@ -71,7 +71,7 @@ class RekapanCPBController extends Controller
             ->get();
 
         $pdf = Pdf::loadView('exports.rekap_cpb_pdf', compact('data'))
-            ->setPaper('a4', 'potrait');
+            ->setPaper('a4', 'landscape');
 
         $statusText = match ($status) {
             'checked' => 'Sudah_Dicek',
@@ -133,8 +133,10 @@ class RekapanCPBController extends Controller
             ->setCellValue('B' . $headerRow, 'Nama')
             ->setCellValue('C' . $headerRow, 'NIK')
             ->setCellValue('D' . $headerRow, 'No KK')
-            ->setCellValue('E' . $headerRow, 'Pekerjaan')
-            ->setCellValue('F' . $headerRow, 'Alamat');
+            ->setCellValue('E' . $headerRow, 'Email')
+            ->setCellValue('F' . $headerRow, 'Koordinat')
+            ->setCellValue('G' . $headerRow, 'Pekerjaan')
+            ->setCellValue('H' . $headerRow, 'Alamat');
 
         // Styling header
         $styleHeader = [
@@ -142,7 +144,7 @@ class RekapanCPBController extends Controller
             'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
             'borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN]]
         ];
-        $sheet->getStyle('A' . $headerRow . ':F' . $headerRow)->applyFromArray($styleHeader);
+        $sheet->getStyle('A' . $headerRow . ':H' . $headerRow)->applyFromArray($styleHeader);
 
         // Data tabel
         $row = 8;
@@ -151,13 +153,17 @@ class RekapanCPBController extends Controller
                 ->setCellValue('B' . $row, $cpb->nama)
                 ->setCellValueExplicit('C' . $row, $cpb->nik, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING)
                 ->setCellValueExplicit('D' . $row, $cpb->no_kk, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING)
-                ->setCellValue('E' . $row, $cpb->pekerjaan)
-                ->setCellValue('F' . $row, $cpb->alamat);
+                ->setCellValue('E' . $row, $cpb->email)
+                ->setCellValue('F' . $row, $cpb->koordinat)
+                ->setCellValue('G' . $row, $cpb->pekerjaan)
+                ->setCellValue('H' . $row, $cpb->alamat);
 
             // Tambahkan border pada setiap baris
-            $sheet->getStyle('A' . $row . ':F' . $row)->applyFromArray([
+            $sheet->getStyle('A' . $row . ':H' . $row)->applyFromArray([
                 'borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN]]
             ]);
+            $sheet->getColumnDimension('G')->setWidth(40); // atau lebih kalau alamat masih terpotong
+            $sheet->getColumnDimension('H')->setWidth(90); // atau lebih kalau alamat masih terpotong
 
             $row++;
         }
@@ -250,6 +256,8 @@ class RekapanCPBController extends Controller
         $table->addCell(2000)->addText('Nama', ['bold' => true]);
         $table->addCell(2000)->addText('NIK', ['bold' => true]);
         $table->addCell(2000)->addText('KK', ['bold' => true]);
+        $table->addCell(2000)->addText('Email', ['bold' => true]);
+        $table->addCell(2000)->addText('Koordinat', ['bold' => true]);
         $table->addCell(2000)->addText('Pekerjaan', ['bold' => true]);
         $table->addCell(3000)->addText('Alamat', ['bold' => true]);
 
@@ -261,6 +269,8 @@ class RekapanCPBController extends Controller
             $table->addCell(2000)->addText($cpb->nama);
             $table->addCell(2000)->addText($cpb->nik);
             $table->addCell(2000)->addText($cpb->no_kk);
+            $table->addCell(2000)->addText($cpb->email);
+            $table->addCell(2000)->addText($cpb->koordinat);
             $table->addCell(2000)->addText($cpb->pekerjaan);
             $table->addCell(3000)->addText($cpb->alamat);
         }

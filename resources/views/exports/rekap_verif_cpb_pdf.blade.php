@@ -45,17 +45,23 @@
             text-align: left;
         }
 
-        .signature {
+        .signature-table {
+            width: 100%;
             margin-top: 50px;
-            text-align: right;
+            border: none;
         }
 
-        .signature p {
-            margin-bottom: 70px;
+        .signature-table td {
+            width: 50%;
+            text-align: center;
+            vertical-align: top;
+            border: none;
         }
 
-        .text-kd {
-            margin-right: 35px;
+        .signature-name {
+            padding-top: 80px;
+            height: 100px;
+            vertical-align: bottom;
         }
     </style>
 </head>
@@ -94,8 +100,8 @@
                 <th>Penutup Lantai</th>
                 <th>Pondasi</th>
                 <th>Sloof</th>
-                <th>MCK</th>
-                <th>Air Kotor</th>
+                <th>Sanitasi</th>
+                <th>Air Bersih</th>
                 <th>Kesanggupan Berswadaya</th>
                 <th>Tipe</th>
                 <th>Penilaian Kerusakan</th>
@@ -132,10 +138,17 @@
         </tbody>
     </table>
 
-    <div class="signature">
-        <p class="text-kd">Kepala Desa</p>
-        <p>……………………………..</p>
-    </div>
+    <!-- Gunakan tabel untuk tanda tangan agar lebih kompatibel dengan PDF renderer -->
+    <table class="signature-table">
+        <tr>
+            <td>Tim Verifikator</td>
+            <td>Kepala Desa</td>
+        </tr>
+        <tr>
+            <td class="signature-name">……………………………..</td>
+            <td class="signature-name">……………………………..</td>
+        </tr>
+    </table>
 </body>
 
 </html>

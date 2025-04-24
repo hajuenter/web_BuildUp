@@ -100,7 +100,7 @@ class RekapanVerifikasiController extends Controller
 
         // Header
         $headerRow = 7;
-        $headers = ['No', 'NIK', 'Penutup Atap', 'Rangka Atap', 'Kolom', 'Ring Balok', 'Kusen', 'Pintu', 'Jendela', 'Struktur Bawah', 'Penutup Lantai', 'Pondasi', 'Sloof', 'MCK', 'Air Kotor', 'Kesanggupan Berswadaya', 'Tipe', 'Penilaian Kerusakan', 'Nilai Bantuan', 'Catatan'];
+        $headers = ['No', 'NIK', 'Penutup Atap', 'Rangka Atap', 'Kolom', 'Ring Balok', 'Kusen', 'Pintu', 'Jendela', 'Struktur Bawah', 'Penutup Lantai', 'Pondasi', 'Sloof', 'Sanitasi', 'Air Bersih', 'Kesanggupan Berswadaya', 'Tipe', 'Penilaian Kerusakan', 'Nilai Bantuan', 'Catatan'];
         $col = 'A';
         foreach ($headers as $header) {
             $sheet->setCellValue($col . $headerRow, $header);
@@ -146,17 +146,26 @@ class RekapanVerifikasiController extends Controller
             $row++;
         }
 
-        // Tanda tangan Kepala Desa
         $signatureRow = $row + 3;
+
+        // Tim Verifikator
+        $sheet->mergeCells('N' . $signatureRow . ':P' . $signatureRow);
+        $sheet->setCellValue('N' . $signatureRow, 'Tim Verifikator');
+        $sheet->mergeCells('N' . ($signatureRow + 4) . ':P' . ($signatureRow + 4));
+        $sheet->setCellValue('N' . ($signatureRow + 4), '……………………………..');
+
+        // Kepala Desa
         $sheet->mergeCells('R' . $signatureRow . ':T' . $signatureRow);
         $sheet->setCellValue('R' . $signatureRow, 'Kepala Desa');
         $sheet->mergeCells('R' . ($signatureRow + 4) . ':T' . ($signatureRow + 4));
         $sheet->setCellValue('R' . ($signatureRow + 4), '……………………………..');
 
+        // Format tanda tangan
         $styleSignature = [
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
             'font' => ['bold' => true]
         ];
+        $sheet->getStyle('N' . $signatureRow . ':P' . ($signatureRow + 4))->applyFromArray($styleSignature);
         $sheet->getStyle('R' . $signatureRow . ':T' . ($signatureRow + 4))->applyFromArray($styleSignature);
 
         // Set auto-size untuk semua kolom
@@ -232,7 +241,7 @@ class RekapanVerifikasiController extends Controller
         $table = $section->addTable($tableStyle);
         $table->addRow();
 
-        $headers = ['No', 'NIK', 'Penutup Atap', 'Rangka Atap', 'Kolom', 'Ring Balok', 'Dinding Pengisi', 'Kusen', 'Pintu', 'Jendela', 'Struktur Bawah', 'Penutup Lantai', 'Pondasi', 'Sloof', 'MCK', 'Air Kotor', 'Kesanggupan Berswadaya', 'Tipe', 'Penilaian Kerusakan', 'Nilai Bantuan', 'Catatan'];
+        $headers = ['No', 'NIK', 'Penutup Atap', 'Rangka Atap', 'Kolom', 'Ring Balok', 'Dinding Pengisi', 'Kusen', 'Pintu', 'Jendela', 'Struktur Bawah', 'Penutup Lantai', 'Pondasi', 'Sloof', 'Sanitasi', 'Air Bersih', 'Kesanggupan Berswadaya', 'Tipe', 'Penilaian Kerusakan', 'Nilai Bantuan', 'Catatan'];
 
         $headerWidths = [
             500,   // No
@@ -290,9 +299,22 @@ class RekapanVerifikasiController extends Controller
 
         // Add signature section
         $section->addTextBreak(2);
-        $section->addText('Kepala Desa', ['bold' => true, 'size' => 12], ['alignment' => 'right']);
-        $section->addTextBreak(3);
-        $section->addText('……………………………..', ['size' => 12], ['alignment' => 'right']);
+
+        // Buat tabel tanda tangan
+        $signTable = $section->addTable();
+        $signTable->addRow();
+
+        $cell1 = $signTable->addCell(5000);
+        $cell1->addText('Tim Verifikator', ['bold' => true, 'size' => 12], ['alignment' => 'center']);
+        $signTable->addCell(5000)->addText('Kepala Desa', ['bold' => true, 'size' => 12], ['alignment' => 'center']);
+
+        $signTable->addRow();
+        $signTable->addCell(5000)->addTextBreak(3);
+        $signTable->addCell(5000)->addTextBreak(3);
+
+        $signTable->addRow();
+        $signTable->addCell(5000)->addText('……………………………..', ['size' => 12], ['alignment' => 'center']);
+        $signTable->addCell(5000)->addText('……………………………..', ['size' => 12], ['alignment' => 'center']);
 
         $statusText = match ($status) {
             'checked' => 'Mendapatkan_Bantuan',

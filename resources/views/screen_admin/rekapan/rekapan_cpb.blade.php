@@ -84,6 +84,8 @@
                                             <th>Nama</th>
                                             <th>NIK</th>
                                             <th>No KK</th>
+                                            <th>Email</th>
+                                            <th>Koordinat</th>
                                             <th>Pekerjaan</th>
                                             <th>Alamat</th>
                                             <th>Tanggal</th>
@@ -96,6 +98,8 @@
                                                 <td style="min-width: 200px;">{{ $cpb->nama }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->nik }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->no_kk }}</td>
+                                                <td style="min-width: 200px;">{{ $cpb->email }}</td>
+                                                <td style="min-width: 200px;">{{ $cpb->koordinat }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->pekerjaan }}</td>
                                                 <td style="min-width: 300px;">{{ $cpb->alamat }}</td>
                                                 <td style="min-width: 150px;">{{ $cpb->created_at->format('d-m-Y') }}</td>

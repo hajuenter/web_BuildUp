@@ -101,8 +101,8 @@
                                         <th>Penutup Lantai</th>
                                         <th>Pondasi</th>
                                         <th>Sloof</th>
-                                        <th>MCK</th>
-                                        <th>Air Kotor</th>
+                                        <th>Sanitasi</th>
+                                        <th>Air Bersih</th>
                                         <th>Kesanggupan Berswadaya</th>
                                         <th>Tipe</th>
                                         <th>Penilaian Kerusakan</th>

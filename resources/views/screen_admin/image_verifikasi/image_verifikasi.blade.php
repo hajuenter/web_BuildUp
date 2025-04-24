@@ -35,8 +35,8 @@
                                 <th style="white-space: nowrap;">Foto Penutup Lantai</th>
                                 <th style="white-space: nowrap;">Foto Pondasi</th>
                                 <th style="white-space: nowrap;">Foto Sloof</th>
-                                <th style="white-space: nowrap;">Foto MCK</th>
-                                <th style="white-space: nowrap;">Foto Air Kotor</th>
+                                <th style="white-space: nowrap;">Foto Sanitasi</th>
+                                <th style="white-space: nowrap;">Foto Air Bersih</th>
                                 <th style="white-space: nowrap;">Aksi</th>
                             </tr>
                         </thead>

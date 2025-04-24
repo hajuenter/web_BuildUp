@@ -199,9 +199,14 @@ class ApiDataVerifikasiCPBController extends Controller
                     mkdir($nikFolder, 0755, true);
                 }
 
-                // Generate nama file unik dengan format: nama_field_timestamp_uniqueid
-                $filename = $field . '_' . time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
+                $customName = $field;
+                if ($field === 'foto_air_kotor') {
+                    $customName = 'foto_air_bersih';
+                } elseif ($field === 'foto_mck') {
+                    $customName = 'foto_sanitasi';
+                }
 
+                $filename = $customName . '_' . time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
                 // Pindahkan file ke direktori NIK
                 $request->file($field)->move($nikFolder, $filename);
 
@@ -429,11 +434,14 @@ class ApiDataVerifikasiCPBController extends Controller
                 if (!file_exists($nikFolder)) {
                     mkdir($nikFolder, 0755, true);
                 }
-
+                $customName = $field;
+                if ($field === 'foto_air_kotor') {
+                    $customName = 'foto_air_bersih';
+                } elseif ($field === 'foto_mck') {
+                    $customName = 'foto_sanitasi';
+                }
                 // Generate nama file unik
-                $filename = $field . '_' . time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
-
-                // Pindahkan file ke direktori NIK
+                $filename = $customName . '_' . time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
                 $request->file($field)->move($nikFolder, $filename);
 
                 // Hapus file lama jika ada
