@@ -19,7 +19,7 @@
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
 
-                <img src="{{ asset('content/dinas.png') }}" alt="">
+                <img src="{{ asset('content/newlogo.svg') }}" alt="">
                 <h1 class="sitename text-primary">BuildUp</h1>
             </a>
 

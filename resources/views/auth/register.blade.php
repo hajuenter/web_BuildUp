@@ -7,8 +7,8 @@
 
     <title>Register - {{ config('app.name') }}</title>
 
-    <link href="{{ asset('content/favicon.ico') }}" rel="icon">
-    <link href="{{ asset('content/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="{{ asset('content/newlogo.svg') }}" rel="icon">
+    <link href="{{ asset('content/newlogo.svg') }}" rel="apple-touch-icon">
 
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Nunito|Poppins" rel="stylesheet">
