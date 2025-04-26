@@ -39,7 +39,7 @@
 
                             <div class="d-flex justify-content-center py-4">
                                 <a class="logo d-flex align-items-center w-auto">
-                                    <span class="d-none d-lg-block">BuildUp</span>
+                                    <span class="d-none d-lg-block">NganjukMase</span>
                                 </a>
                             </div><!-- End Logo -->
 

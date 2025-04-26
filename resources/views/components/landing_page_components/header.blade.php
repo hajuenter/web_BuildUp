@@ -20,7 +20,7 @@
             <a href="index.html" class="logo d-flex align-items-center">
 
                 <img src="{{ asset('content/newlogo.svg') }}" alt="">
-                <h1 class="sitename text-primary">BuildUp</h1>
+                <h1 class="sitename text-primary">NganjukMase</h1>
             </a>
 
             <nav id="navmenu" class="navmenu">

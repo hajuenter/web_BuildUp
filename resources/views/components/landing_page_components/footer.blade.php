@@ -4,7 +4,7 @@
          <div class="row gy-4">
              <div class="col-lg-4 col-md-6 footer-about">
                  <a class="d-flex align-items-center">
-                     <span class="sitename">BuildUp</span>
+                     <span class="sitename">NganjukMase</span>
                  </a>
                  <div class="footer-contact pt-3">
                      <p>Disperkimtan Nganjuk</p>
@@ -49,7 +49,7 @@
      </div>
 
      <div class="container copyright text-center mt-4">
-         <p>© <span>Copyright</span> <strong class="px-1 sitename">BuilUp</strong> <span>All Rights Reserved</span>
+         <p>© <span>Copyright</span> <strong class="px-1 sitename">NganjukMase</strong> <span>All Rights Reserved</span>
          </p>
          <div class="credits">
              Designed and Developed by <a>B2 TIF NJK</a>

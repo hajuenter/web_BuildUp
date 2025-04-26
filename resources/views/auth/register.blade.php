@@ -28,15 +28,11 @@
                         <div class="col-lg-6 col-md-8 d-flex flex-column align-items-center justify-content-center">
                             <div class="d-flex justify-content-center py-4">
                                 <a class="logo d-flex align-items-center w-auto">
-                                    <span class="d-none d-lg-block">BuildUp</span>
+                                    <span class="d-none d-lg-block">NganjukMase</span>
                                 </a>
                             </div><!-- End Logo -->
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    <a href="{{ route('login') }}"
-                                        class="position-absolute top-0 start-0 m-3 text-dark">
-                                        <i class="bi bi-arrow-left-square-fill fs-3"></i>
-                                    </a>
                                     <div class="pt-4 pb-2">
                                         <h5 class="card-title text-center pb-0 fs-4">Buat Akun Baru</h5>
                                         <p class="text-center small">Silakan isi form di bawah untuk mendaftar</p>
@@ -138,10 +134,13 @@
 
                                         <!-- Tombol Register -->
                                         <div class="col-12">
-                                            <button class="btn btn-success w-100" id="btnregister"
+                                            <button class="btn btn-primary w-100" id="btnregister"
                                                 type="submit">Daftar</button>
                                         </div>
-
+                                        <div class="col-12">
+                                            <button class="btn btn-success w-100" id="regisButton" type="button"
+                                                onclick="window.location.href='{{ route('login') }}'">Kembali</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
