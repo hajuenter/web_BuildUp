@@ -120,7 +120,7 @@
                                                 <td>{{ $cpb->mck }}</td>
                                                 <td style="min-width: 100px;">{{ $cpb->air_kotor }}</td>
                                                 <td style="min-width: 300px;">
-                                                    {{ $cpb->kesanggupan_berswadaya ? 'Ya' : 'Tidak' }}</td>
+                                                    {{ $cpb->kesanggupan_berswadaya }}</td>
                                                 <td>{{ $cpb->tipe }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->penilaian_kerusakan }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->nilai_bantuan }}</td>
