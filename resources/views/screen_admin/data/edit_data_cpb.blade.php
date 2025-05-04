@@ -1,11 +1,12 @@
-@extends('layouts.layouts_petugas')
+@extends('layouts.layouts_admin')
 
-@section('content-petugas')
+@section('content-admin')
     <div class="pagetitle">
         <h1>Edit Data CPB</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('petugas.inputcpb') }}">Data CPB</a></li>
+                <li class="breadcrumb-item">Data</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.data_cpb') }}">Data CPB</a></li>
                 <li class="breadcrumb-item active">Edit Data CPB</li>
             </ol>
         </nav>
@@ -19,7 +20,7 @@
 
                         <h6 class="card-title">Edit Data CPB</h6>
 
-                        <form method="POST" action="{{ route('petugas.update.cpb', $cpb->id) }}"
+                        <form method="POST" action="{{ route('admin.update.data_cpb', $cpb->id) }}"
                             enctype="multipart/form-data" onsubmit="disableButton()">
                             @csrf
                             <div class="mb-3">

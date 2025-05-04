@@ -65,7 +65,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex p-3 justify-content-between align-items-center flex-wrap">
-                            <h4 class="card-title">Data CPB</h4>
+                            <h4 class="card-title">Data Verifikasi CPB</h4>
                             <form method="GET" action="{{ route('admin.data_verif_cpb') }}" class="mb-0">
                                 <label for="perPage">Tampilkan:</label>
                                 <select name="perPage" id="perPage" class="form-select d-inline-block w-auto"

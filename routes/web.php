@@ -79,6 +79,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
 
         // Data CPB
         Route::get('/data/cpb', [DataController::class, 'showDataCPB'])->name('admin.data_cpb');
+        Route::get('/data/cpb/edit/{id}', [DataController::class, 'showEditDataCPB'])->name('admin.edit.data_cpb');
+        Route::post('/data/cpb/update/{id}', [DataController::class, 'updateDataCPB'])->name('admin.update.data_cpb');
         Route::delete('/data/cpb/{id}', [DataController::class, 'deleteDataCPB'])->name('admin.delete.data_cpb');
 
         // Data Verif
