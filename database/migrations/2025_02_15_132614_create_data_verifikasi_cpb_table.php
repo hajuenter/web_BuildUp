@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('data_verifikasi_cpb', function (Blueprint $table) {
             $table->id();
-            $table->string('nik');
-            $table->foreign('nik')->references('nik')->on('data_cpb')->onDelete('cascade');
+            $table->string('nik', 16);
+            $table->foreign('nik')->references('nik')->on('data_cpb')->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('foto_kk')->nullable();
             $table->string('foto_ktp')->nullable();

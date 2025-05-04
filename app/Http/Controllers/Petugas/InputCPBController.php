@@ -8,6 +8,7 @@ use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use App\Models\DataVerifikasiCPB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use Illuminate\Support\Facades\Validator;
 
@@ -198,6 +199,8 @@ class InputCPBController extends Controller
             $fotoPath = $cpb->foto_rumah; // Gunakan gambar lama jika tidak ada perubahan
         }
 
+        $nikLama = $cpb->nik;
+
         // Update Data di Database
         $cpb->update([
             'nama'       => strtoupper($request->nama),
@@ -210,6 +213,19 @@ class InputCPBController extends Controller
             'koordinat'  => $request->koordinat,
         ]);
 
+        if ($nikLama !== $request->nik) {
+
+            $oldFolder = public_path("up/verifikasi/{$nikLama}");
+            $newFolder = public_path("up/verifikasi/{$request->nik}");
+
+            if (File::exists($oldFolder)) {
+                File::move($oldFolder, $newFolder);
+            }
+
+            DataVerifikasiCPB::where('nik', $nikLama)
+                ->update(['nik' => $request->nik]);
+        }
+
         return redirect()->route('petugas.inputcpb')->with('successEditCPB', 'Data CPB berhasil diperbarui.');
     }
 
@@ -219,19 +235,27 @@ class InputCPBController extends Controller
         $cpb = DataCPB::findOrFail($id);
         $nik = $cpb->nik;
 
-        $verifikasiExists = DataVerifikasiCPB::where('nik', $nik)->exists();
+        $verifikasi = DataVerifikasiCPB::where('nik', $nik)->get();
 
-        if ($verifikasiExists) {
+        $folderPath = public_path("up/verifikasi/{$nik}");
+
+        if (File::exists($folderPath)) {
+            File::deleteDirectory($folderPath);
+        }
+
+        // Hapus data verifikasi jika ada
+        if ($verifikasi->isNotEmpty()) {
             DataVerifikasiCPB::where('nik', $nik)->delete();
         }
 
-        // Hapus file gambar jika ada
+        // Hapus gambar rumah CPB jika ada
         if ($cpb->foto_rumah && file_exists(public_path($cpb->foto_rumah))) {
             unlink(public_path($cpb->foto_rumah));
         }
 
-        // Hapus data dari database
+        // Hapus data CPB dari database
         $cpb->delete();
+
 
         return redirect()->route('petugas.inputcpb')->with('successDeleteCPB', 'Data CPB berhasil dihapus.');
     }
