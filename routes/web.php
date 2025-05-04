@@ -80,7 +80,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         // Data CPB
         Route::get('/data/cpb', [DataController::class, 'showDataCPB'])->name('admin.data_cpb');
         Route::get('/data/cpb/edit/{id}', [DataController::class, 'showEditDataCPB'])->name('admin.edit.data_cpb');
-        Route::post('/data/cpb/update/{id}', [DataController::class, 'updateDataCPB'])->name('admin.update.data_cpb');
+        Route::put('/data/cpb/update/{id}', [DataController::class, 'updateDataCPB'])->name('admin.update.data_cpb');
         Route::delete('/data/cpb/{id}', [DataController::class, 'deleteDataCPB'])->name('admin.delete.data_cpb');
 
         // Data Verif
@@ -120,7 +120,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::get('/cpb/cetak-surat/{id}', [InputCPBController::class, 'cetakSurat'])->name('cpb.cetakSurat');
         Route::post('/tambahCPB', [InputCPBController::class, 'inputCPB'])->name('petugas.create.inputcpb');
         Route::get('/cpb/edit/{id}', [InputCPBController::class, 'showEditCPB'])->name('petugas.edit.cpb');
-        Route::post('/cpb/update/{id}', [InputCPBController::class, 'updateCPB'])->name('petugas.update.cpb');
+        Route::put('/cpb/update/{id}', [InputCPBController::class, 'updateCPB'])->name('petugas.update.cpb');
         Route::delete('/cpb/delete/{id}', [InputCPBController::class, 'deleteCPB'])->name('petugas.delete.cpb');
 
         // Profile

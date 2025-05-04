@@ -22,6 +22,7 @@
                         <form method="POST" action="{{ route('petugas.update.cpb', $cpb->id) }}"
                             enctype="multipart/form-data" onsubmit="disableButton()">
                             @csrf
+                            @method('PUT')
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
                                 <input type="text" name="nama" class="form-control"
