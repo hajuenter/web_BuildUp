@@ -29,7 +29,7 @@ class DataCPBFactory extends Factory
 
         return [
             'nama'       => strtoupper($faker->name()),
-            'alamat'     => $faker->address(),
+            'alamat'     => $faker->streetAddress . '; ' . $faker->city . '; ' . $faker->state,
             'nik'        => $nik,
             'no_kk'      => $no_kk,
             'pekerjaan'  => $faker->jobTitle(),

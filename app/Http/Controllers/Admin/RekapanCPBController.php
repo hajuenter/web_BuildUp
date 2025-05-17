@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\DataCPB;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\PhpWord;
+use Barryvdh\DomPDF\Facade\Pdf;
 use PhpOffice\PhpWord\IOFactory;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class RekapanCPBController extends Controller
 {
@@ -26,6 +27,11 @@ class RekapanCPBController extends Controller
         $dataCPB = ($perPageAll == "all")
             ? $queryAll->get()
             : $queryAll->paginate($perPageAll)->appends(['perPageAll' => $perPageAll]);
+
+        $desaList = DataCPB::get()->map(function ($item) {
+            $alamatParts = explode(';', $item->alamat);
+            return Str::ucfirst(Str::lower(trim($alamatParts[1] ?? 'Tidak Diketahui')));
+        })->unique()->filter()->sort()->values()->all();
 
         // Data yang Sudah Dicek
         $queryTrue = DataCPB::where('pengecekan', 'Sudah Dicek');
@@ -49,12 +55,13 @@ class RekapanCPBController extends Controller
             ? $queryUnverif->get()
             : $queryUnverif->paginate($perPageUnverif)->appends(['perPageUnverif' => $perPageUnverif]);
 
-        return view('screen_admin.rekapan.rekapan_cpb', compact('dataCPB', 'dataCekTrue', 'dataCekFalse', 'dataCekVerif', 'dataCekUnverif', 'perPageVerif', 'perPageUnverif', 'perPageAll', 'perPageTrue', 'perPageFalse'));
+        return view('screen_admin.rekapan.rekapan_cpb', compact('dataCPB', 'dataCekTrue', 'dataCekFalse', 'dataCekVerif', 'dataCekUnverif', 'perPageVerif', 'perPageUnverif', 'perPageAll', 'perPageTrue', 'perPageFalse',  'desaList'));
     }
 
     public function downloadCpbPdf(Request $request)
     {
         $status = $request->status;
+        $desa = $request->desa;
 
         $data = DataCPB::when($status == 'checked', function ($query) {
             return $query->where('pengecekan', 'Sudah Dicek');
@@ -68,7 +75,15 @@ class RekapanCPBController extends Controller
             ->when($status == 'unverif', function ($query) {
                 return $query->where('status', 'Tidak Terverifikasi');
             })
-            ->get();
+            ->when($desa && $desa != 'all', function ($query) use ($desa) {
+                return $query->where('alamat', 'like', '%;%' . $desa . '%');
+            })
+            ->get()
+            ->map(function ($item) {
+                // Gabungkan alamat yang dipisahkan semicolon dengan spasi
+                $item->alamat_lengkap = str_replace(';', ' ', $item->alamat);
+                return $item;
+            });
 
         $pdf = Pdf::loadView('exports.rekap_cpb_pdf', compact('data'))
             ->setPaper('a4', 'landscape');
@@ -89,6 +104,7 @@ class RekapanCPBController extends Controller
     public function downloadCpbExcel(Request $request)
     {
         $status = $request->status;
+        $desa = $request->desa;
 
         $data = DataCPB::when($status == 'checked', function ($query) {
             return $query->where('pengecekan', 'Sudah Dicek');
@@ -102,7 +118,15 @@ class RekapanCPBController extends Controller
             ->when($status == 'unverif', function ($query) {
                 return $query->where('status', 'Tidak Terverifikasi');
             })
-            ->get();
+            ->when($desa && $desa != 'all', function ($query) use ($desa) {
+                return $query->where('alamat', 'like', '%;%' . $desa . '%');
+            })
+            ->get()
+            ->map(function ($item) {
+                // Gabungkan alamat yang dipisahkan semicolon dengan spasi
+                $item->alamat_lengkap = str_replace(';', ' ', $item->alamat);
+                return $item;
+            });
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -156,7 +180,7 @@ class RekapanCPBController extends Controller
                 ->setCellValue('E' . $row, $cpb->email)
                 ->setCellValue('F' . $row, $cpb->koordinat)
                 ->setCellValue('G' . $row, $cpb->pekerjaan)
-                ->setCellValue('H' . $row, $cpb->alamat);
+                ->setCellValue('H' . $row, $cpb->alamat_lengkap); // Gunakan alamat yang sudah digabung
 
             // Tambahkan border pada setiap baris
             $sheet->getStyle('A' . $row . ':H' . $row)->applyFromArray([
@@ -211,6 +235,7 @@ class RekapanCPBController extends Controller
     public function downloadCpbWord(Request $request)
     {
         $status = $request->status;
+        $desa = $request->desa;
 
         $data = DataCPB::when($status == 'checked', function ($query) {
             return $query->where('pengecekan', 'Sudah Dicek');
@@ -224,7 +249,15 @@ class RekapanCPBController extends Controller
             ->when($status == 'unverif', function ($query) {
                 return $query->where('status', 'Tidak Terverifikasi');
             })
-            ->get();
+            ->when($desa && $desa != 'all', function ($query) use ($desa) {
+                return $query->where('alamat', 'like', '%;%' . $desa . '%');
+            })
+            ->get()
+            ->map(function ($item) {
+                // Gabungkan alamat yang dipisahkan semicolon dengan spasi
+                $item->alamat_lengkap = str_replace(';', ' ', $item->alamat);
+                return $item;
+            });
 
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
@@ -272,7 +305,8 @@ class RekapanCPBController extends Controller
             $table->addCell(2000)->addText($cpb->email);
             $table->addCell(2000)->addText($cpb->koordinat);
             $table->addCell(2000)->addText($cpb->pekerjaan);
-            $table->addCell(3000)->addText($cpb->alamat);
+            $table->addCell(3000)->addText($cpb->alamat_lengkap); // Gunakan alamat yang sudah digabung
+
         }
 
         $section->addTextBreak(1);

@@ -99,7 +99,7 @@
                     <td>{{ $cpb->email }}</td>
                     <td>{{ $cpb->koordinat }}</td>
                     <td>{{ $cpb->pekerjaan }}</td>
-                    <td>{{ $cpb->alamat }}</td>
+                    <td>{{ $cpb->alamat_lengkap }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -25,6 +25,12 @@ class ApiDataCPBController extends Controller
             ], 404);
         }
 
+        $data = $data->map(function ($cpb) {
+            $alamatParts = explode(';', $cpb->alamat);
+            $cpb->alamat = implode(' ', $alamatParts);
+            return $cpb;
+        });
+
         return response()->json([
             'status' => true,
             'message' => 'Data ditemukan',

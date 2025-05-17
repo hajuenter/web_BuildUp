@@ -93,9 +93,31 @@
 
                         <!-- Alamat -->
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
+                            <label for="alamat" class="form-label" id="labelAlamat">Alamat (Jalan)</label>
                             <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror">{{ old('alamat') }}</textarea>
                             @error('alamat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Desa/Kelurahan -->
+                        <div class="mb-3 d-none" id="desaField">
+                            <label for="alamat_desa" class="form-label">Desa/Kelurahan</label>
+                            <input type="text" name="alamat_desa"
+                                class="form-control @error('alamat_desa') is-invalid @enderror"
+                                value="{{ old('alamat_desa') }}">
+                            @error('alamat_desa')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Kecamatan -->
+                        <div class="mb-3 d-none" id="kecamatanField">
+                            <label for="kecamatan" class="form-label">Kecamatan</label>
+                            <input type="text" name="kecamatan"
+                                class="form-control @error('kecamatan') is-invalid @enderror"
+                                value="{{ old('kecamatan') }}">
+                            @error('kecamatan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -122,6 +144,29 @@
         </div>
     </div>
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSelect = document.querySelector('select[name="role"]');
+        const desaField = document.getElementById('desaField');
+        const labelAlamat = document.getElementById('labelAlamat');
+        const kecamatanField = document.getElementById('kecamatanField');
+
+        function toggleExtraFields() {
+            if (roleSelect.value === 'petugas') {
+                desaField.classList.remove('d-none');
+                kecamatanField.classList.remove('d-none');
+                labelAlamat.textContent = "Alamat (Jalan)";
+            } else {
+                desaField.classList.add('d-none');
+                kecamatanField.classList.add('d-none');
+                labelAlamat.textContent = "Alamat";
+            }
+        }
+
+        roleSelect.addEventListener('change', toggleExtraFields);
+        toggleExtraFields(); // inisialisasi saat pertama kali load
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const passwordInput = document.getElementById("password");

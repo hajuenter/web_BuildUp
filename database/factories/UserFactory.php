@@ -64,7 +64,7 @@ class UserFactory extends Factory
             'role' => 'petugas',
             'no_hp' => '6289697083456',
             'foto' => 'default-profile.png',
-            'alamat' => 'Cangkringan Nganjuk',
+            'alamat' => 'Jln S.Parman no 4; Cangkringan; Nganjuk',
             'email_verified_at' => now(),
         ]);
     }

@@ -14,7 +14,5 @@ class UserSeeder extends Seeder
         User::factory()->petugas()->create();
 
         User::factory()->user()->create();
-
-        User::factory()->count(3)->create();
     }
 }

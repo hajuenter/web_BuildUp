@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -21,34 +22,73 @@ class RekapanVerifikasiController extends Controller
         $perPageAll = $request->get('perPageAll', 5);
         $perPageTrue = $request->get('perPageTrue', 5);
         $perPageFalse = $request->get('perPageFalse', 5);
+        $filterDesa = $request->get('desa');
 
-        $queryAll = DataVerifikasiCPB::query();
+        $queryAll = DataVerifikasiCPB::with('cpb');
+        $queryTrue = DataVerifikasiCPB::with('cpb')->where('nilai_bantuan', '>', 0);
+        $queryFalse = DataVerifikasiCPB::with('cpb')->where('nilai_bantuan', 0);
+
+        // FILTER DESA
+        if ($filterDesa && $filterDesa !== 'all') {
+            $queryAll->whereHas('cpb', function ($query) use ($filterDesa) {
+                $query->where('alamat', 'like', "%$filterDesa%");
+            });
+
+            $queryTrue->whereHas('cpb', function ($query) use ($filterDesa) {
+                $query->where('alamat', 'like', "%$filterDesa%");
+            });
+
+            $queryFalse->whereHas('cpb', function ($query) use ($filterDesa) {
+                $query->where('alamat', 'like', "%$filterDesa%");
+            });
+        }
+
+        // PAGINATION
         $dataVerifCPB = ($perPageAll == "all")
             ? $queryAll->get()
-            : $queryAll->paginate($perPageAll)->appends(['perPageAll' => $perPageAll]);
+            : $queryAll->paginate($perPageAll)->appends(['perPageAll' => $perPageAll, 'desa' => $filterDesa]);
 
-        $queryTrue = DataVerifikasiCPB::where('nilai_bantuan', '>', 0);
         $dataCekTrue = ($perPageTrue == "all")
             ? $queryTrue->get()
-            : $queryTrue->paginate($perPageTrue)->appends(['perPageTrue' => $perPageTrue]);
+            : $queryTrue->paginate($perPageTrue)->appends(['perPageTrue' => $perPageTrue, 'desa' => $filterDesa]);
 
-        $queryFalse = DataVerifikasiCPB::where('nilai_bantuan', 0);
         $dataCekFalse = ($perPageFalse == "all")
             ? $queryFalse->get()
-            : $queryFalse->paginate($perPageFalse)->appends(['perPageFalse$perPageFalse' => $perPageFalse]);
+            : $queryFalse->paginate($perPageFalse)->appends(['perPageFalse' => $perPageFalse, 'desa' => $filterDesa]);
 
-        return view('screen_admin.rekapan.rekapan_verif', compact('dataVerifCPB', 'dataCekTrue', 'dataCekFalse', 'perPageAll', 'perPageTrue', 'perPageFalse'));
+        // Generate List Desa dari relasi cpb
+        $desaList = DataVerifikasiCPB::with('cpb')->get()->map(function ($item) {
+            $alamatParts = explode(';', $item->cpb->alamat ?? '');
+            return Str::ucfirst(Str::lower(trim($alamatParts[1] ?? 'Tidak Diketahui')));
+        })->unique()->filter()->sort()->values()->all();
+
+        return view('screen_admin.rekapan.rekapan_verif', compact(
+            'dataVerifCPB',
+            'dataCekTrue',
+            'dataCekFalse',
+            'perPageAll',
+            'perPageTrue',
+            'perPageFalse',
+            'desaList',
+            'filterDesa'
+        ));
     }
+
 
     public function downloadVerifikasiPdf(Request $request)
     {
         $status = $request->status;
-
+        $desa = $request->desa;
         $data = DataVerifikasiCPB::when($status == 'checked', function ($query) {
             return $query->where('nilai_bantuan', '>', 0);
         })
             ->when($status == 'unchecked', function ($query) {
                 return $query->where('nilai_bantuan', 0);
+            })
+            ->when($desa && $desa !== 'all', function ($query) use ($desa) {
+                return $query->whereHas('cpb', function ($q) use ($desa) {
+                    $q->where('alamat', 'like', "%$desa%");
+                });
             })
             ->get();
         $pdf = Pdf::loadView('exports.rekap_verif_cpb_pdf', compact('data'))
@@ -60,6 +100,7 @@ class RekapanVerifikasiController extends Controller
             default => 'Semua_Data',
         };
 
+
         $filename = "Rekap_Verifikasi_CPB_{$statusText}.pdf";
 
         return $pdf->download($filename);
@@ -68,12 +109,17 @@ class RekapanVerifikasiController extends Controller
     public function downloadVerifikasiExcel(Request $request)
     {
         $status = $request->status;
-
+        $desa = $request->desa;
         $data = DataVerifikasiCPB::when($status == 'checked', function ($query) {
             return $query->where('nilai_bantuan', '>', 0);
         })
             ->when($status == 'unchecked', function ($query) {
                 return $query->where('nilai_bantuan', 0);
+            })
+            ->when($desa && $desa !== 'all', function ($query) use ($desa) {
+                return $query->whereHas('cpb', function ($q) use ($desa) {
+                    $q->where('alamat', 'like', "%$desa%");
+                });
             })
             ->get();
 
@@ -191,12 +237,17 @@ class RekapanVerifikasiController extends Controller
     public function downloadVerifikasiWord(Request $request)
     {
         $status = $request->status;
-
+        $desa = $request->desa;
         $data = DataVerifikasiCPB::when($status == 'checked', function ($query) {
             return $query->where('nilai_bantuan', '>', 0);
         })
             ->when($status == 'unchecked', function ($query) {
                 return $query->where('nilai_bantuan', 0);
+            })
+            ->when($desa && $desa !== 'all', function ($query) use ($desa) {
+                return $query->whereHas('cpb', function ($q) use ($desa) {
+                    $q->where('alamat', 'like', "%$desa%");
+                });
             })
             ->get();
 

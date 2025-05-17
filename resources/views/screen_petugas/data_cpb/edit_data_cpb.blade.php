@@ -5,7 +5,7 @@
         <h1>Edit Data CPB</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('petugas.inputcpb') }}">Data CPB</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('petugas.datacpb') }}">Data CPB</a></li>
                 <li class="breadcrumb-item active">Edit Data CPB</li>
             </ol>
         </nav>
@@ -30,9 +30,23 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Alamat</label>
-                                <input type="text" name="alamat" class="form-control"
-                                    value="{{ old('alamat', $cpb->alamat) }}">
+                                <label class="form-label">Alamat (Jalan)</label>
+                                <input type="text" name="alamat_jalan" class="form-control"
+                                    value="{{ old('alamat_jalan', explode(';', $cpb->alamat)[0] ?? '') }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Desa/Kelurahan</label>
+                                <input type="text" readonly style="pointer-events: none;" tabindex="-1"
+                                    name="alamat_desa" class="form-control"
+                                    value="{{ old('alamat_desa', explode(';', $cpb->alamat)[1] ?? '') }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Kecamatan</label>
+                                <input type="text" readonly style="pointer-events: none;" tabindex="-1"
+                                    name="alamat_kecamatan" class="form-control"
+                                    value="{{ old('alamat_kecamatan', explode(';', $cpb->alamat)[2] ?? '') }}">
                             </div>
 
                             <div class="mb-3">
@@ -74,7 +88,7 @@
                             </div>
 
                             <button type="submit" id="editCPBButton" class="btn btn-primary">Edit</button>
-                            <a href="{{ route('petugas.inputcpb') }}" class="btn btn-danger">Batal</a>
+                            <a href="{{ route('petugas.datacpb') }}" class="btn btn-danger">Batal</a>
                         </form>
 
                     </div>

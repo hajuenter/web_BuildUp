@@ -4,10 +4,18 @@
 
         <!-- Dashboard -->
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('petugas/inputCPB*') || Request::is('petugas/cpb/edit/*') ? '' : 'collapsed' }}"
+            <a class="nav-link {{ Request::is('petugas/inputCPB*') ? '' : 'collapsed' }}"
                 href="{{ route('petugas.inputcpb') }}">
-                <i class="bi bi-clipboard-plus"></i>
+                <i class="bi bi-person-lines-fill"></i>
                 <span>Input Data CPB</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('petugas/dataCPB*') || Request::is('petugas/cpb/edit/*') ? '' : 'collapsed' }}"
+                href="{{ route('petugas.datacpb') }}">
+                <i class="bi bi-journal-plus"></i>
+                <span>Data CPB</span>
             </a>
         </li>
     </ul>

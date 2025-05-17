@@ -35,6 +35,16 @@
                                                 </select>
                                             </div>
 
+                                            <div class="mb-2">
+                                                <label for="desa" class="form-label">Filter Desa:</label>
+                                                <select name="desa" class="form-control">
+                                                    <option value="all">Semua Desa</option>
+                                                    @foreach ($desaList as $desa)
+                                                        <option value="{{ $desa }}">{{ $desa }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
                                             <button type="submit" class="btn btn-{{ $color }} w-100">
                                                 <i class="bi bi-file-earmark-{{ $format }}"></i> Download
                                                 {{ strtoupper($format) }}
@@ -88,25 +98,36 @@
                                             <th>Koordinat</th>
                                             <th>Pekerjaan</th>
                                             <th>Alamat</th>
+                                            <th>Desa/Kelurahan</th>
+                                            <th>Kecamatan</th>
                                             <th>Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse ($table['data'] as $index => $cpb)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    {{ $table['perPage'] === 'all'
+                                                        ? $loop->iteration
+                                                        : ($table['data']->currentPage() - 1) * $table['data']->perPage() + $loop->iteration }}
+                                                </td>
                                                 <td style="min-width: 200px;">{{ $cpb->nama }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->nik }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->no_kk }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->email }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->koordinat }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->pekerjaan }}</td>
-                                                <td style="min-width: 300px;">{{ $cpb->alamat }}</td>
+                                                @php
+                                                    $alamatParts = explode(';', $cpb->alamat);
+                                                @endphp
+                                                <td style="min-width: 200px;">{{ $alamatParts[0] ?? '-' }}</td>
+                                                <td style="min-width: 150px;">{{ $alamatParts[1] ?? '-' }}</td>
+                                                <td style="min-width: 150px;">{{ $alamatParts[2] ?? '-' }}</td>
                                                 <td style="min-width: 150px;">{{ $cpb->created_at->format('d-m-Y') }}</td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center">Tidak ada data</td>
+                                                <td colspan="11" class="text-center">Tidak ada data</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

@@ -9,10 +9,17 @@ use Illuminate\Support\Facades\File;
 
 class ImageVerifikasiController extends Controller
 {
-    public function showImageVerif()
+    public function showImageVerif(Request $request)
     {
-        $dataFotoVerif = DataVerifikasiCPB::all();
-        return view('screen_admin.image_verifikasi.image_verifikasi', compact('dataFotoVerif'));
+        $perPage = $request->input('perPage', 5);
+        $query = DataVerifikasiCPB::query();
+        if ($perPage == "all") {
+            $dataFotoVerif = $query->get(); 
+        } else {
+            $dataFotoVerif = $query->paginate($perPage)->appends($request->query());
+        }
+
+        return view('screen_admin.image_verifikasi.image_verifikasi', compact('dataFotoVerif', 'perPage'));
     }
 
     public function downloadFolder(Request $request)

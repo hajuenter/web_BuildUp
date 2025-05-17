@@ -57,20 +57,13 @@ class ApiAuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'user',
-        ]);
-
-        $apiKey = Str::random(64);
-        $hashedKey = hash('sha256', $apiKey);
-        ApiKey::create([
-            'user_id' => $user->id,
-            'api_key' => $hashedKey,
+            'email_verified_at' => null,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Registrasi berhasil',
             'user' => $user,
-            'api_key' => $apiKey,
         ], 201);
     }
 
@@ -92,21 +85,15 @@ class ApiAuthController extends Controller
             return response()->json(['message' => 'Akun belum diverifikasi oleh admin'], 403);
         }
 
-        $apiKey = $user->apiKey->api_key ?? null;
+        $apiKeyModel = $user->apiKey;
 
-        if (!$apiKey) {
-            // Buat API Key baru jika belum ada
-            $apiKey = Str::random(64);
-            $user->apiKey()->create([
-                'api_key' => hash('sha256', $apiKey),
-            ]);
-        } else {
-            // Ambil API Key yang sudah ada
-            $apiKey = ApiKey::where('user_id', $user->id)->first()->api_key;
+        if (!$apiKeyModel || !$apiKeyModel->api_key) {
+            return response()->json(['message' => 'API key belum tersedia, hubungi admin'], 403);
         }
 
+        $apiKey = $apiKeyModel->api_key;
+
         $user->foto = url('up/profile/' . $user->foto);
-        // $user->foto = str_replace("127.0.0.1", "192.168.1.100", $user->foto);
         return response()->json([
             'message' => 'Login berhasil',
             'user' => $user,
@@ -130,17 +117,16 @@ class ApiAuthController extends Controller
             ], 401);
         }
 
-        $apiKey = $user->apiKey->api_key ?? null;
+        $apiKeyModel = $user->apiKey;
 
-        if (!$apiKey) {
-            $apiKey = Str::random(64);
-            $user->apiKey()->create([
-                'api_key' => hash('sha256', $apiKey),
-            ]);
-        } else {
-            // Ambil API Key yang sudah ada
-            $apiKey = ApiKey::where('user_id', $user->id)->first()->api_key;
+        if (!$apiKeyModel || !$apiKeyModel->api_key) {
+            return response()->json([
+                'success' => false,
+                'message' => 'API key belum tersedia, hubungi admin'
+            ], 403);
         }
+
+        $apiKey = $apiKeyModel->api_key;
 
         return response()->json([
             'success' => true,

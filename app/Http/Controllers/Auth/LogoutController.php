@@ -14,7 +14,7 @@ class LogoutController extends Controller
     {
         DB::table('sessions')->where('id', session()->getId())->delete();
         Auth::logout();
-        Session::flush(); // Hapus semua session
+        Session::flush();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login')->with('bagus', 'Anda telah logout.');

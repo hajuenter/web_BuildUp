@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class InputCPBController extends Controller
 {
-    public function showFormInpuCPB(Request $request)
+    public function showDataCPB(Request $request)
     {
         $query = DataCPB::query();
 
@@ -22,7 +22,16 @@ class InputCPBController extends Controller
         $nik = $request->input('nik');
         $no_kk = $request->input('no_kk');
         $nama = $request->input('nama');
-        $perPage = $request->input('perPage', 5); // Default 5
+        $perPage = $request->input('perPage', 5);
+
+        $desa = session('desa_petugas');
+        $kecamatan = session('kecamatan_petugas');
+
+        // Filter berdasarkan alamat petugas
+        if ($desa && $kecamatan) {
+            $query->whereRaw("TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(alamat, ';', 2), ';', -1)) = ?", [$desa])
+                ->whereRaw("TRIM(SUBSTRING_INDEX(alamat, ';', -1)) = ?", [$kecamatan]);
+        }
 
         // Filter berdasarkan input yang diisi
         if (!empty($nik)) {
@@ -45,13 +54,23 @@ class InputCPBController extends Controller
             $dataCPB->appends(request()->query());
         }
 
-        return view('screen_petugas.input_cbp.data_cpb', compact('dataCPB', 'perPage'));
+        return view('screen_petugas.data_cpb.data_cpb', compact('dataCPB', 'perPage'));
+    }
+
+    public function showFormInputCPB()
+    {
+        $desa = session('desa_petugas', '');
+        $kecamatan = session('kecamatan_petugas', '');
+
+        return view('screen_petugas.input_cbp.data_cpb', compact('desa', 'kecamatan'));
     }
 
     public function inputCPB(Request $request)
     {
         // Aturan Validasi
         $validator = Validator::make($request->all(), [
+            'desa'      => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
             'nama'       => 'required|string|regex:/^[A-Za-z\s\.\'\-]+$/u|max:255',
             'alamat'     => 'required|string',
             'nik'        => 'required|digits:16|unique:data_cpb,nik',
@@ -64,6 +83,10 @@ class InputCPBController extends Controller
                 'regex:/^-?\d{1,3}\.\d+,\s*-?\d{1,3}\.\d+$/'
             ],
         ], [
+            'desa.required'      => 'Desa/Kelurahan wajib diisi.',
+            'desa.max'           => 'Desa/Kelurahan tidak boleh lebih dari 255 karakter.',
+            'kecamatan.required' => 'Kecamatan wajib diisi.',
+            'kecamatan.max'      => 'Kecamatan tidak boleh lebih dari 255 karakter.',
             'nama.required'       => 'Nama wajib diisi.',
             'nama.regex'          => 'Nama tidak valid.',
             'nama.max'            => 'Nama tidak boleh lebih dari 255 karakter.',
@@ -110,11 +133,12 @@ class InputCPBController extends Controller
             $fotoPath = null;
         }
 
+        $gabunganAlamat = $request->alamat . '; ' . $request->desa . '; ' . $request->kecamatan;
 
         // Simpan Data ke Database
         DataCPB::create([
             'nama'       => strtoupper($request->nama),
-            'alamat'     => $request->alamat,
+            'alamat'     => $gabunganAlamat,
             'nik'        => $request->nik,
             'no_kk'      => $request->no_kk,
             'pekerjaan'  => $request->pekerjaan,
@@ -129,7 +153,7 @@ class InputCPBController extends Controller
     public function showEditCPB($id)
     {
         $cpb = DataCPB::findOrFail($id);
-        return view('screen_petugas.input_cbp.edit_data_cpb', compact('cpb'));
+        return view('screen_petugas.data_cpb.edit_data_cpb', compact('cpb'));
     }
 
     public function updateCPB(Request $request, $id)
@@ -139,8 +163,10 @@ class InputCPBController extends Controller
 
         // Validasi Input
         $validator = Validator::make($request->all(), [
+            'alamat_jalan'     => 'required|string',
+            'alamat_desa'      => 'required|string',
+            'alamat_kecamatan' => 'required|string',
             'nama'       => 'required|string|regex:/^[A-Za-z\s\.\'\-]+$/u|max:255',
-            'alamat'     => 'required|string',
             'nik'        => 'required|digits:16|unique:data_cpb,nik,' . $id,
             'no_kk'      => 'required|digits:16|unique:data_cpb,no_kk,' . $id,
             'pekerjaan'  => 'required|string|max:255',
@@ -154,7 +180,9 @@ class InputCPBController extends Controller
             'nama.required'       => 'Nama wajib diisi.',
             'nama.regex'          => 'Nama tidak valid.',
             'nama.max'            => 'Nama tidak boleh lebih dari 255 karakter.',
-            'alamat.required'     => 'Alamat wajib diisi.',
+            'alamat_jalan.required'     => 'Alamat wajib diisi.',
+            'alamat_desa.required'     => 'Alamat wajib diisi.',
+            'alamat_kecamatan.required'     => 'Alamat wajib diisi.',
             'nik.required'        => 'NIK wajib diisi.',
             'nik.digits'          => 'NIK harus 16 digit angka.',
             'nik.unique'          => 'NIK sudah digunakan.',
@@ -200,11 +228,11 @@ class InputCPBController extends Controller
         }
 
         $nikLama = $cpb->nik;
-
+        $alamatGabung = trim($request->alamat_jalan) . '; ' . trim($request->alamat_desa) . '; ' . trim($request->alamat_kecamatan);
         // Update Data di Database
         $cpb->update([
             'nama'       => strtoupper($request->nama),
-            'alamat'     => $request->alamat,
+            'alamat'     => $alamatGabung,
             'nik'        => $request->nik,
             'no_kk'      => $request->no_kk,
             'pekerjaan'  => $request->pekerjaan,
@@ -226,7 +254,7 @@ class InputCPBController extends Controller
                 ->update(['nik' => $request->nik]);
         }
 
-        return redirect()->route('petugas.inputcpb')->with('successEditCPB', 'Data CPB berhasil diperbarui.');
+        return redirect()->route('petugas.datacpb')->with('successEditCPB', 'Data CPB berhasil diperbarui.');
     }
 
     public function deleteCPB($id)
@@ -257,7 +285,7 @@ class InputCPBController extends Controller
         $cpb->delete();
 
 
-        return redirect()->route('petugas.inputcpb')->with('successDeleteCPB', 'Data CPB berhasil dihapus.');
+        return redirect()->route('petugas.datacpb')->with('successDeleteCPB', 'Data CPB berhasil dihapus.');
     }
 
     public function cetakSurat($id)
@@ -436,7 +464,7 @@ class InputCPBController extends Controller
         $table->addRow();
         $table->addCell(3000)->addText("Alamat");
         $table->addCell(500)->addText(":");
-        $table->addCell(6000)->addText($cpb->alamat);
+        $table->addCell(6000)->addText(str_replace(';', ',', $cpb->alamat));
 
         // Isi pernyataan
         $section->addTextBreak(1);

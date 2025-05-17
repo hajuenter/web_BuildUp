@@ -11,9 +11,11 @@
 
             <li class="nav-item dropdown">
 
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <a class="nav-link nav-icon" href="" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
-                    <span id="notifBadge" class="badge bg-primary badge-number">{{ $jumlahNotif }}</span>
+                    @if ($jumlahNotif > 0)
+                        <span id="notifBadge" class="badge bg-primary badge-number">{{ $jumlahNotif }}</span>
+                    @endif
                 </a><!-- End Notification Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">

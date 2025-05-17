@@ -94,6 +94,7 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
         Route::delete('/user/delete/{id}', [DataController::class, 'deleteUser'])->name('admin.user.delete');
         Route::get('/data/pengguna/add', [DataController::class, 'showPetugasAdd'])->name('admin.user.petugas.add');
         Route::post('/data/pengguna/create', [DataController::class, 'createPengguna'])->name('admin.user.create');
+        Route::put('/data/token', [DataController::class, 'updateToken'])->name('admin.token.update');
 
         // Rekapan CPB
         Route::get('/rekapan/cpb', [RekapanCPBController::class, 'showRekapCPB'])->name('admin.rekap.cpb');
@@ -116,7 +117,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     // Petugas Routes
     Route::prefix('petugas')->group(function () {
         // CPB input
-        Route::get('/inputCPB', [InputCPBController::class, 'showFormInpuCPB'])->name('petugas.inputcpb');
+        Route::get('/inputCPB', [InputCPBController::class, 'showFormInputCPB'])->name('petugas.inputcpb');
+        Route::get('/dataCPB', [InputCPBController::class, 'showDataCPB'])->name('petugas.datacpb');
         Route::get('/cpb/cetak-surat/{id}', [InputCPBController::class, 'cetakSurat'])->name('cpb.cetakSurat');
         Route::post('/tambahCPB', [InputCPBController::class, 'inputCPB'])->name('petugas.create.inputcpb');
         Route::get('/cpb/edit/{id}', [InputCPBController::class, 'showEditCPB'])->name('petugas.edit.cpb');

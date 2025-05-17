@@ -31,6 +31,10 @@ class LoginController extends Controller
             return back()->withErrors(['email' => 'Email tidak terdaftar!'])->withInput();
         }
 
+        if (is_null($user->email_verified_at)) {
+            return back()->withErrors(['email' => 'Akun Anda belum diverifikasi oleh admin.'])->withInput();
+        }
+
         $throttleKey = 'login_attempts_' . $request->ip();
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             return back()->withErrors(['email' => 'Terlalu banyak percobaan login. Coba lagi nanti setelah 5 menit.'])->withInput();
@@ -46,6 +50,13 @@ class LoginController extends Controller
         if ($user->role === 'admin') {
             $redirectRoute = 'admin.dashboard';
         } elseif ($user->role === 'petugas') {
+            $alamatParts = explode(';', $user->alamat);
+            $desa = isset($alamatParts[1]) ? trim($alamatParts[1]) : null;
+            $kecamatan = isset($alamatParts[2]) ? trim($alamatParts[2]) : null;
+            session([
+                'desa_petugas' => $desa,
+                'kecamatan_petugas' => $kecamatan,
+            ]);
             $redirectRoute = 'petugas.inputcpb';
         } else {
             Auth::logout();

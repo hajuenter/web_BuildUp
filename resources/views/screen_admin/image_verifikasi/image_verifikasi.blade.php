@@ -14,6 +14,20 @@
     <section>
         <div class="card">
             <div class="card-body">
+                <div class="d-flex p-1 justify-content-between align-items-center flex-wrap">
+                    <h4 class="card-title">Data Berita</h4>
+                    <form method="GET" action="{{ route('admin.verif.image') }}" class="mb-0">
+                        <label for="perPage">Tampilkan:</label>
+                        <select name="perPage" id="perPage" class="form-select d-inline-block w-auto"
+                            onchange="this.form.submit()">
+                            @foreach ([5, 10, 25, 50, 'all'] as $value)
+                                <option value="{{ $value }}" {{ request('perPage', 5) == $value ? 'selected' : '' }}>
+                                    {{ $value === 'all' ? 'Semua' : $value }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
                 <h5 class="card-title">Daftar Foto Verifikasi</h5>
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -43,7 +57,11 @@
                         <tbody>
                             @foreach ($dataFotoVerif as $key => $data)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>
+                                        {{ $perPage === 'all'
+                                            ? $loop->iteration
+                                            : ($dataFotoVerif->currentPage() - 1) * $dataFotoVerif->perPage() + $loop->iteration }}
+                                    </td>
                                     <td>{{ $data->nik }}</td>
 
                                     <!-- Kolom Foto -->
@@ -76,6 +94,11 @@
                         </tbody>
                     </table>
                 </div>
+                @if ($perPage !== 'all')
+                    <div class="d-flex justify-content-center justify-content-md-end mt-3">
+                        {{ $dataFotoVerif->links('pagination::bootstrap-5') }}
+                    </div>
+                @endif
             </div>
         </div>
     </section>

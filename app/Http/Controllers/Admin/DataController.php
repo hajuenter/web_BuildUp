@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Token;
 use App\Models\ApiKey;
 use App\Models\DataCPB;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\DataVerifikasiCPB;
 use App\Services\PHPMailerService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
@@ -78,8 +82,10 @@ class DataController extends Controller
 
         // Validasi Input
         $validator = Validator::make($request->all(), [
+            'alamat_jalan'     => 'required|string',
+            'alamat_desa'      => 'required|string',
+            'alamat_kecamatan' => 'required|string',
             'nama'       => 'required|string|regex:/^[A-Za-z\s\.\'\-]+$/u|max:255',
-            'alamat'     => 'required|string',
             'nik'        => 'required|digits:16|unique:data_cpb,nik,' . $id,
             'no_kk'      => 'required|digits:16|unique:data_cpb,no_kk,' . $id,
             'pekerjaan'  => 'required|string|max:255',
@@ -90,10 +96,12 @@ class DataController extends Controller
                 'regex:/^-?\d{1,3}\.\d+,\s*-?\d{1,3}\.\d+$/'
             ],
         ], [
+            'alamat_jalan.required' => 'Alamat wajib diisi',
+            'alamat_desa.required' => 'Alamat wajib diisi',
+            'alamat_kecamatan.required' => 'Alamat wajib diisi',
             'nama.required'       => 'Nama wajib diisi.',
             'nama.regex'          => 'Nama tidak valid.',
             'nama.max'            => 'Nama tidak boleh lebih dari 255 karakter.',
-            'alamat.required'     => 'Alamat wajib diisi.',
             'nik.required'        => 'NIK wajib diisi.',
             'nik.digits'          => 'NIK harus 16 digit angka.',
             'nik.unique'          => 'NIK sudah digunakan.',
@@ -139,11 +147,11 @@ class DataController extends Controller
         }
 
         $nikLama = $cpb->nik;
-
+        $alamatGabung = trim($request->alamat_jalan) . '; ' . trim($request->alamat_desa) . '; ' . trim($request->alamat_kecamatan);
         // Update Data di Database
         $cpb->update([
             'nama'       => strtoupper($request->nama),
-            'alamat'     => $request->alamat,
+            'alamat'     => $alamatGabung,
             'nik'        => $request->nik,
             'no_kk'      => $request->no_kk,
             'pekerjaan'  => $request->pekerjaan,
@@ -255,15 +263,66 @@ class DataController extends Controller
 
     public function showDataRole(Request $request)
     {
-        $perPage = $request->input('perPage', 5);
+        $perPagePetugas = $request->input('perPage_petugas', 5);
+        $perPageUser = $request->input('perPage_user', 5);
 
-        if ($perPage == "all") {
-            $dataRole = User::whereIn('role', ['petugas', 'user'])->get();
-        } else {
-            $dataRole = User::whereIn('role', ['petugas', 'user'])->paginate($perPage);
+        // Ambil data sesuai role
+        $dataPetugas = $perPagePetugas === 'all'
+            ? User::where('role', 'petugas')->get()
+            : User::where('role', 'petugas')->paginate($perPagePetugas, ['*'], 'petugas_page');
+
+        $dataUser = $perPageUser === 'all'
+            ? User::where('role', 'user')->get()
+            : User::where('role', 'user')->paginate($perPageUser, ['*'], 'user_page');
+
+        $token = Token::first();
+        $originalToken = null;
+
+        if ($token && $token->token_login) {
+            try {
+                $originalToken = Crypt::decryptString($token->token_login);
+            } catch (\Exception $e) {
+                $originalToken = 'Token tidak valid atau gagal didekripsi';
+            }
         }
 
-        return view('screen_admin.data.data_role', compact('dataRole', 'perPage'));
+        return view('screen_admin.data.data_role', compact(
+            'dataPetugas',
+            'dataUser',
+            'perPagePetugas',
+            'perPageUser',
+            'originalToken'
+        ));
+    }
+
+    public function updateToken(Request $request)
+    {
+        $request->validate([
+            'token_login' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[^\s]+$/',
+                'max:255',
+            ],
+        ], [
+            'token_login.required' => 'Token tidak boleh kosong!',
+            'token_login.min' => 'Token minimal harus 8 karakter!',
+            'token_login.regex' => 'Token harus mengandung huruf besar, huruf kecil, angka, simbol, dan tanpa spasi!',
+            'token_login.max' => 'Token tidak boleh lebih dari 255 karakter!',
+        ]);
+
+        $token = Token::first();
+
+        $hashedToken = Crypt::encryptString($request->token_login);
+        $userId = Auth::id();
+        if ($token) {
+            $token->update(['token_login' => $hashedToken]);
+        } else {
+            Token::create(['user_id' => $userId, 'token_login' => $hashedToken]);
+        }
+
+        return redirect()->route('admin.data_role')->with('success', 'Token berhasil disimpan!');
     }
 
     public function verifyUser($id)
@@ -271,7 +330,10 @@ class DataController extends Controller
         $user = User::findOrFail($id);
         $user->email_verified_at = now();
         $user->save();
-
+        ApiKey::create([
+            'user_id' => $user->id,
+            'api_key' => hash('sha256', Str::random(64)),
+        ]);
         $mailService = new PHPMailerService();
         $subject = "Verifikasi Akun Berhasil";
         $body = "
@@ -291,6 +353,7 @@ class DataController extends Controller
     public function unverifyUser($id)
     {
         $user = User::findOrFail($id);
+        ApiKey::where('user_id', $user->id)->delete();
         $user->email_verified_at = null;
         $user->save();
 
@@ -384,6 +447,32 @@ class DataController extends Controller
             ]
         );
 
+        if ($request->role === 'petugas') {
+            $validator->after(function ($validator) use ($request) {
+                if (empty($request->alamat_desa)) {
+                    $validator->errors()->add('alamat_desa', 'Desa/Kelurahan wajib diisi untuk petugas input.');
+                }
+                if (empty($request->kecamatan)) {
+                    $validator->errors()->add('kecamatan', 'Kecamatan wajib diisi untuk petugas input.');
+                }
+
+                $inputDesa = strtolower(trim($request->alamat_desa));
+                if (!empty($inputDesa)) {
+                    $semuaAlamat = User::pluck('alamat');
+                    foreach ($semuaAlamat as $alamat) {
+                        $bagian = explode(';', $alamat);
+                        if (count($bagian) >= 2) {
+                            $desa = strtolower(trim($bagian[1]));
+                            if ($desa === $inputDesa) {
+                                $validator->errors()->add('alamat_desa', 'Desa/Kelurahan sudah terdaftar oleh pengguna lain!');
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
@@ -398,15 +487,20 @@ class DataController extends Controller
             $foto = $filename; // Simpan nama file ke database
         }
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'email_verified_at' => null,
+            'email_verified_at' => now(),
             'password' => Hash::make($request->password),
             'role' => $request->role,
             'no_hp' => $request->no_hp,
-            'alamat' => $request->alamat,
+            'alamat' => $request->alamat . '; ' . $request->alamat_desa . '; ' . $request->kecamatan,
             'foto' => $foto,
+        ]);
+
+        ApiKey::create([
+            'user_id' => $user->id,
+            'api_key' => hash('sha256', Str::random(64)),
         ]);
 
         return redirect()->route('admin.data_role')->with('successY', 'Pengguna berhasil ditambahkan.');

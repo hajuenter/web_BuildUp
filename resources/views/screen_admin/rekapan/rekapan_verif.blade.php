@@ -32,6 +32,16 @@
                                                 </select>
                                             </div>
 
+                                            <div class="mb-2">
+                                                <label for="desa" class="form-label">Filter Desa:</label>
+                                                <select name="desa" class="form-control">
+                                                    <option value="all">Semua Desa</option>
+                                                    @foreach ($desaList as $desa)
+                                                        <option value="{{ $desa }}">{{ $desa }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
                                             <button type="submit" class="btn btn-{{ $color }} w-100">
                                                 <i class="bi bi-file-earmark-{{ $format }}"></i> Download
                                                 {{ strtoupper($format) }}
@@ -103,7 +113,11 @@
                                     <tbody>
                                         @forelse ($table['data'] as $index => $cpb)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    {{ $table['perPage'] === 'all'
+                                                        ? $loop->iteration
+                                                        : ($table['data']->currentPage() - 1) * $table['data']->perPage() + $loop->iteration }}
+                                                </td>
                                                 <td style="min-width: 300px;">{{ $cpb->nik }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->penutup_atap }}</td>
                                                 <td style="min-width: 200px;">{{ $cpb->rangka_atap }}</td>

@@ -106,6 +106,8 @@
                                         <th>Id</th>
                                         <th>Nama</th>
                                         <th class="w-100">Alamat</th>
+                                        <th>Desa/Kelurahan</th>
+                                        <th>Kecamatan</th>
                                         <th>NIK</th>
                                         <th class="w-100">NO KK</th>
                                         <th>Pekerjaan</th>
@@ -122,7 +124,12 @@
                                         <tr>
                                             <td>{{ $cpb->id }}</td>
                                             <td style="min-width: 200px;">{{ $cpb->nama }}</td>
-                                            <td style="min-width: 200px;">{{ $cpb->alamat }}</td>
+                                            @php
+                                                $alamatParts = explode(';', $cpb->alamat);
+                                            @endphp
+                                            <td style="min-width: 200px;">{{ $alamatParts[0] ?? '-' }}</td>
+                                            <td>{{ $alamatParts[1] ?? '-' }}</td>
+                                            <td>{{ $alamatParts[2] ?? '-' }}</td>
                                             <td>{{ $cpb->nik }}</td>
                                             <td>{{ $cpb->no_kk }}</td>
                                             <td>{{ $cpb->pekerjaan }}</td>
@@ -187,7 +194,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7">Data tidak ditemukan !!!</td>
+                                            <td colspan="12">Data tidak ditemukan !!!</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

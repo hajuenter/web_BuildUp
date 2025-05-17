@@ -79,6 +79,50 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-12">
+                                            <label for="alamat_jalan" class="form-label">Alamat (Jalan)</label>
+                                            <input type="text" id="alamat_jalan" name="alamat_jalan"
+                                                class="form-control @error('alamat_jalan') is-invalid @enderror"
+                                                value="{{ old('alamat_jalan') }}" required>
+                                            <div class="invalid-feedback">
+                                                @error('alamat_jalan')
+                                                    {{ $message }}
+                                                @else
+                                                    Masukkan alamat yang valid Contoh: Jl. Mawar No. 123, 64419
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <!-- Desa/Kelurahan -->
+                                        <div class="col-12">
+                                            <label for="desa_kelurahan" class="form-label">Desa / Kelurahan</label>
+                                            <input type="text" id="desa_kelurahan" name="desa_kelurahan"
+                                                class="form-control @error('desa_kelurahan') is-invalid @enderror"
+                                                value="{{ old('desa_kelurahan') }}" required>
+                                            <div class="invalid-feedback">
+                                                @error('desa_kelurahan')
+                                                    {{ $message }}
+                                                @else
+                                                    Masukkan nama desa atau kelurahan.
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <!-- Kecamatan -->
+                                        <div class="col-12">
+                                            <label for="kecamatan" class="form-label">Kecamatan</label>
+                                            <input type="text" id="kecamatan" name="kecamatan"
+                                                class="form-control @error('kecamatan') is-invalid @enderror"
+                                                value="{{ old('kecamatan') }}" required>
+                                            <div class="invalid-feedback">
+                                                @error('kecamatan')
+                                                    {{ $message }}
+                                                @else
+                                                    Masukkan nama kecamatan.
+                                                @enderror
+                                            </div>
+                                        </div>
+
                                         <!-- Email -->
                                         <div class="col-12">
                                             <label for="email" class="form-label">Email</label>
@@ -114,12 +158,15 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
+                                            <label for="confirmPassword" class="form-label">Konfirmasi
+                                                Password</label>
                                             <div class="input-group has-validation">
-                                                <input type="password" id="confirmPassword" name="password_confirmation"
+                                                <input type="password" id="confirmPassword"
+                                                    name="password_confirmation"
                                                     class="form-control @error('password_confirmation') is-invalid @enderror"
                                                     required>
-                                                <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                                <span class="input-group-text toggle-password"
+                                                    style="cursor: pointer;">
                                                     <i class="bi bi-eye"></i>
                                                 </span>
                                                 <div class="invalid-feedback">
@@ -129,6 +176,20 @@
                                                         Ulangi password Anda.
                                                     @enderror
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="token" class="form-label">Token</label>
+                                            <input type="text" id="yourToken" name="token"
+                                                class="form-control @error('token') is-invalid @enderror"
+                                                value="{{ old('token') }}" required>
+                                            <div class="invalid-feedback">
+                                                @error('token')
+                                                    {{ $message }}
+                                                @else
+                                                    Tolong masukkan token untuk register.
+                                                @enderror
                                             </div>
                                         </div>
 
