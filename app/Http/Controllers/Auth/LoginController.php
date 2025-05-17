@@ -36,7 +36,7 @@ class LoginController extends Controller
         }
 
         $throttleKey = 'login_attempts_' . $request->ip();
-        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+        if (RateLimiter::tooManyAttempts($throttleKey, 10)) {
             return back()->withErrors(['email' => 'Terlalu banyak percobaan login. Coba lagi nanti setelah 5 menit.'])->withInput();
         }
 
