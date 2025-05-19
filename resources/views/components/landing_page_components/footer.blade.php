@@ -39,9 +39,16 @@
                  <h4>Ikuti Kami</h4>
                  <p>Temukan dan ikuti kami di berbagai platform media sosial berikut</p>
                  <div class="social-links d-flex">
-                     <a href=""><i class="bi bi-twitter-x"></i></a>
-                     <a href=""><i class="bi bi-facebook"></i></a>
-                     <a href=""><i class="bi bi-instagram"></i></a>
+                     <a href="https://www.facebook.com/dinas.prkpp.nganjuk.2025?mibextid=rS40aB7S9Ucbxw6v"
+                         target="_blank">
+                         <i class="bi bi-facebook"></i>
+                     </a>
+                     <a href="https://www.tiktok.com/@dinas_prkppnganju?_t=ZS-8wTUXFZkwfS&_r=1" target="_blank">
+                         <i class="bi bi-tiktok"></i>
+                     </a>
+                     <a href="https://www.instagram.com/dinas_prkppnganjuk?igsh=ajFzazV2M3A1a2Vu" target="_blank">
+                         <i class="bi bi-instagram"></i>
+                     </a>
                  </div>
              </div>
 
