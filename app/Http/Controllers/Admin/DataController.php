@@ -505,4 +505,250 @@ class DataController extends Controller
 
         return redirect()->route('admin.data_role')->with('successY', 'Pengguna berhasil ditambahkan.');
     }
+
+    public function showEditDataVerifCPB($id)
+    {
+        $verifCPB = DataVerifikasiCPB::findOrFail($id);
+        return view('screen_admin.data.edit_verif_cpb', compact('verifCPB'));
+    }
+
+    public function updateDataVerifCPB(Request $request, string $id)
+    {
+        $verifikasi = DataVerifikasiCPB::findOrFail($id);
+
+        // Validasi input
+        $validator = Validator::make(
+            $request->all(),
+            [
+                // Validasi untuk dropdown decimal (0.25, 0.5, 0.75, 1.0)
+                'penutup_atap' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'rangka_atap' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'kolom' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'ring_balok' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'dinding_pengisi' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'kusen' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'pintu' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'jendela' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'struktur_bawah' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'penutup_lantai' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+                'mck' => 'required|numeric|in:0.0,0.25,0.5,0.75,1.0',
+
+                // Validasi untuk dropdown 0.0 dan 1.0
+                'sloof' => 'required|numeric|in:0.0,1.0',
+                'air_kotor' => 'required|numeric|in:0.0,1.0',
+
+                // Validasi untuk kesanggupan berswadaya
+                'kesanggupan_berswadaya' => 'required|in:0,1',
+
+                // Validasi untuk tipe
+                'tipe' => 'required|in:T,K',
+                'foto_kk' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'foto_ktp' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                // Validasi untuk foto-foto (optional)
+                'foto_penutup_atap' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_rangka_atap' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_kolom' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_ring_balok' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_dinding_pengisi' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_kusen' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_pintu' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_jendela' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_struktur_bawah' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_penutup_lantai' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_sloof' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_air_kotor' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+                'foto_mck' => 'nullable|image|mimes:jpg,jpeg,png|max:15360',
+            ],
+            [
+                // Custom error messages
+                'penutup_atap.required' => 'Penilaian penutup atap harus diisi.',
+                'penutup_atap.in' => 'Penilaian penutup atap harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'rangka_atap.required' => 'Penilaian rangka atap harus diisi.',
+                'rangka_atap.in' => 'Penilaian rangka atap harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'kolom.required' => 'Penilaian kolom harus diisi.',
+                'kolom.in' => 'Penilaian kolom harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'ring_balok.required' => 'Penilaian ring balok harus diisi.',
+                'ring_balok.in' => 'Penilaian ring balok harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'dinding_pengisi.required' => 'Penilaian dinding pengisi harus diisi.',
+                'dinding_pengisi.in' => 'Penilaian dinding pengisi harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'kusen.required' => 'Penilaian kusen harus diisi.',
+                'kusen.in' => 'Penilaian kusen harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'pintu.required' => 'Penilaian pintu harus diisi.',
+                'pintu.in' => 'Penilaian pintu harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'jendela.required' => 'Penilaian jendela harus diisi.',
+                'jendela.in' => 'Penilaian jendela harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'struktur_bawah.required' => 'Penilaian struktur bawah harus diisi.',
+                'struktur_bawah.in' => 'Penilaian struktur bawah harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'penutup_lantai.required' => 'Penilaian penutup lantai harus diisi.',
+                'penutup_lantai.in' => 'Penilaian penutup lantai harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'mck.required' => 'Penilaian sanitasi harus diisi.',
+                'mck.in' => 'Penilaian sanitasi harus bernilai 0.25, 0.5, 0.75, atau 1.0.',
+                'sloof.required' => 'Penilaian sloof harus diisi.',
+                'sloof.in' => 'Penilaian sloof harus bernilai 0.0 atau 1.0.',
+                'air_kotor.required' => 'Penilaian air bersih harus diisi.',
+                'air_kotor.in' => 'Penilaian air bersih harus bernilai 0.0 atau 1.0.',
+                'kesanggupan_berswadaya.required' => 'Kesanggupan berswadaya harus diisi.',
+                'kesanggupan_berswadaya.in' => 'Kesanggupan berswadaya harus bernilai Ya atau Tidak.',
+                'tipe.required' => 'Tipe rumah wajib diisi.',
+                'tipe.in' => 'Tipe rumah harus bernilai "T" (Tembok) atau "K" (Kayu).',
+            ]
+        );
+
+        // Jika validasi gagal, redirect kembali dengan error
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Ambil semua data dari request
+        $data = $request->all();
+        $nik = $verifikasi->nik; // Gunakan NIK dari data yang sudah ada
+
+        // Set bobot berdasarkan tipe rumah
+        $bobot_tembok = [12.4, 13.65, 5.675, 5.675, 16.1, 2.81, 3.02, 6.3, 3.4, 10.52, 13.1, 3.91, 2.01, 1.43];
+        $bobot_kayu = [15.19, 3.39, 5.825, 5.825, 29.58, 4.6, 1.08, 1.09, 0.71, 4.49, 3.93, 19.05, 1.42, 3.82];
+        $bobot = $data['tipe'] === 'T' ? $bobot_tembok : $bobot_kayu;
+
+        // Hitung penilaian kerusakan
+        $kerusakan_fields = [
+            'penutup_atap',
+            'rangka_atap',
+            'kolom',
+            'ring_balok',
+            'dinding_pengisi',
+            'kusen',
+            'pintu',
+            'jendela',
+            'struktur_bawah',
+            'penutup_lantai',
+            'pondasi',
+            'sloof',
+            'mck',
+            'air_kotor'
+        ];
+
+        $penilaian_kerusakan = 0;
+        foreach ($kerusakan_fields as $index => $field) {
+            $penilaian_kerusakan += ($data[$field] ?? 0) * $bobot[$index];
+        }
+        $penilaian_kerusakan *= $data['kesanggupan_berswadaya'];
+
+        // Menentukan nilai bantuan dan catatan
+        if ($penilaian_kerusakan > 66) {
+            $nilai_bantuan = 20000000;
+            $catatan = "Rusak Berat";
+        } elseif ($penilaian_kerusakan > 46) {
+            $nilai_bantuan = 10000000;
+            $catatan = "Rusak Sedang";
+        } elseif ($penilaian_kerusakan > 30) {
+            $nilai_bantuan = 5000000;
+            $catatan = "Rusak Ringan";
+        } else {
+            $nilai_bantuan = 0;
+            $catatan = "Tidak mendapat bantuan";
+        }
+
+        // Proses upload foto
+        $fotoFields = [
+            'foto_penutup_atap',
+            'foto_pondasi',
+            'foto_rangka_atap',
+            'foto_kolom',
+            'foto_ring_balok',
+            'foto_dinding_pengisi',
+            'foto_kusen',
+            'foto_pintu',
+            'foto_jendela',
+            'foto_struktur_bawah',
+            'foto_penutup_lantai',
+            'foto_sloof',
+            'foto_mck',
+            'foto_air_kotor',
+            'foto_kk',
+            'foto_ktp',
+        ];
+
+        foreach ($fotoFields as $field) {
+            if ($request->hasFile($field)) {
+                // Hapus file lama SEBELUM upload file baru
+                if (!empty($verifikasi->$field) && file_exists(public_path($verifikasi->$field))) {
+                    unlink(public_path($verifikasi->$field));
+                }
+
+                // Buat direktori dan upload file baru
+                $nikFolder = public_path('up/verifikasi/' . $nik);
+                if (!file_exists($nikFolder)) {
+                    mkdir($nikFolder, 0755, true);
+                }
+
+                // Generate nama file dan upload
+                $customName = $field;
+                if ($field === 'foto_air_kotor') {
+                    $customName = 'foto_air_bersih';
+                } elseif ($field === 'foto_mck') {
+                    $customName = 'foto_sanitasi';
+                }
+
+                $filename = $customName . '_' . time() . '_' . uniqid() . '.' . $request->file($field)->getClientOriginalExtension();
+                $request->file($field)->move($nikFolder, $filename);
+
+                $data[$field] = 'up/verifikasi/' . $nik . '/' . $filename;
+            } else {
+                // Gunakan foto yang sudah ada
+                $data[$field] = $verifikasi->$field;
+            }
+        }
+
+        // Update data verifikasi
+        $verifikasi->update([
+            'foto_kk' => $data['foto_kk'],
+            'foto_ktp' => $data['foto_ktp'],
+            'kesanggupan_berswadaya' => $data['kesanggupan_berswadaya'],
+            'tipe' => $data['tipe'],
+            'penutup_atap' => $data['penutup_atap'],
+            'rangka_atap' => $data['rangka_atap'],
+            'kolom' => $data['kolom'],
+            'pondasi' => $data['pondasi'],
+            'ring_balok' => $data['ring_balok'],
+            'dinding_pengisi' => $data['dinding_pengisi'],
+            'kusen' => $data['kusen'],
+            'pintu' => $data['pintu'],
+            'jendela' => $data['jendela'],
+            'struktur_bawah' => $data['struktur_bawah'],
+            'penutup_lantai' => $data['penutup_lantai'],
+            'sloof' => $data['sloof'],
+            'mck' => $data['mck'],
+            'air_kotor' => $data['air_kotor'],
+            'foto_penutup_atap' => $data['foto_penutup_atap'],
+            'foto_rangka_atap' => $data['foto_rangka_atap'],
+            'foto_kolom' => $data['foto_kolom'],
+            'foto_pondasi' => $data['foto_pondasi'],
+            'foto_ring_balok' => $data['foto_ring_balok'],
+            'foto_dinding_pengisi' => $data['foto_dinding_pengisi'],
+            'foto_kusen' => $data['foto_kusen'],
+            'foto_pintu' => $data['foto_pintu'],
+            'foto_jendela' => $data['foto_jendela'],
+            'foto_struktur_bawah' => $data['foto_struktur_bawah'],
+            'foto_penutup_lantai' => $data['foto_penutup_lantai'],
+            'foto_sloof' => $data['foto_sloof'],
+            'foto_mck' => $data['foto_mck'],
+            'foto_air_kotor' => $data['foto_air_kotor'],
+            'penilaian_kerusakan' => $penilaian_kerusakan,
+            'nilai_bantuan' => $nilai_bantuan,
+            'catatan' => $catatan
+        ]);
+
+        // Update status di tabel data_cpb
+        $dataCPB = DataCPB::where('nik', $nik)->first();
+        if ($dataCPB) {
+            $dataCPB->pengecekan = 'Sudah Dicek';
+            $dataCPB->status = $nilai_bantuan > 0 ? 'Terverifikasi' : 'Tidak Terverifikasi';
+            $dataCPB->save();
+        }
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin.data_verif_cpb')
+            ->with('success', 'Data verifikasi CPB berhasil diperbarui');
+    }
 }

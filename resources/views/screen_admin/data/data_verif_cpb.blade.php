@@ -137,11 +137,19 @@
                                             <td style="min-width: 200px;">{{ $cpb->nilai_bantuan }}</td>
                                             <td style="min-width: 250px;">{{ $cpb->catatan }}</td>
                                             <td>
-                                                <!-- Tombol untuk membuka modal -->
-                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#modalHapus{{ $cpb->id }}">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <!-- Tombol Edit -->
+                                                    <a href="{{ route('admin.edit.data_verif_cpb', $cpb->id) }}"
+                                                        class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-pencil"></i> Edit
+                                                    </a>
+
+                                                    <!-- Tombol Hapus -->
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#modalHapus{{ $cpb->id }}">
+                                                        <i class="bi bi-trash"></i> Hapus
+                                                    </button>
+                                                </div>
 
                                                 <!-- Modal Konfirmasi Hapus -->
                                                 <div class="modal fade" id="modalHapus{{ $cpb->id }}" tabindex="-1"

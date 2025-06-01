@@ -67,7 +67,7 @@
                                     <table class="table table-hover table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
+                                                <th>No</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
                                                 <th>Verifikasi</th>
@@ -218,7 +218,7 @@
                                     <table class="table table-hover table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
+                                                <th>No</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
                                                 <th>Verifikasi</th>

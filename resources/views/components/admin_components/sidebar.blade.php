@@ -49,8 +49,8 @@
                 Request::routeIs('admin.data_cpb') ||
                 Request::routeIs('admin.data_verif_cpb') ||
                 Request::routeIs('admin.user.petugas.add') ||
-                // Request::routeIs('admin.add.data_cpb') ||
-                // Request::routeIs('admin.edit.data_cpb') ||
+                Request::routeIs('admin.edit.data_cpb') ||
+                Request::routeIs('admin.edit.data_verif_cpb') ||
                 Request::routeIs('admin.data_role');
             // Request::routeIs('admin.add.data_petugas') ||
             // Request::routeIs('admin.edit.data_petugas') ||

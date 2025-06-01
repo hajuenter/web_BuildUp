@@ -1,66 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏠 NganjukMase - Sistem Informasi Bantuan Rumah Tidak Layak Huni
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**NganjukMase** adalah website informasi dan pengelolaan data bantuan rumah tidak layak huni (Rutilahu) di Kabupaten Nganjuk, Jawa Timur. Website ini dikembangkan sebagai media kolaborasi dengan **Dinas Perumahan Rakyat, Kawasan Permukiman dan Pertanahan Kabupaten Nganjuk**, guna memudahkan proses pendataan calon penerima bantuan, verifikasi data, serta penyampaian informasi berita dan jadwal kegiatan dinas terkait.
 
-## About Laravel
+## 🔧 Teknologi yang Digunakan
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Proyek ini dibangun menggunakan teknologi-teknologi modern dan populer untuk memastikan performa, skalabilitas, dan kemudahan pengembangan:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   **Backend**:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    -   [Laravel 11](https://laravel.com/docs/11.x) – Framework PHP yang kuat dan mudah digunakan untuk pengembangan aplikasi web.
+    -   [MySQL](https://www.mysql.com/) – Database relasional yang digunakan untuk menyimpan seluruh data aplikasi.
 
-## Learning Laravel
+-   **Frontend**:
+    -   [Bootstrap 5](https://getbootstrap.com/) – Framework CSS/JS untuk desain antarmuka yang responsif dan modern.
+    -   HTML5 & CSS3
+    -   JavaScript Vanilla untuk interaksi klien
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📋 Fitur Utama Aplikasi
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Pengunjung Umum
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![Landing Page](screenshoot/satu.png)
 
-## Laravel Sponsors
+-   Melihat informasi berita terbaru dari Dinas Perumahan Rakyat, Kawasan Permukiman dan Pertanahan Kabupaten Nganjuk.
+-   Melihat jadwal kegiatan dinas.
+-   Menampilkan jumlah data CPB.
+-   Menampilkan jumlah data Verifikasi.
+-   Menampilkan jumlah data Tidak Terverifikasi.
+-   Menampilkan jumlah data penerima RTLH.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Role: Admin
 
-### Premium Partners
+![Admin Page](screenshoot/dua.png)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   Menu profile.
+-   Menu ganti password.
+-   Menu semua aktivasi pengguna.
+-   Mengelola berita (tambah, edit, hapus).
+-   Mengelola jadwal kegiatan dinas (tambah, edit, hapus).
+-   Bisa edit dan hapus data CPB yang diinput oleh petugas desa.
+-   Melihat hasil verifikasi data.
+-   Melihat laporan dan rekap data CPB per desa/kelurahan.
+-   Melihat laporan dan rekap data Verifikasi per desa/kelurahan.
 
-## Contributing
+### Role: Petugas Input CPB (Kepala Desa)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![Ptugas Page](screenshoot/tiga.png)
 
-## Code of Conduct
+-   Menu profile.
+-   Menu ganti password.
+-   Hanya bisa menginput/menambahkan data calon penerima bantuan (CPB) dari wilayah desa masing-masing.
+-   Tidak diperbolehkan melihat data dari desa lain.
+-   Hanya bisa mengedit data untuk desanya sendiri.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📥 Cara Menjalankan Proyek (untuk Developer)
 
-## Security Vulnerabilities
+### Prasyarat
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Pastikan Anda sudah menginstal:
 
-## License
+-   PHP >= 8.1
+-   Composer
+-   MySQL Server
+-   Git
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📬 Kontak
+
+Jika Anda memiliki pertanyaan atau ingin bekerja sama lebih lanjut, silakan hubungi kami melalui email resmi Dinas Perumahan Rakyat, Kawasan Permukiman dan Pertanahan Kabupaten Nganjuk.
+
+📩 **Hajuenter**  
+Email: [bahrulahmad1945@gmail.com](mailto:bahrulahmad1945@gmail.com)
+
+## 🌐 Website: https://nganjukmase.pbltifnganjuk.com/
+
+## 👨‍💻 Developer: BuildUp / TIF NGK B2
+
+### Clone Repository
+
+```bash
+git clone https://github.com/hajuenter/web_BuildUp.git
+cd nganjukmase
+```

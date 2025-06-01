@@ -25,8 +25,9 @@ Route::middleware(['api.key'])->group(function () {
     Route::post('/profile', [ApiProfileController::class, 'getProfile']);
     Route::post('/profile-update', [ApiProfileController::class, 'updateProfile']);
     Route::resource('/dataCPB', ApiDataCPBController::class);
+    Route::put('/updateVerifCPB/{id}', [ApiDataVerifikasiCPBController::class, 'updateVerifCPB']);
     Route::post('/verifikasiCPB', [ApiDataVerifikasiCPBController::class, 'addVerifikasiCPB']);
-    Route::match(['POST', 'PUT'], '/updateVerifCPB/{id}', [ApiDataVerifikasiCPBController::class, 'updateVerifCPB']);
+    // Route::match(['POST', 'PUT'], '/updateVerifCPB/{id}', [ApiDataVerifikasiCPBController::class, 'updateVerifCPB']);
     Route::get('/getVerifCPB', [ApiDataVerifikasiCPBController::class, 'getVerifCPB']);
     Route::delete('/delete/verifcpb/by-cpb/{id}', [ApiDataVerifikasiCPBController::class, 'destroyByCpbId']);
 });
