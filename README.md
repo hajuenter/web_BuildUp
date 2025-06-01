@@ -8,16 +8,16 @@ Proyek ini dibangun menggunakan teknologi-teknologi modern dan populer untuk mem
 
 ### 💻 Backend
 
--   ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white) [Laravel 11](https://laravel.com/docs/11.x) – Framework PHP yang kuat dan mudah digunakan untuk pengembangan aplikasi web.
--   ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white) [MySQL](https://www.mysql.com/) – Database relasional yang digunakan untuk menyimpan seluruh data aplikasi.
+-   ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white) – Framework PHP yang kuat dan mudah digunakan untuk pengembangan aplikasi web.
+-   ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white) – Database relasional yang digunakan untuk menyimpan seluruh data aplikasi.
 
 ### 🖥️ Frontend
 
--   ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white) [Bootstrap 5](https://getbootstrap.com/) – Framework CSS/JS untuk desain antarmuka yang responsif dan modern.
--   ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) HTML5 – Struktur dasar halaman web.
--   ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) CSS3 – Styling antarmuka.
--   ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) JavaScript Vanilla – Interaksi dinamis pada sisi klien.
--   ![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white) jQuery – Library JS untuk manipulasi DOM dan AJAX.
+-   ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white) – Framework CSS/JS untuk desain antarmuka yang responsif dan modern.
+-   ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) – Struktur dasar halaman web.
+-   ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) – Styling antarmuka.
+-   ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) – Interaksi dinamis pada sisi klien.
+-   ![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white) – Library JS untuk manipulasi DOM dan AJAX.
 
 ## 📋 Fitur Utama Aplikasi
 
